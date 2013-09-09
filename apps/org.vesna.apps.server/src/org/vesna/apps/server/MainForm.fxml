@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.vesna.core.javafx.controls.*?>
+
+<VBox fx:id="vbox" prefHeight="664.0" prefWidth="973.999977929685" xmlns:fx="http://javafx.com/fxml" fx:controller="org.vesna.apps.server.MainFormController">
+  <MenuBar>
+    <menus>
+      <Menu mnemonicParsing="false" text="Server">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
+        </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Help">
+        <items>
+          <MenuItem mnemonicParsing="false" text="About" />
+        </items>
+      </Menu>
+    </menus>
+  </MenuBar>
+  <LogsListController fx:id="logsList"/>
+  <AnchorPane>
+    <children>
+      <Button fx:id="button" layoutX="860.0" layoutY="16.0" onAction="#handleButtonAction" text="Click Me!" />
+      <Label fx:id="label" layoutX="707.0" layoutY="35.0" minHeight="16.0" minWidth="69.0" prefHeight="30.0" prefWidth="87.0" />
+      <Button fx:id="buttonInfo" layoutX="34.0" layoutY="16.0" onAction="#handleButtonInfo" text="Info Log Me!" />
+      <Button fx:id="buttonWarning" layoutX="217.0" layoutY="16.0" onAction="#handleButtonWarning" text="Warning Log Me!" />
+      <Button fx:id="buttonError" layoutX="443.0" layoutY="16.0" onAction="#handleButtonError" text="Error Log Me!" />
+      <Button fx:id="buttonCritical" layoutX="610.0" layoutY="16.0" onAction="#handleButtonCritical" text="Critical Log Me!" />
+    </children>
+  </AnchorPane>
+</VBox>
