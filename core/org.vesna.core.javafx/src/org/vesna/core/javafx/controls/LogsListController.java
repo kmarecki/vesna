@@ -66,17 +66,6 @@ public class LogsListController implements Initializable {
 	@FXML
 	private Label labelFatalsCount;
 	
-        public LogsListController() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LogsList.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		model = new LogsListViewModel();

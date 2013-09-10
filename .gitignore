@@ -22,3 +22,6 @@
 /core/org.vesna.core.javafx/dist/
 /apps/org.vesna.apps.server/build/
 /apps/org.vesna.apps.server/dist/
+
+*.log
+*.mdmp

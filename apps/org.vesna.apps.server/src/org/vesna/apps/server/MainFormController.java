@@ -38,7 +38,7 @@ public class MainFormController implements Initializable {
     private Label label;
 	
 //    @FXML
-    private  LogsListController logsList;
+//    private  LogsListController logsList;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -58,7 +58,8 @@ public class MainFormController implements Initializable {
         logger.log(Level.INFO, "buttonInfo was clicked!");
     }
 	
-	@FXML 
+    
+    @FXML 
      private void handleButtonWarning(ActionEvent event) {
         logger.log(Level.WARN, "buttonWarning was clicked!");
     }

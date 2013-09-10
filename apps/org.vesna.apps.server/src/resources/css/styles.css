@@ -1,0 +1,37 @@
+/* 
+    Document   : styles
+    Created on : Feb 17, 2013, 8:05:42 PM
+    Author     : Krzysztof Marecki
+    Description:
+        Purpose of the stylesheet follows.
+*/
+root { 
+    display: block;
+}
+
+/*.table-row-cell:filled:odd {
+   -fx-background-color: -fx-table-cell-border-color, white;
+}
+
+.table-row-cell:filled:selected:hover:odd {
+    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-selection-bar
+}
+
+.table-row-cell:filled:selected:odd {
+    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-selection-bar
+}
+
+.table-row-cell:filled:hover:odd {
+    -fx-background-color: -fx-table-cell-border-color, -fx-cell-hover-color;
+}*/
+
+.table-row-cell:empty {
+    -fx-background-color: white;   
+}
+
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
+
+
+

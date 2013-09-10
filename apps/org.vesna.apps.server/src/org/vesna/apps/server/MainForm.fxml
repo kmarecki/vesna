@@ -22,7 +22,7 @@
       </Menu>
     </menus>
   </MenuBar>
-  <LogsListController fx:id="logsList"/>
+  <LogsList fx:id="logsList" VBox.vgrow="ALWAYS" />
   <AnchorPane>
     <children>
       <Button fx:id="button" layoutX="860.0" layoutY="16.0" onAction="#handleButtonAction" text="Click Me!" />
