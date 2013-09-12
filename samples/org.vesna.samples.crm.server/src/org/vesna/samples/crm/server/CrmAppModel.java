@@ -15,30 +15,17 @@
  */
 package org.vesna.samples.crm.server;
 
-import static javafx.application.Application.launch;
 import org.vesna.apps.server.AppModel;
-
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class App extends org.vesna.apps.server.App  {
-   /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+public class CrmAppModel extends AppModel {
 
     @Override
-    protected AppModel createAppModel() {
-        CrmAppModel model = new CrmAppModel();
-        return model;
+    protected String getApplicationTitle() {
+        return "Vesna CRM 2013";
     }
+    
 }

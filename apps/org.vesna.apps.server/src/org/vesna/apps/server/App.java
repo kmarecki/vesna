@@ -28,10 +28,12 @@ import org.apache.log4j.Priority;
 
 /**
  *
- * @author krzys
+ * @author Krzysztof Marecki
  */
-public class App extends Application {
+public abstract class App extends Application {
     private static final Logger logger = Logger.getLogger(App.class);
+    
+    private AppModel model;
 	
     
 //    private Endpoint endpoint;
@@ -39,12 +41,13 @@ public class App extends Application {
 	
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
+        model = createAppModel();
+        Parent root = FXMLLoader.load(App.class.getResource("MainForm.fxml"));
         
         Scene scene = new Scene(root);
 		scene.getStylesheets().add("resources/css/styles.css");
         
-        stage.setTitle("Vesna Server 2013");
+        stage.setTitle(model.getApplicationTitle());
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
@@ -75,4 +78,6 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    protected abstract AppModel createAppModel();
 }
