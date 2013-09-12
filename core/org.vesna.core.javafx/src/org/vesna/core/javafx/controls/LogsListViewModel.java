@@ -21,6 +21,7 @@ import org.vesna.core.server.logging.LogEntryType;
 import org.vesna.core.server.logging.ObservableAppender;
 import java.util.Collections;
 import java.util.Comparator;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -135,10 +136,15 @@ public final class LogsListViewModel implements LogEntriesObserver {
 	}
 	
 	@Override
-	public void addNewLogEntry(LogEntry entry) {
-		addEntry(entry);
-		sortLogEntries();
-	}
+	public void addNewLogEntry(final LogEntry entry) {
+                Platform.runLater(new Runnable() {
+                    @Override 
+                    public void run() {
+                        addEntry(entry);
+                        sortLogEntries();
+                     }
+                });
+        }
 	
 	private void addEntry(LogEntry entry) {
 		if (getSelectedLogType().equals(entry.getEntryType().toString()) || 

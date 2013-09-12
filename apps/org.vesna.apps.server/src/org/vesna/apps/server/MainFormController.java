@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.vesna.core.server.derby.DerbyServer;
 
 /**
  *
@@ -33,6 +34,7 @@ import org.apache.log4j.Logger;
  */
 public class MainFormController implements Initializable {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
+    private DerbyServer derbyServer = new DerbyServer();
     
     @FXML
     private Label label;
@@ -51,6 +53,7 @@ public class MainFormController implements Initializable {
 //								jednmiary.getNazwa(),
 //								jednmiary.getSymbol());
 //		}
+        derbyServer.runStandaloneServer();
     }
     
     @FXML 
