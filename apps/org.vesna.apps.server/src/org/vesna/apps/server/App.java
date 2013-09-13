@@ -42,11 +42,14 @@ public abstract class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         model = createAppModel();
-        Parent root = FXMLLoader.load(App.class.getResource("MainForm.fxml"));
-        
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(App.class.getResource("MainForm.fxml"));
+        Parent root = (Parent)fxmlLoader.load();
         Scene scene = new Scene(root);
 		scene.getStylesheets().add("resources/css/styles.css");
-        
+        MainFormController controller = (MainFormController)fxmlLoader.getController();
+        controller.setAppModel(model);
+                
         stage.setTitle(model.getApplicationTitle());
         stage.setScene(scene);
         stage.sizeToScene();

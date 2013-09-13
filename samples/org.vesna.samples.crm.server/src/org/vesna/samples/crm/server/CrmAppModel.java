@@ -27,5 +27,12 @@ public class CrmAppModel extends AppModel {
     protected String getApplicationTitle() {
         return "Vesna CRM 2013";
     }
+
+    @Override
+    protected String getDatabaseName() {
+        return "crm";
+    }
+    
+    
     
 }

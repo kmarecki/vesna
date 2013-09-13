@@ -34,7 +34,8 @@ import org.vesna.core.server.derby.DerbyServer;
  */
 public class MainFormController implements Initializable {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
-    private DerbyServer derbyServer = new DerbyServer();
+    private AppModel appModel;
+    private DerbyServer derbyServer;
     
     @FXML
     private Label label;
@@ -53,7 +54,12 @@ public class MainFormController implements Initializable {
 //								jednmiary.getNazwa(),
 //								jednmiary.getSymbol());
 //		}
-        derbyServer.runStandaloneServer();
+        if (derbyServer == null) {
+            derbyServer = new DerbyServer(appModel.getDatabaseName());
+        }
+        if (!derbyServer.isRunningAndExists()) {
+            derbyServer.runStandaloneServer();
+        }
     }
     
     @FXML 
@@ -86,4 +92,8 @@ public class MainFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    public void setAppModel(AppModel model) {
+        appModel = model;
+    }
 }
