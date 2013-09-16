@@ -57,9 +57,8 @@ public class MainFormController implements Initializable {
         if (derbyServer == null) {
             derbyServer = new DerbyServer(appModel.getDatabaseName());
         }
-        if (!derbyServer.isRunningAndExists()) {
-            derbyServer.runStandaloneServer();
-        }
+        
+        derbyServer.checkDerbyServer();
     }
     
     @FXML 

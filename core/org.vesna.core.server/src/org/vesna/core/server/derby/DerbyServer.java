@@ -16,13 +16,14 @@
 package org.vesna.core.server.derby;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
 /**
@@ -71,15 +72,37 @@ public class DerbyServer {
         thread.start();
     }
     
+   Boolean isDatabaseExists() {
+        File databaseDirectory =  new File(System.getProperty("user.dir"), databaseName);
+        return databaseDirectory.exists();
+    }
+    
     public Boolean isRunningAndExists() {
-        String url = String.format("jdbc:derby:directory%s;create=true", databaseName);
+        Boolean create = !isDatabaseExists();
+        String url = String.format("jdbc:derby://localhost:1527/%s", databaseName);
+        if (create) {
+            url = url.concat(";create=true");
+        }
         try {
             Connection connection = DriverManager.getConnection(url);
             connection.close();
+            if (create) {
+                logger.info(String.format("Database %s has been created", databaseName));
+            }
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
             return false;
         }
+        logger.info(String.format("Derby server is running, connection to database %s successful.", databaseName));
         return true;
+    }
+    
+    public void checkDerbyServer() {
+        if (!isRunningAndExists()) {
+            runStandaloneServer();
+            if (!isRunningAndExists()) {
+                logger.error("Derby Server cannot be started");
+            }
+        }
     }
 }
