@@ -23,7 +23,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.vesna.core.server.derby.DerbyServer;
@@ -58,12 +57,15 @@ public class MainFormController implements Initializable {
             derbyServer = new DerbyServer(appModel.getDatabaseName());
         }
         
-        derbyServer.checkDerbyServer();
+        derbyServer.check();
     }
     
     @FXML 
      private void handleButtonInfo(ActionEvent event) {
-        logger.log(Level.INFO, "buttonInfo was clicked!");
+        if (derbyServer.isRunning()) {
+            derbyServer.shutdown();
+        }
+        logger.info("buttonInfo was clicked!");
     }
 	
     
@@ -84,6 +86,9 @@ public class MainFormController implements Initializable {
     
     @FXML
     private void handleMenuItemExit(ActionEvent event) {
+        if (derbyServer.isRunning()) {
+            derbyServer.shutdown();
+        }
         Platform.exit();
     }
     

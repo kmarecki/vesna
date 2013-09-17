@@ -15,16 +15,12 @@
  */
 package org.vesna.core.server.derby;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
+import org.vesna.core.lang.ProcessHelper;
 
 /**
  *
@@ -39,37 +35,8 @@ public class DerbyServer {
     }
     
     public void runStandaloneServer() {
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "start"};
-                Process process;
-                try {
-                    logger.info("Current directory is " + System.getProperty("user.dir"));
-                    ProcessBuilder builder = new ProcessBuilder(commands);
-             
-                    process = builder.start();
-                    InputStream outputStream = process.getInputStream();
-                    InputStreamReader outputStreamReader = new InputStreamReader(outputStream);
-                    BufferedReader outputBufferedReader = new BufferedReader(outputStreamReader);
-
-                    while(true) {
-                        String line;
-                        while((line = outputBufferedReader.readLine()) != null) {
-                            logger.info(line);
-                        }
-                        Thread.sleep(500);
-                    }
-
-                } catch (IOException ex) {
-                    logger.error(ex.getMessage());
-                } catch (InterruptedException ex) {
-                    
-                }
-            }
-        });
-        thread.start();
+        String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "start"};
+        ProcessHelper.StartInSeparateThread(commands, logger);
     }
     
    Boolean isDatabaseExists() {
@@ -77,7 +44,7 @@ public class DerbyServer {
         return databaseDirectory.exists();
     }
     
-    public Boolean isRunningAndExists() {
+    public Boolean isRunning() {
         Boolean create = !isDatabaseExists();
         String url = String.format("jdbc:derby://localhost:1527/%s", databaseName);
         if (create) {
@@ -93,16 +60,50 @@ public class DerbyServer {
             logger.error(ex.getMessage());
             return false;
         }
-        logger.info(String.format("Derby server is running, connection to database %s successful.", databaseName));
         return true;
     }
     
-    public void checkDerbyServer() {
-        if (!isRunningAndExists()) {
+    public void check() {
+        Boolean isRunning = isRunning();
+        
+        if (!isRunning) {
             runStandaloneServer();
-            if (!isRunningAndExists()) {
-                logger.error("Derby Server cannot be started");
-            }
+            isRunning = isRunning();
         }
+        
+        if (isRunning) {
+            logger.info(String.format("Derby server is running, connection to database %s successful.", databaseName));
+        } else {
+            logger.error("Derby Server cannot be started");
+        }
+    }
+    
+    void shutdownDatabase() {
+        String url = String.format("jdbc:derby://localhost:1527/%s;shutdown=true", databaseName);
+        try {
+            DriverManager.getConnection(url);
+            logger.info("Derby server has been shut down");
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+    }
+    
+    void shutdownServer() {
+        String url = "jdbc:derby://localhost:1527/;shutdown=true";
+        try {
+           DriverManager.getConnection(url);
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+    }
+    
+    void shutdownStandaloneServer() {
+        String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "shutdown"};
+        ProcessHelper.StartInSeparateThread(commands, logger);
+    } 
+    
+    public void shutdown() {
+        shutdownStandaloneServer();
+        logger.info("Derby server has been shut down");
     }
 }
