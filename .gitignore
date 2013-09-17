@@ -25,3 +25,14 @@
 
 *.log
 *.mdmp
+/core/org.vesna.core/nbproject/private/
+/core/org.vesna.core/dist/
+/core/org.vesna.core/build/
+/samples/crm/org.vesna.samples.crm.dto/nbproject/private/
+/samples/crm/org.vesna.samples.crm.server/nbproject/private/
+/samples/crm/org.vesna.samples.crm.server/build/
+/samples/crm/org.vesna.samples.crm.dto/build/
+/samples/crm/org.vesna.samples.crm.dto/dist/
+/samples/crm/org.vesna.samples.crm.server/dist/
+/samples/crm/org.vesna.samples.crm.server/crm/
+
