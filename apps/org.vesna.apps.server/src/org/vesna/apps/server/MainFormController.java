@@ -25,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.vesna.apps.server.controls.DatabaseManagementControl;
 import org.vesna.apps.server.controls.LogsControl;
 import org.vesna.core.server.derby.DerbyServer;
 
@@ -38,6 +39,8 @@ public class MainFormController {
     
     @FXML
     LogsControl logsControl;
+    @FXML
+    DatabaseManagementControl databaseControl;
     
     @FXML
     private void handleMenuItemExit(ActionEvent event) {
@@ -48,5 +51,6 @@ public class MainFormController {
         appModel = model;
         
         logsControl.getController().setModel(model);
+        databaseControl.getController().setModel(model);
     }
 }

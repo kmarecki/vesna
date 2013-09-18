@@ -29,6 +29,8 @@
       <Tab text="Logs">
         <LogsControl fx:id="logsControl"/>
       </Tab>
-      <Tab text="Hibernate" />
+      <Tab text="Database">
+        <DatabaseManagementControl fx:id="databaseControl"/>
+      </Tab>
   </TabPane>
 </VBox>

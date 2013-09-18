@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
+         fx:controller="org.vesna.apps.server.controls.DatabaseManagementControlController"
+         spacing="10" >
+    <GridPane VBox.vgrow="ALWAYS">
+        <Label GridPane.columnIndex="0" GridPane.rowIndex="0"
+               text="Tables"/>
+        <ListView fx:id="tablesList" 
+                  GridPane.columnIndex="0" GridPane.rowIndex="1"/> 
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="0"
+              spacing="5" >
+            <children>
+                <Button fx:id="addRowButton" text="Add" />
+                <Button fx:id="editRowButton" text="Edit"/>
+                <Button fx:id="deleteRowButton" text="Remove"/> 
+            </children>
+        </HBox>
+        <TableView fx:id="rowsTable"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1" 
+                   GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/> 
+    </GridPane>
+</fx:root>

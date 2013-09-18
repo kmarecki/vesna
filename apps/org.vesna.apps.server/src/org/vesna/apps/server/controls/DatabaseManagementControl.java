@@ -23,16 +23,16 @@ import javafx.scene.layout.VBox;
  *
  * @author Krzysztof Marecki
  */
-public class LogsControl extends VBox {
+public class DatabaseManagementControl extends VBox {
+    
+    private DatabaseManagementControlController controller;
 
-    private LogsControlController controller;
-
-    public LogsControlController getController() {
+    public DatabaseManagementControlController getController() {
         return controller;
     }
 
-    public LogsControl() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LogsControl.fxml"));
+    public DatabaseManagementControl() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DatabaseManagementControl.fxml"));
         fxmlLoader.setRoot(this);
         try {
             fxmlLoader.load();

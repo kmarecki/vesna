@@ -15,31 +15,30 @@
  */
 package org.vesna.apps.server.controls;
 
-import java.io.IOException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import org.vesna.apps.server.AppModel;
+
 
 /**
+ * 
  *
  * @author Krzysztof Marecki
  */
-public class LogsControl extends VBox {
-
-    private LogsControlController controller;
-
-    public LogsControlController getController() {
-        return controller;
+public class DatabaseManagementControlController {
+    
+    private DatabaseManegementControlModel model;
+    
+    @FXML
+    ListView tablesList;
+    @FXML
+    TableView rowsTable;
+    
+    public void setModel(AppModel appModel) {
+        model = new DatabaseManegementControlModel();
+        
+        tablesList.itemsProperty().bind(model.tablesProperty());
     }
-
-    public LogsControl() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LogsControl.fxml"));
-        fxmlLoader.setRoot(this);
-        try {
-            fxmlLoader.load();
-            controller = fxmlLoader.getController();
-
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
+    
 }
