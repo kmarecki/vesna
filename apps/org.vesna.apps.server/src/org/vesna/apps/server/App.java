@@ -48,7 +48,7 @@ public abstract class App extends Application {
         Scene scene = new Scene(root);
 		scene.getStylesheets().add("resources/css/styles.css");
         MainFormController controller = (MainFormController)fxmlLoader.getController();
-        controller.setAppModel(model);
+        controller.setModel(model);
                 
         stage.setTitle(model.getApplicationTitle());
         stage.setScene(scene);

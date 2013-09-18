@@ -14,13 +14,19 @@ import javafx.scene.layout.VBox;
  */
 public class LogsList extends VBox {
     
+    private LogsListController controller;
+
+    public LogsListController getController() {
+        return controller;
+    }
+    
     public LogsList() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LogsList.fxml"));
         fxmlLoader.setRoot(this);
-        fxmlLoader.setController(new LogsListController());
-
+        
         try {
             fxmlLoader.load();
+            controller = fxmlLoader.getController();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }

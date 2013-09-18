@@ -43,7 +43,7 @@ import static org.vesna.core.server.logging.LogEntryType.Warning;
  *
  * @author Krzysztof Marecki
  */
-public class LogsListController implements Initializable {
+public class LogsListController {
 
 	private LogsListViewModel model;
 	
@@ -66,8 +66,8 @@ public class LogsListController implements Initializable {
 	@FXML
 	private Label labelFatalsCount;
 	
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	
+	public void setModel() {
 		model = new LogsListViewModel();
 		model.initialize();
 		

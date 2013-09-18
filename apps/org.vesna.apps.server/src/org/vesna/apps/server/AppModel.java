@@ -21,7 +21,7 @@ package org.vesna.apps.server;
  */
 public abstract class AppModel {
     
-    protected abstract String getApplicationTitle();
+    public abstract String getApplicationTitle();
     
-    protected abstract String getDatabaseName();
+    public abstract String getDatabaseName();
 }

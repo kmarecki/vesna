@@ -25,79 +25,28 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.vesna.apps.server.controls.LogsControl;
 import org.vesna.core.server.derby.DerbyServer;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class MainFormController implements Initializable {
+public class MainFormController {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
     private AppModel appModel;
-    private DerbyServer derbyServer;
     
     @FXML
-    private Label label;
-	
-//    @FXML
-//    private  LogsListController logsList;
-
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-//        JednmiarRepositoryImpl repository = new JednmiarRepositoryImpl();
-//		Jednmiary[] jednmiar = repository.getAllEntities();
-//		
-//		for(Jednmiary jednmiary : jednmiar) {
-//			System.out.printf("Id=%s, Nazwa=%s, Symbol=%s\n", 
-//								jednmiary.getJednmiaryId(),
-//								jednmiary.getNazwa(),
-//								jednmiary.getSymbol());
-//		}
-        if (derbyServer == null) {
-            derbyServer = new DerbyServer(appModel.getDatabaseName());
-        }
-        
-        derbyServer.check();
-    }
-    
-    @FXML 
-     private void handleButtonInfo(ActionEvent event) {
-        if (derbyServer.isRunning()) {
-            derbyServer.shutdown();
-        }
-        logger.info("buttonInfo was clicked!");
-    }
-	
-    
-    @FXML 
-     private void handleButtonWarning(ActionEvent event) {
-        logger.log(Level.WARN, "buttonWarning was clicked!");
-    }
-	
-	@FXML 
-     private void handleButtonError(ActionEvent event) {
-        logger.log(Level.ERROR, "buttonError was clicked!\n Multiline Rulez");
-    }
-	
-	@FXML 
-     private void handleButtonCritical(ActionEvent event) {
-        logger.log(Level.FATAL, "buttonFatal was clicked!");
-    }
+    LogsControl logsControl;
     
     @FXML
     private void handleMenuItemExit(ActionEvent event) {
-        if (derbyServer.isRunning()) {
-            derbyServer.shutdown();
-        }
         Platform.exit();
     }
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
-    public void setAppModel(AppModel model) {
+    public void setModel(AppModel model) {
         appModel = model;
+        
+        logsControl.getController().setModel(model);
     }
 }

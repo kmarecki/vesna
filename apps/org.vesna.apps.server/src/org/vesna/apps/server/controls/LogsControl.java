@@ -13,23 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.server;
+package org.vesna.apps.server.controls;
 
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
 import org.vesna.apps.server.AppModel;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CrmAppModel extends AppModel {
+public class LogsControl extends VBox {
 
-    @Override
-    public String getApplicationTitle() {
-        return "Vesna CRM 2013";
+    private LogsControlController controller;
+
+    public LogsControlController getController() {
+        return controller;
     }
 
-    @Override
-    public String getDatabaseName() {
-        return "crm";
+    public LogsControl() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LogsControl.fxml"));
+        fxmlLoader.setRoot(this);
+        try {
+            fxmlLoader.load();
+            controller = fxmlLoader.getController();
+
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
     }
 }
