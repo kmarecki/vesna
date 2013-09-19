@@ -15,11 +15,19 @@
  */
 package org.vesna.apps.server.controls;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import org.vesna.apps.server.AppModel;
-
+import javafx.util.Callback;
+import org.vesna.core.javafx.data.DataRow;
+import org.vesna.core.javafx.data.DataTable;
 
 /**
  * 
@@ -28,17 +36,54 @@ import org.vesna.apps.server.AppModel;
  */
 public class DatabaseManagementControlController {
     
-    private DatabaseManegementControlModel model;
+    private DatabaseManagementControlModel model;
     
     @FXML
     ListView tablesList;
     @FXML
     TableView rowsTable;
+    @FXML 
+    Label tableNameLabel;
     
-    public void setModel(AppModel appModel) {
-        model = new DatabaseManegementControlModel();
+    public void setModel(final DatabaseManagementControlModel model) {
+        this.model = model;
         
         tablesList.itemsProperty().bind(model.tablesProperty());
+        tablesList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+					@Override
+					public void changed(ObservableValue<? extends String> ov, 
+                                                            String oldValue, String newValue) {
+                                            model.setSelectedTable(newValue);
+                                            model.loadTableRows();
+                                            addColumns();
+                                            bindRows();
+					}	
+		});
+        tableNameLabel.textProperty().bindBidirectional(model.selectedTableProperty());
+        
+        model.initialize();
+    }
+    
+    private void addColumns() {
+        rowsTable.getColumns().clear();
+        for(final String columnName : model.getColumns()) {
+            TableColumn column = new TableColumn(columnName);
+            column.setCellValueFactory(new Callback<CellDataFeatures<DataRow,String>,ObservableValue<String>>(){                   
+                    @Override
+                    public ObservableValue<String> call(CellDataFeatures<DataRow, String> param) {                                                                                             
+                        return new SimpleStringProperty(param.getValue().getString(columnName));                       
+                    }                   
+                });
+
+            rowsTable.getColumns().add(column);
+        }
+    }
+    
+    private void bindRows() {
+        DataTable table = model.getRowsTable();
+        if (table != null) {
+            rowsTable.itemsProperty().bind(table.rowsProperty());
+        }
     }
     
 }

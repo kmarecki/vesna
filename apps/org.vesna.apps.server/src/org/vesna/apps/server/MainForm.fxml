@@ -29,8 +29,10 @@
       <Tab text="Logs">
         <LogsControl fx:id="logsControl"/>
       </Tab>
-      <Tab text="Database">
+      <Tab text="Database" onSelectionChanged="#handleTabDatabase" >
         <DatabaseManagementControl fx:id="databaseControl"/>
+      </Tab>
+      <Tab text="Diagnostics">
       </Tab>
   </TabPane>
 </VBox>

@@ -77,8 +77,8 @@ public class LogsListController {
 				new ChangeListener<String>() {
 					@Override
 					public void changed(ObservableValue<? extends String> ov, 
-										String oldValue, String newValue) {
-						model.setSelectedLogType(newValue);
+                                                            String oldValue, String newValue) {
+                                            model.setSelectedLogType(newValue);
 					}	
 		});
 		

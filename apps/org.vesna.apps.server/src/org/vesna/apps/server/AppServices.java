@@ -13,21 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.vesna.apps.server;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public abstract class AppModel {
+public class AppServices {
+    Map<Class, Object> services = new HashMap<>();
     
-    private AppServices services = new AppServices();
-    
-    public AppServices getServices() {
-        return services;
+    public void add(Object service) {
+        services.put(service.getClass(), service);
     }
     
-    public abstract String getApplicationTitle();
-    
-    public abstract String getDatabaseName();   
+    public <T> T get(Class<T> clazz) {
+        T service = (T)services.get(clazz);
+        return service;
+    }
 }

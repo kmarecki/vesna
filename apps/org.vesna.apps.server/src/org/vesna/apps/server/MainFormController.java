@@ -15,19 +15,15 @@
  */
 package org.vesna.apps.server;
 
-import org.vesna.core.javafx.controls.LogsListController;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.vesna.apps.server.controls.DatabaseManagementControl;
+import org.vesna.apps.server.controls.DatabaseManagementControlModel;
 import org.vesna.apps.server.controls.LogsControl;
-import org.vesna.core.server.derby.DerbyServer;
+import org.vesna.core.server.derby.DerbyService;
 
 /**
  *
@@ -47,10 +43,24 @@ public class MainFormController {
         Platform.exit();
     }
     
+    @FXML
+    private void handleTabDatabase(Event event) {
+         setDatabaseManagementControlModel();
+    }
+    
     public void setModel(AppModel model) {
         appModel = model;
         
-        logsControl.getController().setModel(model);
+        setLogControlModel();
+    }
+    
+    private void setLogControlModel() {
+       logsControl.getController().setModel(appModel);
+    }
+    
+    private void setDatabaseManagementControlModel() {
+        DerbyService derbyService = appModel.getServices().get(DerbyService.class);
+        DatabaseManagementControlModel model = new DatabaseManagementControlModel(derbyService);
         databaseControl.getController().setModel(model);
     }
 }

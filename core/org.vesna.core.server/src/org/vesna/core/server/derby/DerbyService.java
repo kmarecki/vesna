@@ -26,33 +26,39 @@ import org.vesna.core.lang.ProcessHelper;
  *
  * @author Krzysztof Marecki
  */
-public class DerbyServer {
-    private static final Logger logger = Logger.getLogger(DerbyServer.class);
+public class DerbyService {
+    private static final Logger logger = Logger.getLogger(DerbyService.class);
     private String databaseName;
+    private Connection connection;
     
-    public DerbyServer(String databaseName) {
+    public DerbyService(String databaseName) {
         this.databaseName = databaseName;
     }
     
-    public void runStandaloneServer() {
+    private void runStandaloneServer() {
         String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "start"};
         ProcessHelper.StartInSeparateThread(commands, logger);
     }
     
-   Boolean isDatabaseExists() {
+    private Boolean isDatabaseExists() {
         File databaseDirectory =  new File(System.getProperty("user.dir"), databaseName);
         return databaseDirectory.exists();
+    }
+   
+    private String getDatabaseUrl() {
+        String url = String.format("jdbc:derby://localhost:1527/%s", databaseName);
+        return url;
     }
     
     public Boolean isRunning() {
         Boolean create = !isDatabaseExists();
-        String url = String.format("jdbc:derby://localhost:1527/%s", databaseName);
+        String url = getDatabaseUrl();
         if (create) {
             url = url.concat(";create=true");
         }
         try {
-            Connection connection = DriverManager.getConnection(url);
-            connection.close();
+            Connection testConnection = DriverManager.getConnection(url);
+            testConnection.close();
             if (create) {
                 logger.info(String.format("Database %s has been created", databaseName));
             }
@@ -78,8 +84,9 @@ public class DerbyServer {
         }
     }
     
-    void shutdownDatabase() {
-        String url = String.format("jdbc:derby://localhost:1527/%s;shutdown=true", databaseName);
+    private void shutdownDatabase() {
+        String url = getDatabaseUrl();
+         url = url.concat(";shutdown=true");
         try {
             DriverManager.getConnection(url);
             logger.info("Derby server has been shut down");
@@ -88,7 +95,7 @@ public class DerbyServer {
         }
     }
     
-    void shutdownServer() {
+    private void shutdownServer() {
         String url = "jdbc:derby://localhost:1527/;shutdown=true";
         try {
            DriverManager.getConnection(url);
@@ -97,7 +104,7 @@ public class DerbyServer {
         }
     }
     
-    void shutdownStandaloneServer() {
+    private void shutdownStandaloneServer() {
         String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "shutdown"};
         ProcessHelper.StartInSeparateThread(commands, logger);
     } 
@@ -105,5 +112,13 @@ public class DerbyServer {
     public void shutdown() {
         shutdownStandaloneServer();
         logger.info("Derby server has been shut down");
+    }
+    
+    public Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            String url = getDatabaseUrl();
+            connection = DriverManager.getConnection(url);
+        }
+        return connection;
     }
 }

@@ -14,14 +14,21 @@
                text="Tables"/>
         <ListView fx:id="tablesList" 
                   GridPane.columnIndex="0" GridPane.rowIndex="1"/> 
-        <HBox GridPane.columnIndex="1" GridPane.rowIndex="0"
-              spacing="5" >
-            <children>
-                <Button fx:id="addRowButton" text="Add" />
-                <Button fx:id="editRowButton" text="Edit"/>
-                <Button fx:id="deleteRowButton" text="Remove"/> 
-            </children>
-        </HBox>
+        <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <left>
+                <HBox spacing="10">
+                    <children>
+                        <Button fx:id="addRowButton" text="Add" />
+                        <Button fx:id="editRowButton" text="Edit"/>
+                        <Button fx:id="deleteRowButton" text="Remove"/> 
+                    </children>
+                </HBox>
+            </left>
+            <right>
+                <Label fx:id="tableNameLabel"
+                       BorderPane.alignment="CENTER_RIGHT" /> 
+            </right>
+        </BorderPane>
         <TableView fx:id="rowsTable"
                    GridPane.columnIndex="1" GridPane.rowIndex="1" 
                    GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/> 

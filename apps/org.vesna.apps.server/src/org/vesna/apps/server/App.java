@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javax.xml.ws.Endpoint;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.vesna.core.server.derby.DerbyService;
 
 /**
  *
@@ -42,6 +43,8 @@ public abstract class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         model = createAppModel();
+        model.getServices().add(new DerbyService(model.getDatabaseName()));
+        
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(App.class.getResource("MainForm.fxml"));
         Parent root = (Parent)fxmlLoader.load();

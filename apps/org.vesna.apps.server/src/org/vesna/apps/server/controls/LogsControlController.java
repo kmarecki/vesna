@@ -15,18 +15,14 @@
  */
 package org.vesna.apps.server.controls;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.vesna.apps.server.AppModel;
 import org.vesna.apps.server.MainFormController;
 import org.vesna.core.javafx.controls.LogsList;
-import org.vesna.core.server.derby.DerbyServer;
+import org.vesna.core.server.derby.DerbyService;
 
 /**
  *
@@ -35,7 +31,7 @@ import org.vesna.core.server.derby.DerbyServer;
 public class LogsControlController {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
     private AppModel appModel;
-    private DerbyServer derbyServer;
+    private DerbyService derbyService;
     
     @FXML
     LogsList logsList;
@@ -51,17 +47,14 @@ public class LogsControlController {
 //								jednmiary.getNazwa(),
 //								jednmiary.getSymbol());
 //		}
-        if (derbyServer == null) {
-            derbyServer = new DerbyServer(appModel.getDatabaseName());
-        }
         
-        derbyServer.check();
+        derbyService.check();
     }
     
     @FXML 
      private void handleButtonInfo(ActionEvent event) {
-        if (derbyServer.isRunning()) {
-            derbyServer.shutdown();
+        if (derbyService.isRunning()) {
+            derbyService.shutdown();
         }
         logger.info("buttonInfo was clicked!");
     }
@@ -72,18 +65,19 @@ public class LogsControlController {
         logger.log(Level.WARN, "buttonWarning was clicked!");
     }
 	
-	@FXML 
+    @FXML 
      private void handleButtonError(ActionEvent event) {
         logger.log(Level.ERROR, "buttonError was clicked!\n Multiline Rulez");
     }
 	
-	@FXML 
+     @FXML 
      private void handleButtonCritical(ActionEvent event) {
         logger.log(Level.FATAL, "buttonFatal was clicked!");
     }
     
     public void setModel(AppModel model) {
         appModel = model;
+        derbyService = appModel.getServices().get(DerbyService.class);
         
         logsList.getController().setModel();
     }

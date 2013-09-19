@@ -13,21 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.apps.server;
+package org.vesna.core.javafx.data;
+
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public abstract class AppModel {
+public class DataRow {
+    private DataTable parent;
+    private ObservableList<Object> items;
     
-    private AppServices services = new AppServices();
-    
-    public AppServices getServices() {
-        return services;
+    public ObservableList<Object> getItems() {
+        return items;
     }
     
-    public abstract String getApplicationTitle();
+    void setItems(ObservableList<Object> value) {
+        items = value;
+    }
     
-    public abstract String getDatabaseName();   
+    DataRow(DataTable table) {
+        this.parent = table;
+    }
+    
+    public String getString(int columnIndex) {
+        return (String)items.get(columnIndex);
+    }
+    
+    public String getString(String columnName) {
+        int columnIndex = parent.indexOfColumn(columnName);
+        return getString(columnIndex);
+    }
 }
