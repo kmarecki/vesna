@@ -20,31 +20,39 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.property.adapter.JavaBeanObjectProperty;
+import javafx.beans.property.adapter.JavaBeanObjectPropertyBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 import org.vesna.core.javafx.data.DataTable;
 import org.vesna.core.server.derby.DerbyService;
+import org.vesna.core.sql.MetaDataTable;
 
 /**
  *
  * @author Krzysztof Marecki
  */
 public class DatabaseManagementControlModel {
+    
+    
     private static final Logger logger = Logger.getLogger(DatabaseManagementControlModel.class);
     private DerbyService derbyService;
     
-    private final ListProperty<String> tables = new SimpleListProperty<>(FXCollections.<String>observableArrayList());
+    private final ListProperty<MetaDataTable> tables = new SimpleListProperty<>(FXCollections.<MetaDataTable>observableArrayList());
 
-    public ObservableList<String> getTables() {
+    public ObservableList<MetaDataTable> getTables() {
         return tables.get();
     }
 
-    public void setTables(ObservableList<String> value) {
+    public void setTables(ObservableList<MetaDataTable> value) {
         tables.set(value);
     }
 
@@ -53,17 +61,28 @@ public class DatabaseManagementControlModel {
     }
     
     
-    private final StringProperty selectedTable = new SimpleStringProperty();
+    private final ObjectProperty<MetaDataTable> selectedTable = new ObjectPropertyBase<MetaDataTable>() {
 
-    public String getSelectedTable() {
+        @Override
+        public Object getBean() {
+          return null;
+        }
+
+        @Override
+        public String getName() {
+           return "";
+        }
+    };
+
+    public MetaDataTable getSelectedTable() {
         return selectedTable.get();
     }
 
-    public void setSelectedTable(String value) {
+    public void setSelectedTable(MetaDataTable value) {
         selectedTable.set(value);
     }
 
-    public StringProperty selectedTableProperty() {
+    public ObjectProperty<MetaDataTable> selectedTableProperty() {
         return selectedTable;
     }
     
@@ -87,10 +106,7 @@ public class DatabaseManagementControlModel {
         return rowsTable;
     }
     
-    public DatabaseManagementControlModel() {
-        
-    }
-    
+   
     public DatabaseManagementControlModel(DerbyService derbyService) {
         this.derbyService = derbyService;
     }
@@ -106,16 +122,12 @@ public class DatabaseManagementControlModel {
     
     private void loadTables() {
         try {
-            Connection connection = derbyService.getConnection();
-            DatabaseMetaData dbmd = connection.getMetaData();
+            DatabaseMetaData dbmd = getDatabaseMetaData();
             ResultSet resultSet = dbmd.getTables(null, null, null, null);
             tables.clear();
             while (resultSet.next()) {
-//                String tableName = String.format("%s.%s",
-//                        resultSet.getString("TABLE_SCHEM"),
-//                        resultSet.getString("TABLE_NAME"));
-                String tableName = resultSet.getString("TABLE_NAME");
-                tables.add(tableName);
+                MetaDataTable table = MetaDataTable.fromResultSet(resultSet);
+                tables.add(table);
             }
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
@@ -124,9 +136,10 @@ public class DatabaseManagementControlModel {
     
     private void loadColumns() {
          try {
-            Connection connection = derbyService.getConnection();
-            DatabaseMetaData dbmd = connection.getMetaData();
-            ResultSet resultSet = dbmd.getColumns(null, null, getSelectedTable(), null);
+            DatabaseMetaData dbmd = getDatabaseMetaData();
+            MetaDataTable table = getSelectedTable();
+            ResultSet resultSet = dbmd.getColumns(
+                    null, table.getTableSchema(), table.getTableName(), null);
             columns.clear();
             while (resultSet.next()) {
                 String tableName = resultSet.getString("COLUMN_NAME");
@@ -143,13 +156,20 @@ public class DatabaseManagementControlModel {
         try {
            Connection connection = derbyService.getConnection();
            Statement statement = connection.createStatement();
-           String sql = String.format("SELECT * FROM sys.%s", getSelectedTable());
+           MetaDataTable table = getSelectedTable();
+           String sql = String.format("SELECT * FROM %s.%s", 
+                   table.getTableSchema(), table.getTableName());
            statement.execute(sql);
            ResultSet resultSet = statement.getResultSet();
            rowsTable = DataTable.fromResultSet(resultSet);
         } catch (SQLException ex) {
            logger.error(ex.getMessage());
         }
-        
+    }
+    
+    private DatabaseMetaData getDatabaseMetaData() throws SQLException {
+        Connection connection = derbyService.getConnection();
+        DatabaseMetaData dbmd = connection.getMetaData();
+        return dbmd;
     }
 }

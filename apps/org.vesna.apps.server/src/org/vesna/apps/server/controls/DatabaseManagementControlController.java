@@ -15,19 +15,22 @@
  */
 package org.vesna.apps.server.controls;
 
+import static javafx.beans.binding.Bindings.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import org.vesna.core.javafx.JavaFXUtils;
 import org.vesna.core.javafx.data.DataRow;
 import org.vesna.core.javafx.data.DataTable;
+import org.vesna.core.sql.MetaDataTable;
 
 /**
  * 
@@ -49,17 +52,32 @@ public class DatabaseManagementControlController {
         this.model = model;
         
         tablesList.itemsProperty().bind(model.tablesProperty());
-        tablesList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        tablesList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MetaDataTable>() {
 					@Override
-					public void changed(ObservableValue<? extends String> ov, 
-                                                            String oldValue, String newValue) {
+					public void changed(ObservableValue<? extends MetaDataTable> ov, 
+                                                            MetaDataTable oldValue, MetaDataTable newValue) {
                                             model.setSelectedTable(newValue);
                                             model.loadTableRows();
-                                            addColumns();
                                             bindRows();
+                                            addColumns();
+                                            tableNameLabel.setText(model.getSelectedTable().getTableName());
 					}	
 		});
-        tableNameLabel.textProperty().bindBidirectional(model.selectedTableProperty());
+         tablesList.setCellFactory(new Callback<ListView<MetaDataTable>, ListCell<MetaDataTable>>() {
+            @Override
+            public ListCell<MetaDataTable> call(ListView<MetaDataTable> p) {
+                ListCell<MetaDataTable> cell = new ListCell<MetaDataTable>() {
+                    @Override
+                    public void updateItem(MetaDataTable item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null) {
+                            setText(String.format("%s.%s", item.getTableSchema(), item.getTableName()));
+                        }
+                    };
+                };
+                return cell;
+            }
+        });
         
         model.initialize();
     }
@@ -68,6 +86,7 @@ public class DatabaseManagementControlController {
         rowsTable.getColumns().clear();
         for(final String columnName : model.getColumns()) {
             TableColumn column = new TableColumn(columnName);
+            column.setMinWidth(JavaFXUtils.getTextWithMarginWidth(columnName));
             column.setCellValueFactory(new Callback<CellDataFeatures<DataRow,String>,ObservableValue<String>>(){                   
                     @Override
                     public ObservableValue<String> call(CellDataFeatures<DataRow, String> param) {                                                                                             

@@ -13,7 +13,8 @@
         <Label GridPane.columnIndex="0" GridPane.rowIndex="0"
                text="Tables"/>
         <ListView fx:id="tablesList" 
-                  GridPane.columnIndex="0" GridPane.rowIndex="1"/> 
+                  GridPane.columnIndex="0" GridPane.rowIndex="1"
+                  minWidth="150" /> 
         <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="0">
             <left>
                 <HBox spacing="10">
