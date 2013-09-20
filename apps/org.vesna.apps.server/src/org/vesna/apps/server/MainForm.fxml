@@ -26,13 +26,18 @@
     </menus>
   </MenuBar>
   <TabPane VBox.vgrow="ALWAYS" >
-      <Tab text="Logs">
+      <Tab text="Logs" closable="false" >
         <LogsControl fx:id="logsControl"/>
       </Tab>
-      <Tab text="Database" onSelectionChanged="#handleTabDatabase" >
+      <Tab text="Database" closable="false" 
+           onSelectionChanged="#handleTabDatabase" >
         <DatabaseManagementControl fx:id="databaseControl"/>
       </Tab>
-      <Tab text="Diagnostics">
+      <Tab text="Hibernate" closable="false" 
+           onSelectionChanged="#handleTabHibernate" >
+          <HibernateControl fx:id="hibernateControl"/>
+      </Tab>
+      <Tab text="Diagnostics" closable="false">
       </Tab>
   </TabPane>
 </VBox>

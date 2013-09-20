@@ -22,6 +22,8 @@ import javafx.fxml.FXML;
 import org.apache.log4j.Logger;
 import org.vesna.apps.server.controls.DatabaseManagementControl;
 import org.vesna.apps.server.controls.DatabaseManagementControlModel;
+import org.vesna.apps.server.controls.HibernateControl;
+import org.vesna.apps.server.controls.HibernateControlModel;
 import org.vesna.apps.server.controls.LogsControl;
 import org.vesna.core.server.derby.DerbyService;
 
@@ -37,6 +39,8 @@ public class MainFormController {
     LogsControl logsControl;
     @FXML
     DatabaseManagementControl databaseControl;
+    @FXML
+    HibernateControl hibernateControl;
     
     @FXML
     private void handleMenuItemExit(ActionEvent event) {
@@ -46,6 +50,11 @@ public class MainFormController {
     @FXML
     private void handleTabDatabase(Event event) {
          setDatabaseManagementControlModel();
+    }
+    
+    @FXML
+    private void handleTabHibernate(Event event) {
+        setHibernateControlModel();
     }
     
     public void setModel(AppModel model) {
@@ -62,5 +71,10 @@ public class MainFormController {
         DerbyService derbyService = appModel.getServices().get(DerbyService.class);
         DatabaseManagementControlModel model = new DatabaseManagementControlModel(derbyService);
         databaseControl.getController().setModel(model);
+    }
+    
+    private void setHibernateControlModel() {
+        HibernateControlModel model = new HibernateControlModel();
+        hibernateControl.getController().setModel(model);
     }
 }
