@@ -74,7 +74,8 @@ public class MainFormController {
     }
     
     private void setHibernateControlModel() {
-        HibernateControlModel model = new HibernateControlModel();
+        
+        HibernateControlModel model = new HibernateControlModel(appModel.getHibernateMappingsJar());
         hibernateControl.getController().setModel(model);
     }
 }

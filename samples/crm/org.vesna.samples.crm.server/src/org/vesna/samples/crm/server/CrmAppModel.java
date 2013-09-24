@@ -32,4 +32,11 @@ public class CrmAppModel extends AppModel {
     public String getDatabaseName() {
         return "crm";
     }
+
+    @Override
+    public String getHibernateMappingsJar() {
+        return "org.vesna.samples.crm.dto.jar";
+    }
+    
+    
 }

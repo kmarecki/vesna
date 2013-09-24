@@ -29,5 +29,7 @@ public abstract class AppModel {
     
     public abstract String getApplicationTitle();
     
-    public abstract String getDatabaseName();   
+    public abstract String getDatabaseName();  
+    
+    public abstract String getHibernateMappingsJar();
 }

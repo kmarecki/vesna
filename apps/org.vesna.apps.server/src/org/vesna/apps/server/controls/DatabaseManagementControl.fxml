@@ -14,7 +14,17 @@
                text="Tables"/>
         <ListView fx:id="tablesList" 
                   GridPane.columnIndex="0" GridPane.rowIndex="1"
-                  minWidth="150" /> 
+                  minWidth="150" >
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem fx:id="deleteTableMenuItem"  text="Delete" 
+                                  onAction="#handleActionDeleteTable"
+                                  onMenuValidation="#handleValidateDeleteTable" /> 
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </ListView> 
         <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="0">
             <left>
                 <HBox spacing="10">

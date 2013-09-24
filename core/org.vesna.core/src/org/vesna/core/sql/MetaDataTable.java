@@ -44,6 +44,10 @@ public class MetaDataTable {
         this.tableName = tableName;
     }
     
+    public String getFullTableName() {
+        return String.format("%s.%s", getTableSchema(), getTableName());
+    }
+    
     public static MetaDataTable fromResultSet(ResultSet resultSet) throws SQLException {
         MetaDataTable table = new MetaDataTable();
         table.setTableSchema(resultSet.getString("TABLE_SCHEM"));

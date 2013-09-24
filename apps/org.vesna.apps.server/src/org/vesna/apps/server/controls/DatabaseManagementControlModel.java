@@ -20,15 +20,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.adapter.JavaBeanObjectProperty;
-import javafx.beans.property.adapter.JavaBeanObjectPropertyBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
@@ -120,6 +115,14 @@ public class DatabaseManagementControlModel {
         loadRows();
     }
     
+    public void deleteSelectedTable() {
+        MetaDataTable table = getSelectedTable();
+        if (table != null) {
+            deleteTable(getSelectedTable());
+            initialize();
+        }
+    }
+    
     private void loadTables() {
         try {
             DatabaseMetaData dbmd = getDatabaseMetaData();
@@ -135,33 +138,46 @@ public class DatabaseManagementControlModel {
     }
     
     private void loadColumns() {
-         try {
-            DatabaseMetaData dbmd = getDatabaseMetaData();
-            MetaDataTable table = getSelectedTable();
-            ResultSet resultSet = dbmd.getColumns(
-                    null, table.getTableSchema(), table.getTableName(), null);
-            columns.clear();
-            while (resultSet.next()) {
-                String tableName = resultSet.getString("COLUMN_NAME");
-                columns.add(tableName);
+         columns.clear();
+         MetaDataTable table = getSelectedTable();
+         if (table != null) {
+            try {
+               DatabaseMetaData dbmd = getDatabaseMetaData();
+               ResultSet resultSet = dbmd.getColumns(
+                       null, table.getTableSchema(), table.getTableName(), null);
+               while (resultSet.next()) {
+                   String tableName = resultSet.getString("COLUMN_NAME");
+                   columns.add(tableName);
+               }
+            } catch (SQLException ex) {
+               logger.error(ex.getMessage());
             }
-        } catch (SQLException ex) {
-            logger.error(ex.getMessage());
         }
     }
     
     private void loadRows() {
         rowsTable = null;
-        
+        MetaDataTable table = getSelectedTable();
+        if (table != null) {
+            try {
+               Connection connection = derbyService.getConnection();
+               Statement statement = connection.createStatement();
+               String sql = String.format("SELECT * FROM %s", table.getFullTableName());
+               statement.execute(sql);
+               ResultSet resultSet = statement.getResultSet();
+               rowsTable = DataTable.fromResultSet(resultSet);
+            } catch (SQLException ex) {
+               logger.error(ex.getMessage());
+            }
+        }
+    }
+    
+    private void deleteTable(MetaDataTable table) {
         try {
-           Connection connection = derbyService.getConnection();
-           Statement statement = connection.createStatement();
-           MetaDataTable table = getSelectedTable();
-           String sql = String.format("SELECT * FROM %s.%s", 
-                   table.getTableSchema(), table.getTableName());
-           statement.execute(sql);
-           ResultSet resultSet = statement.getResultSet();
-           rowsTable = DataTable.fromResultSet(resultSet);
+            Connection connection = derbyService.getConnection();
+            Statement statement = connection.createStatement();
+            String sql = String.format("DROP TABLE %s", table.getFullTableName());
+            statement.executeUpdate(sql);
         } catch (SQLException ex) {
            logger.error(ex.getMessage());
         }

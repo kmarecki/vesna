@@ -15,14 +15,16 @@
  */
 package org.vesna.apps.server.controls;
 
-import static javafx.beans.binding.Bindings.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -48,6 +50,20 @@ public class DatabaseManagementControlController {
     @FXML 
     Label tableNameLabel;
     
+    @FXML
+    MenuItem deleteTableMenuItem;
+    
+    @FXML
+    private void handleActionDeleteTable(ActionEvent event) {
+        model.deleteSelectedTable();
+    }
+    
+    @FXML
+    private void handleValidateDeleteTable(Event event) {
+        Boolean disabled = (model.getSelectedTable() == null);
+        deleteTableMenuItem.setDisable(disabled);
+    }
+            
     public void setModel(final DatabaseManagementControlModel model) {
         this.model = model;
         
@@ -60,7 +76,7 @@ public class DatabaseManagementControlController {
                                             model.loadTableRows();
                                             bindRows();
                                             addColumns();
-                                            tableNameLabel.setText(model.getSelectedTable().getTableName());
+                                            setTableNameLabel();
 					}	
 		});
          tablesList.setCellFactory(new Callback<ListView<MetaDataTable>, ListCell<MetaDataTable>>() {
@@ -103,6 +119,11 @@ public class DatabaseManagementControlController {
         if (table != null) {
             rowsTable.itemsProperty().bind(table.rowsProperty());
         }
+    }
+    
+    private void setTableNameLabel() {
+        MetaDataTable table = model.getSelectedTable();
+        tableNameLabel.setText(table != null ? table.getTableName() : "");
     }
     
 }

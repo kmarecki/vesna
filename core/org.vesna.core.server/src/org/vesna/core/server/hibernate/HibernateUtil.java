@@ -15,6 +15,8 @@
  */
 package org.vesna.core.server.hibernate;
 
+import java.io.File;
+import org.apache.log4j.Logger;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 
@@ -26,21 +28,39 @@ import org.hibernate.SessionFactory;
  */
 public class HibernateUtil {
 
-	private static final SessionFactory sessionFactory;
+        private static final Logger logger = Logger.getLogger(HibernateUtil.class);
+        
+	private static SessionFactory sessionFactory;
 	
-	static {
-		try {
-			// Create the SessionFactory from standard (hibernate.cfg.xml) 
-			// config file.
-			sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-		} catch (Throwable ex) {
-			// Log the exception. 
-			System.err.println("Initial SessionFactory creation failed." + ex);
-			throw new ExceptionInInitializerError(ex);
-		}
-	}
+        private static String mappingsJar;
+
+        public static String getMappingsJar() {
+            return mappingsJar;
+        }
+
+        public static void setMappingsJar(String jarPath) {
+           mappingsJar = jarPath;
+        }
 	
 	public static SessionFactory getSessionFactory() {
+                if (sessionFactory == null) {
+                    try {
+			// Create the SessionFactory from standard (hibernate.cfg.xml) 
+			// config file.
+                        AnnotationConfiguration configuration = new AnnotationConfiguration();
+                        if (mappingsJar != null) {
+                            File jar = new File(System.getProperty("user.dir"), mappingsJar);
+                            if (!jar.exists()) {
+                                logger.error(String.format("%s mappings jar does not exists", jar.getPath()));
+                            } else {
+                                configuration.addJar(jar);
+                            }
+                        }
+			sessionFactory = configuration.configure().buildSessionFactory();
+                    } catch (Throwable ex) {
+                            logger.error(ex.getMessage());
+                    }
+                }
 		return sessionFactory;
 	}
 }

@@ -21,4 +21,13 @@ package org.vesna.apps.server.controls;
  */
 public class HibernateControlModel {
     
+    private String mappingsJar;
+
+    public String getMappingsJar() {
+        return mappingsJar;
+    }
+    
+    public HibernateControlModel(String mappingsJar) {
+        this.mappingsJar = mappingsJar;
+    }
 }
