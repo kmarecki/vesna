@@ -24,9 +24,18 @@ import org.vesna.core.sql.MetaDataTable;
  */
 public class RowEditControlModel {
     private MetaDataTable table;
+    
+    public MetaDataTable getTable() {
+        return table;
+    }
+    
     private DataRow row;
     
-    public void RowEditControlModel(MetaDataTable table, DataRow row) {
+    public DataRow getRow() {
+        return row;
+    }
+    
+    public RowEditControlModel(MetaDataTable table, DataRow row) {
         this.table = table;
         this.row = row;
     }

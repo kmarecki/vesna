@@ -22,9 +22,11 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
+import org.vesna.core.javafx.data.DataRow;
 import org.vesna.core.javafx.data.DataTable;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.sql.MetaDataColumn;
@@ -54,18 +56,7 @@ public class DatabaseManagementControlModel {
     }
     
     
-    private final ObjectProperty<MetaDataTable> selectedTable = new ObjectPropertyBase<MetaDataTable>() {
-
-        @Override
-        public Object getBean() {
-          return null;
-        }
-
-        @Override
-        public String getName() {
-           return "";
-        }
-    };
+    private final ObjectProperty<MetaDataTable> selectedTable = new SimpleObjectProperty();
 
     public MetaDataTable getSelectedTable() {
         return selectedTable.get();
@@ -78,6 +69,23 @@ public class DatabaseManagementControlModel {
     public ObjectProperty<MetaDataTable> selectedTableProperty() {
         return selectedTable;
     }
+    
+    
+    private final ObjectProperty<DataRow> selectedRow = new SimpleObjectProperty();
+
+    public DataRow getSelectedRow() {
+        return selectedRow.get();
+    }
+
+    public void setSelectedRow(DataRow value) {
+        selectedRow.set(value);
+    }
+
+    public ObjectProperty selectedRowProperty() {
+        return selectedRow;
+    }
+    
+    
     
     private final ListProperty<String> columns = new SimpleListProperty<>(FXCollections.<String>observableArrayList());
     
@@ -112,7 +120,8 @@ public class DatabaseManagementControlModel {
     private void loadTables() {
         try {
             tables.clear();
-            List<MetaDataTable> list = databaseService.getTables(null, null, null, null);
+            List<MetaDataTable> list = databaseService.getTables(
+                    null, null, null, null);
             for (MetaDataTable table : list) {
                 tables.add(table);
             }

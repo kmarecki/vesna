@@ -7,5 +7,17 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
+         fx:id="mainVBox" 
          fx:controller="org.vesna.apps.server.controls.RowEditControlController">
+    <children>
+        <GridPane fx:id="columnsGrid" hgap="10" />
+        <HBox alignment="CENTER_RIGHT">
+            <children>
+                <Button text="Save"
+                        onAction="#handleActionSave" />
+                <Button text="Cancel"
+                        onAction="#handleActionCancel" />
+            </children>
+        </HBox>
+    </children>
 </fx:root>

@@ -80,6 +80,11 @@ public class DatabaseManagementControlController {
         stage.setScene(new Scene(control));
         stage.setTitle("Edit row");
         stage.initModality(Modality.APPLICATION_MODAL);
+        
+        RowEditControlModel controlModel = new RowEditControlModel(
+                model.getSelectedTable(), model.getSelectedRow());
+        control.getController().setModel(controlModel);
+        control.getController().setStage(stage);
         stage.show();
     }
     
@@ -102,8 +107,8 @@ public class DatabaseManagementControlController {
                                             addColumns();
                                             setTableNameLabel();
 					}	
-		});
-         tablesList.setCellFactory(new Callback<ListView<MetaDataTable>, ListCell<MetaDataTable>>() {
+        });
+        tablesList.setCellFactory(new Callback<ListView<MetaDataTable>, ListCell<MetaDataTable>>() {
             @Override
             public ListCell<MetaDataTable> call(ListView<MetaDataTable> p) {
                 ListCell<MetaDataTable> cell = new ListCell<MetaDataTable>() {
@@ -117,6 +122,13 @@ public class DatabaseManagementControlController {
                 };
                 return cell;
             }
+        });
+        rowsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DataRow>() {
+					@Override
+					public void changed(ObservableValue<? extends DataRow> ov, 
+                                                            DataRow oldValue, DataRow newValue) {
+                                            model.setSelectedRow(newValue);
+                                        }
         });
         
         model.initialize();

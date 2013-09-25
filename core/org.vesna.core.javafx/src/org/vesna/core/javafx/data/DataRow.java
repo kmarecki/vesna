@@ -45,4 +45,13 @@ public class DataRow {
         int columnIndex = parent.indexOfColumn(columnName);
         return getString(columnIndex);
     }
+    
+    public void setString(int columnIndex, String value) {
+        items.set(columnIndex, value);
+    }
+    
+    public void setString(String columnName, String value) {
+        int columnIndex = parent.indexOfColumn(columnName);
+        setString(columnIndex, value);
+    }
 }
