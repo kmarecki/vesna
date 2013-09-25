@@ -17,6 +17,8 @@ package org.vesna.core.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -46,6 +48,18 @@ public class MetaDataTable {
     
     public String getFullTableName() {
         return String.format("%s.%s", getTableSchema(), getTableName());
+    }
+    
+    private List<MetaDataColumn> columns = new ArrayList();
+    
+    public List<MetaDataColumn> getColumns() {
+        return columns;
+    }
+    
+    public void addColumns(List<MetaDataColumn> columns) {
+        for (MetaDataColumn column : columns) {
+            this.columns.add(column);
+        }
     }
     
     public static MetaDataTable fromResultSet(ResultSet resultSet) throws SQLException {

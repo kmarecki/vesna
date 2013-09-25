@@ -21,12 +21,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.vesna.core.lang.ProcessHelper;
+import org.vesna.core.server.sql.DatabaseAdapter;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class DerbyService {
+public class DerbyService implements DatabaseAdapter {
     private static final Logger logger = Logger.getLogger(DerbyService.class);
     private String databaseName;
     private Connection connection;
@@ -114,6 +115,7 @@ public class DerbyService {
         logger.info("Derby server has been shut down");
     }
     
+    @Override
     public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             String url = getDatabaseUrl();

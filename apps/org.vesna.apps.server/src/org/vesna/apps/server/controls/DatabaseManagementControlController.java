@@ -21,6 +21,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -28,10 +29,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.vesna.core.javafx.JavaFXUtils;
 import org.vesna.core.javafx.data.DataRow;
 import org.vesna.core.javafx.data.DataTable;
+import org.vesna.core.sql.MetaDataColumn;
 import org.vesna.core.sql.MetaDataTable;
 
 /**
@@ -62,6 +66,26 @@ public class DatabaseManagementControlController {
     private void handleValidateDeleteTable(Event event) {
         Boolean disabled = (model.getSelectedTable() == null);
         deleteTableMenuItem.setDisable(disabled);
+    }
+    
+    @FXML
+    private void handleActionAddRow(ActionEvent event) {
+        
+    }
+    
+    @FXML
+    private void handleActionEditRow(ActionEvent event) {
+        Stage stage = new Stage();
+        RowEditControl control = new RowEditControl();
+        stage.setScene(new Scene(control));
+        stage.setTitle("Edit row");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+    
+    @FXML
+    private void handleActionDeleteRow(ActionEvent event) {
+        
     }
             
     public void setModel(final DatabaseManagementControlModel model) {
@@ -100,17 +124,21 @@ public class DatabaseManagementControlController {
     
     private void addColumns() {
         rowsTable.getColumns().clear();
-        for(final String columnName : model.getColumns()) {
-            TableColumn column = new TableColumn(columnName);
-            column.setMinWidth(JavaFXUtils.getTextWithMarginWidth(columnName));
-            column.setCellValueFactory(new Callback<CellDataFeatures<DataRow,String>,ObservableValue<String>>(){                   
-                    @Override
-                    public ObservableValue<String> call(CellDataFeatures<DataRow, String> param) {                                                                                             
-                        return new SimpleStringProperty(param.getValue().getString(columnName));                       
-                    }                   
-                });
+        MetaDataTable metatable = model.getSelectedTable();
+        if (metatable != null) {
+            for(final MetaDataColumn metacolumn : metatable.getColumns()) {
+                final String columnName = metacolumn.getColumnName();
+                TableColumn column = new TableColumn(columnName);
+                column.setMinWidth(JavaFXUtils.getTextWithMarginWidth(columnName));
+                column.setCellValueFactory(new Callback<CellDataFeatures<DataRow,String>,ObservableValue<String>>(){                   
+                        @Override
+                        public ObservableValue<String> call(CellDataFeatures<DataRow, String> param) {                                                                                             
+                            return new SimpleStringProperty(param.getValue().getString(columnName));                       
+                        }                   
+                    });
 
-            rowsTable.getColumns().add(column);
+                rowsTable.getColumns().add(column);
+            }
         }
     }
     

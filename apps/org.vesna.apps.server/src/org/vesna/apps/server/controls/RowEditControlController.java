@@ -15,28 +15,17 @@
  */
 package org.vesna.apps.server.controls;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.hibernate.SessionFactory;
-import org.vesna.core.server.hibernate.HibernateUtil;
-
 
 /**
  * 
  *
  * @author Krzysztof Marecki
  */
-public class HibernateControlController {
+public class RowEditControlController  {
 
-     private HibernateControlModel model;
-    
-     @FXML 
-     private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateUtil.setMappingsJar(model.getMappingsJar());
-         SessionFactory session = HibernateUtil.getSessionFactory();
-     }
-    
-    public void setModel(final HibernateControlModel model) {
-        this.model = model;
-    }
+   private RowEditControlModel model;
+   
+   public void setModel(RowEditControlModel model) {
+       this.model = model;
+   }
 }

@@ -13,30 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.apps.server.controls;
+package org.vesna.core.server.sql;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.hibernate.SessionFactory;
-import org.vesna.core.server.hibernate.HibernateUtil;
-
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
- * 
  *
  * @author Krzysztof Marecki
  */
-public class HibernateControlController {
-
-     private HibernateControlModel model;
+public interface DatabaseAdapter {
     
-     @FXML 
-     private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateUtil.setMappingsJar(model.getMappingsJar());
-         SessionFactory session = HibernateUtil.getSessionFactory();
-     }
-    
-    public void setModel(final HibernateControlModel model) {
-        this.model = model;
-    }
+    Connection getConnection() throws SQLException;
 }

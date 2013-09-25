@@ -26,6 +26,7 @@ import org.vesna.apps.server.controls.HibernateControl;
 import org.vesna.apps.server.controls.HibernateControlModel;
 import org.vesna.apps.server.controls.LogsControl;
 import org.vesna.core.server.derby.DerbyService;
+import org.vesna.core.server.sql.DatabaseService;
 
 /**
  *
@@ -68,8 +69,8 @@ public class MainFormController {
     }
     
     private void setDatabaseManagementControlModel() {
-        DerbyService derbyService = appModel.getServices().get(DerbyService.class);
-        DatabaseManagementControlModel model = new DatabaseManagementControlModel(derbyService);
+        DatabaseService databaseService = appModel.getServices().get(DatabaseService.class);
+        DatabaseManagementControlModel model = new DatabaseManagementControlModel(databaseService);
         databaseControl.getController().setModel(model);
     }
     

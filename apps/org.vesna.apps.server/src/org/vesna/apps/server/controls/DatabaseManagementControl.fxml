@@ -29,9 +29,12 @@
             <left>
                 <HBox spacing="10">
                     <children>
-                        <Button fx:id="addRowButton" text="Add" />
-                        <Button fx:id="editRowButton" text="Edit"/>
-                        <Button fx:id="deleteRowButton" text="Remove"/> 
+                        <Button fx:id="addRowButton" text="Add" 
+                                onAction="#handleActionAddRow" />
+                        <Button fx:id="editRowButton" text="Edit" 
+                                onAction="#handleActionEditRow" />
+                        <Button fx:id="deleteRowButton" text="Remove"
+                                onAction="#handleActionDeleteRow" /> 
                     </children>
                 </HBox>
             </left>

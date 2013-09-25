@@ -15,28 +15,30 @@
  */
 package org.vesna.apps.server.controls;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.hibernate.SessionFactory;
-import org.vesna.core.server.hibernate.HibernateUtil;
-
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
 
 /**
- * 
  *
  * @author Krzysztof Marecki
  */
-public class HibernateControlController {
+public class RowEditControl extends VBox {
+    private RowEditControlController controller;
 
-     private HibernateControlModel model;
-    
-     @FXML 
-     private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateUtil.setMappingsJar(model.getMappingsJar());
-         SessionFactory session = HibernateUtil.getSessionFactory();
-     }
-    
-    public void setModel(final HibernateControlModel model) {
-        this.model = model;
+    public RowEditControlController getController() {
+        return controller;
+    }
+
+    public RowEditControl() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RowEditControl.fxml"));
+        fxmlLoader.setRoot(this);
+        try {
+            fxmlLoader.load();
+            controller = fxmlLoader.getController();
+
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 }
