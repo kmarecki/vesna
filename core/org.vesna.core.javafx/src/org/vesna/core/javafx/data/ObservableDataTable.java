@@ -24,17 +24,19 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import java.util.Map;
 import javafx.collections.ObservableList;
+import org.vesna.core.server.sql.DataRow;
+import org.vesna.core.server.sql.DataTable;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class DataTable {
+public class ObservableDataTable implements DataTable {
     Map<String, Integer> columnNames;
     
-    private ListProperty<DataRow> rows = new SimpleListProperty<>(FXCollections.<DataRow>observableArrayList());
+    private ListProperty<ObservableDataRow> rows = new SimpleListProperty<>(FXCollections.<ObservableDataRow>observableArrayList());
     
-    public ObservableList<DataRow> getRows() {
+    public ObservableList<ObservableDataRow> getRows() {
         return rows;
     }
     
@@ -42,8 +44,17 @@ public class DataTable {
         return rows;
     }
     
-    public static DataTable fromResultSet(ResultSet resultSet) throws SQLException {
-        DataTable table = new DataTable();
+    @Override
+    public DataRow newRow() {
+         ObservableDataRow row = new ObservableDataRow(this);
+         Object[] arr = new Object[columnNames.size()];
+         ObservableList<Object> items = new SimpleListProperty<>(FXCollections.observableArrayList(arr));
+         row.setItems(items);
+         return row;
+    }
+    
+    public static ObservableDataTable fromResultSet(ResultSet resultSet) throws SQLException {
+        ObservableDataTable table = new ObservableDataTable();
         
         table.fillColumnNames(resultSet);
         table.fillRows(resultSet);
@@ -68,15 +79,12 @@ public class DataTable {
     }
     
     private void fillRows(ResultSet resultSet) throws SQLException {
-        ResultSetMetaData metaData = resultSet.getMetaData();
         while(resultSet.next()) {
-            DataRow row = new DataRow(this);
-            ObservableList<Object> items = new SimpleListProperty<>(FXCollections.<Object>observableArrayList());
-            for(int i = 1; i <= metaData.getColumnCount(); i++) {
-                String value = resultSet.getString(i);
-                items.add(value);
+            ObservableDataRow row = (ObservableDataRow)newRow(); 
+            for (Integer columnIndex : columnNames.values()) {
+                String value = resultSet.getString(columnIndex + 1);
+                row.setString(columnIndex, value);
             }
-            row.setItems(items);
             rows.add(row);
         }
     }

@@ -17,12 +17,14 @@ package org.vesna.core.server.sql;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.vesna.core.sql.MetaDataColumn;
+import org.vesna.core.sql.MetaDataPrimaryKey;
 import org.vesna.core.sql.MetaDataSchema;
 import org.vesna.core.sql.MetaDataTable;
 
@@ -55,6 +57,22 @@ public class DatabaseService {
         return columns;
     }
     
+    public List<MetaDataPrimaryKey> getPrimaryKeys(
+            String catalog,
+            String schema,
+            String table
+            ) throws SQLException {
+        
+        List<MetaDataPrimaryKey> primaryKeys = new ArrayList();
+        DatabaseMetaData dbmd = getDatabaseMetaData();
+        ResultSet resultSet = dbmd.getPrimaryKeys(catalog, schema, table);
+        while (resultSet.next()) {
+            MetaDataPrimaryKey primaryKey = MetaDataPrimaryKey.fromResultSet(resultSet);
+            primaryKeys.add(primaryKey);
+        }
+        return primaryKeys;
+    }
+    
     public List<MetaDataSchema> getSchemas(
             String catalog,
             String schemaPattern) throws SQLException {
@@ -85,6 +103,13 @@ public class DatabaseService {
         return tables;
     }
     
+    public void deleteTable(MetaDataTable table) throws SQLException {
+        Connection connection = database.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = String.format("DROP TABLE %s", table.getFullTableName());
+        statement.executeUpdate(sql);
+    }
+     
     public ResultSet selectAll(MetaDataTable table) throws SQLException {
         Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
@@ -94,14 +119,54 @@ public class DatabaseService {
         return resultSet;
     }
     
-    public void deleteTable(MetaDataTable table) throws SQLException {
-        Connection connection = database.getConnection();
-        Statement statement = connection.createStatement();
-        String sql = String.format("DROP TABLE %s", table.getFullTableName());
-        statement.executeUpdate(sql);
+    private String constructSQLInsert(MetaDataTable table) {
+        StringBuilder sql = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        
+        sql.append(String.format("INSERT INTO %s (", table.getFullTableName()));
+        Boolean firstColumn = true;
+        for (MetaDataColumn column : table.getColumns()) {
+            if (!column.isIsAutoincrement()) {
+                if (!firstColumn) {
+                    sql.append(", ");
+                    values.append(", ");
+                }
+                sql.append(String.format("%s", column.getColumnName()));
+                values.append("?");
+                firstColumn = false;
+            }
+        }
+        sql.append(String.format(") VALUES(%s)", values.toString()));
+        
+        return sql.toString();
     }
     
-     private DatabaseMetaData getDatabaseMetaData() throws SQLException {
+    private void addStatementParameters(PreparedStatement statement, MetaDataTable table, DataRow row) throws SQLException {
+        int parameterIndex = 1;
+        for (MetaDataColumn column : table.getColumns()) {
+            String value = row.getString(column.getColumnName());
+            statement.setString(parameterIndex, value);
+            parameterIndex++;
+        }
+    }
+    
+    public void insertRow(MetaDataTable table, DataRow row) throws SQLException {
+        Connection connection = database.getConnection();
+        String sql = constructSQLInsert(table);
+        PreparedStatement statement = connection.prepareStatement(sql);
+        addStatementParameters(statement, table, row);
+        statement.executeUpdate();
+    }
+    
+    public void updateRow(MetaDataTable table, DataRow row) {
+        
+    }
+    
+    public void deleteRow(MetaDataTable table) {
+        
+    }
+    
+    private DatabaseMetaData getDatabaseMetaData() throws SQLException {
         Connection connection = database.getConnection();
         DatabaseMetaData dbmd = connection.getMetaData();
         return dbmd;

@@ -20,16 +20,16 @@ import java.sql.SQLException;
 import java.util.List;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
-import org.vesna.core.javafx.data.DataRow;
-import org.vesna.core.javafx.data.DataTable;
+import org.vesna.core.javafx.data.ObservableDataRow;
+import org.vesna.core.javafx.data.ObservableDataTable;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.sql.MetaDataColumn;
+import org.vesna.core.sql.MetaDataPrimaryKey;
 import org.vesna.core.sql.MetaDataSchema;
 import org.vesna.core.sql.MetaDataTable;
 
@@ -40,7 +40,12 @@ import org.vesna.core.sql.MetaDataTable;
 public class DatabaseManagementControlModel {
     
     private static final Logger logger = Logger.getLogger(DatabaseManagementControlModel.class);
+    
     private DatabaseService databaseService;
+    
+    public DatabaseService getDatabaseService() {
+        return databaseService;
+    }
     
     private final ListProperty<MetaDataSchema> schemas = new SimpleListProperty<>(FXCollections.<MetaDataSchema>observableArrayList());
 
@@ -102,13 +107,13 @@ public class DatabaseManagementControlModel {
     }
     
     
-    private final ObjectProperty<DataRow> selectedRow = new SimpleObjectProperty();
+    private final ObjectProperty<ObservableDataRow> selectedRow = new SimpleObjectProperty();
 
-    public DataRow getSelectedRow() {
+    public ObservableDataRow getSelectedRow() {
         return selectedRow.get();
     }
 
-    public void setSelectedRow(DataRow value) {
+    public void setSelectedRow(ObservableDataRow value) {
         selectedRow.set(value);
     }
 
@@ -120,9 +125,9 @@ public class DatabaseManagementControlModel {
     
     private final ListProperty<String> columns = new SimpleListProperty<>(FXCollections.<String>observableArrayList());
     
-    private DataTable rowsTable;
+    private ObservableDataTable rowsTable;
     
-    public DataTable getRowsTable() {
+    public ObservableDataTable getRowsTable() {
         return rowsTable;
     }
     
@@ -178,13 +183,20 @@ public class DatabaseManagementControlModel {
     }
     
     private void loadColumns() {
-         columns.clear();
-         MetaDataTable table = getSelectedTable();
-         if (table != null && table.getColumns().isEmpty()) {
+        columns.clear();
+        MetaDataTable table = getSelectedTable();
+        if (table != null) {
             try {
-               List<MetaDataColumn> list = databaseService.getColumns(
-                       null, table.getTableSchema(), table.getTableName(), null);
-               table.addColumns(list);
+                if (table.getColumns().isEmpty()) {
+                    List<MetaDataColumn> list = databaseService.getColumns(
+                            null, table.getTableSchema(), table.getTableName(), null);
+                    table.addColumns(list);
+                }  
+                if (table.getPrimaryKeys().isEmpty()) {
+                    List<MetaDataPrimaryKey> list = databaseService.getPrimaryKeys(
+                            null, table.getTableSchema(), table.getTableName());
+                    table.addPrimaryKeys(list);
+                }
             } catch (SQLException ex) {
                logger.error(ex.getMessage());
             }
@@ -197,7 +209,7 @@ public class DatabaseManagementControlModel {
         if (table != null) {
             try {
                ResultSet resultSet = databaseService.selectAll(table);
-               rowsTable = DataTable.fromResultSet(resultSet);
+               rowsTable = ObservableDataTable.fromResultSet(resultSet);
             } catch (SQLException ex) {
                logger.error(ex.getMessage());
             }

@@ -15,7 +15,10 @@
  */
 package org.vesna.apps.server.controls;
 
-import org.vesna.core.javafx.data.DataRow;
+import java.sql.SQLException;
+import org.apache.log4j.Logger;
+import org.vesna.core.javafx.data.ObservableDataRow;
+import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.sql.MetaDataTable;
 
 /**
@@ -23,20 +26,61 @@ import org.vesna.core.sql.MetaDataTable;
  * @author Krzysztof Marecki
  */
 public class RowEditControlModel {
+    
+    private static final Logger logger = Logger.getLogger(RowEditControlModel.class);
+    
+    public enum Mode {
+        Insert,
+        Update
+    }
+    
+    private DatabaseService databaseService;
+    
     private MetaDataTable table;
     
     public MetaDataTable getTable() {
         return table;
     }
     
-    private DataRow row;
+    private ObservableDataRow row;
     
-    public DataRow getRow() {
+    public ObservableDataRow getRow() {
         return row;
     }
     
-    public RowEditControlModel(MetaDataTable table, DataRow row) {
+    private Mode mode;
+    
+    public Mode getMode() {
+        return mode;
+    }
+    
+    public RowEditControlModel(
+            DatabaseService databaseService, 
+            MetaDataTable table, 
+            ObservableDataRow row, 
+            Mode mode) {
+        
+        this.databaseService = databaseService;
         this.table = table;
         this.row = row;
+        this.mode = mode;
+    }
+    
+    public Boolean save() {
+        try {
+        switch (mode) {
+            case Insert : {
+                databaseService.insertRow(table, row);
+            }
+            case Update : {
+                databaseService.updateRow(table, row);
+                break;
+            }
+        }
+        return true;
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+        return false;
     }
 }

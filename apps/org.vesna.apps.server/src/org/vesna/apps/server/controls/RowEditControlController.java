@@ -33,62 +33,63 @@ import org.vesna.core.sql.MetaDataColumn;
  * @author Krzysztof Marecki
  */
 public class RowEditControlController  {
+    
+    private RowEditControlModel model;
+    private Stage stage;
+    @FXML
+    private VBox mainVBox;
+    @FXML
+    private GridPane columnsGrid;
+   
+    @FXML
+    private void handleActionSave(ActionEvent event) {
+        if (model.save()) {
+            stage.close();
+        }
+    }
 
-  
-   private RowEditControlModel model;
-   private Stage stage;
+    @FXML
+    private void handleActionCancel(ActionEvent event) {
+        stage.close();
+    }
+
+    public void setModel(RowEditControlModel model) {
+        this.model = model;
+        addTextBox();
+    }
    
-   @FXML
-   private VBox mainVBox;
-   @FXML
-   private GridPane columnsGrid;
-   
-   @FXML
-   private void handleActionSave(ActionEvent event){
-       stage.close();
-   }
-   
-   @FXML
-   private void handleActionCancel(ActionEvent event){
-       
-   }
-   
-   public void setModel(RowEditControlModel model) {
-       this.model = model;
-       addTextBox();
-   }
-   
-   public void setStage(Stage stage) {
-       this.stage = stage;
-   }
-   
-   private void addTextBox() {
-       int rowIndex = 1;
-       for (MetaDataColumn column : model.getTable().getColumns()) {
-           final String columnName = column.getColumnName();
-           
-           Label columnLabel = new Label();
-           columnLabel.setAlignment(Pos.CENTER_RIGHT);
-           columnLabel.setText(columnName);
-           GridPane.setConstraints(columnLabel, 1, rowIndex);
-           
-           TextField columnText = new TextField();
-           columnText.setEditable(true);
-           columnText.setText(model.getRow().getString(columnName));
-           columnText.textProperty().bindBidirectional(new SimpleObjectProperty<String>() {
-               @Override
-               public String get() {
-                   return model.getRow().getString(columnName);
-               }
-               @Override
-               public void set(String value) {
-                   model.getRow().setString(columnName, value);
-               }
-           });
-           GridPane.setConstraints(columnText, 2, rowIndex);
-           
-           columnsGrid.getChildren().addAll(columnLabel, columnText);
-           rowIndex++;
-       }
-   }
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    private void addTextBox() {
+        int rowIndex = 1;
+        for (MetaDataColumn column : model.getTable().getColumns()) {
+            final String columnName = column.getColumnName();
+
+            Label columnLabel = new Label();
+            columnLabel.setAlignment(Pos.CENTER_RIGHT);
+            columnLabel.setText(columnName);
+            GridPane.setConstraints(columnLabel, 1, rowIndex);
+
+            TextField columnText = new TextField();
+            columnText.setEditable(true);
+            columnText.setText(model.getRow().getString(columnName));
+            columnText.textProperty().bindBidirectional(new SimpleObjectProperty<String>() {
+                @Override
+                public String get() {
+                    return model.getRow().getString(columnName);
+                }
+
+                @Override
+                public void set(String value) {
+                    model.getRow().setString(columnName, value);
+                }
+            });
+            GridPane.setConstraints(columnText, 2, rowIndex);
+
+            columnsGrid.getChildren().addAll(columnLabel, columnText);
+            rowIndex++;
+        }
+    }
 }

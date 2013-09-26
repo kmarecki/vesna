@@ -34,8 +34,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.vesna.core.javafx.JavaFXUtils;
-import org.vesna.core.javafx.data.DataRow;
-import org.vesna.core.javafx.data.DataTable;
+import org.vesna.core.javafx.data.ObservableDataRow;
+import org.vesna.core.javafx.data.ObservableDataTable;
 import org.vesna.core.sql.MetaDataColumn;
 import org.vesna.core.sql.MetaDataSchema;
 import org.vesna.core.sql.MetaDataTable;
@@ -93,23 +93,15 @@ public class DatabaseManagementControlController {
     }
     
     @FXML
-    private void handleActionAddRow(ActionEvent event) {
-        
+    private void handleActionInsertRow(ActionEvent event) {
+        ObservableDataRow row = (ObservableDataRow)model.getRowsTable().newRow();
+        showEditRowForm(RowEditControlModel.Mode.Insert, row);
     }
     
     @FXML
-    private void handleActionEditRow(ActionEvent event) {
-        Stage stage = new Stage();
-        RowEditControl control = new RowEditControl();
-        stage.setScene(new Scene(control));
-        stage.setTitle("Edit row");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        
-        RowEditControlModel controlModel = new RowEditControlModel(
-                model.getSelectedTable(), model.getSelectedRow());
-        control.getController().setModel(controlModel);
-        control.getController().setStage(stage);
-        stage.show();
+    private void handleActionUpdateRow(ActionEvent event) {
+        ObservableDataRow row = model.getSelectedRow();
+        showEditRowForm(RowEditControlModel.Mode.Update, row);
     }
     
     @FXML
@@ -154,10 +146,10 @@ public class DatabaseManagementControlController {
                 return cell;
             }
         });
-        rowsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DataRow>() {
+        rowsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ObservableDataRow>() {
             @Override
-            public void changed(ObservableValue<? extends DataRow> ov, 
-                                DataRow oldValue, DataRow newValue) {
+            public void changed(ObservableValue<? extends ObservableDataRow> ov, 
+                                ObservableDataRow oldValue, ObservableDataRow newValue) {
                 model.setSelectedRow(newValue);
             }
         });
@@ -174,9 +166,9 @@ public class DatabaseManagementControlController {
                 final String columnName = metacolumn.getColumnName();
                 TableColumn column = new TableColumn(columnName);
                 column.setMinWidth(JavaFXUtils.getTextWithMarginWidth(columnName));
-                column.setCellValueFactory(new Callback<CellDataFeatures<DataRow,String>,ObservableValue<String>>(){                   
+                column.setCellValueFactory(new Callback<CellDataFeatures<ObservableDataRow,String>,ObservableValue<String>>(){                   
                         @Override
-                        public ObservableValue<String> call(CellDataFeatures<DataRow, String> param) {                                                                                             
+                        public ObservableValue<String> call(CellDataFeatures<ObservableDataRow, String> param) {                                                                                             
                             return new SimpleStringProperty(param.getValue().getString(columnName));                       
                         }                   
                     });
@@ -187,7 +179,7 @@ public class DatabaseManagementControlController {
     }
     
     private void bindRows() {
-        DataTable table = model.getRowsTable();
+        ObservableDataTable table = model.getRowsTable();
         if (table != null) {
             rowsTable.itemsProperty().bind(table.rowsProperty());
         }
@@ -196,6 +188,20 @@ public class DatabaseManagementControlController {
     private void setTableNameLabel() {
         MetaDataTable table = model.getSelectedTable();
         tableNameLabel.setText(table != null ? table.getTableName() : "");
+    }
+    
+    private void showEditRowForm(RowEditControlModel.Mode mode, ObservableDataRow row) {
+        Stage stage = new Stage();
+        RowEditControl control = new RowEditControl();
+        stage.setScene(new Scene(control));
+        stage.setTitle(mode.toString());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        
+        RowEditControlModel controlModel = new RowEditControlModel(
+                model.getDatabaseService(), model.getSelectedTable(), row, mode);
+        control.getController().setModel(controlModel);
+        control.getController().setStage(stage);
+        stage.show();
     }
     
 }

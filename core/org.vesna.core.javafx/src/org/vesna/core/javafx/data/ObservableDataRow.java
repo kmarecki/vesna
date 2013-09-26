@@ -16,13 +16,14 @@
 package org.vesna.core.javafx.data;
 
 import javafx.collections.ObservableList;
+import org.vesna.core.server.sql.DataRow;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class DataRow {
-    private DataTable parent;
+public class ObservableDataRow implements DataRow {
+    private ObservableDataTable parent;
     private ObservableList<Object> items;
     
     public ObservableList<Object> getItems() {
@@ -33,23 +34,28 @@ public class DataRow {
         items = value;
     }
     
-    DataRow(DataTable table) {
+    ObservableDataRow(ObservableDataTable table) {
         this.parent = table;
     }
     
+    
+    @Override
     public String getString(int columnIndex) {
         return (String)items.get(columnIndex);
     }
     
+    @Override
     public String getString(String columnName) {
         int columnIndex = parent.indexOfColumn(columnName);
         return getString(columnIndex);
     }
     
+    @Override
     public void setString(int columnIndex, String value) {
         items.set(columnIndex, value);
     }
     
+    @Override
     public void setString(String columnName, String value) {
         int columnIndex = parent.indexOfColumn(columnName);
         setString(columnIndex, value);

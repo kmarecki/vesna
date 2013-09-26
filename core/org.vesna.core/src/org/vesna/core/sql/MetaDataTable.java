@@ -62,6 +62,18 @@ public class MetaDataTable {
         }
     }
     
+    private List<MetaDataPrimaryKey> primaryKeys = new ArrayList();
+    
+    public List<MetaDataPrimaryKey> getPrimaryKeys() {
+        return primaryKeys;
+    }
+    
+    public void addPrimaryKeys(List<MetaDataPrimaryKey> primaryKeys) {
+        for (MetaDataPrimaryKey primaryKey : primaryKeys) {
+            this.primaryKeys.add(primaryKey);
+        }
+    }
+    
     public static MetaDataTable fromResultSet(ResultSet resultSet) throws SQLException {
         MetaDataTable table = new MetaDataTable();
         table.setTableSchema(resultSet.getString("TABLE_SCHEM"));
