@@ -35,7 +35,7 @@ public class CrmAppModel extends AppModel {
 
     @Override
     public String getHibernateMappingsJar() {
-        return "org.vesna.samples.crm.dto.jar";
+        return "dist//lib//org.vesna.samples.crm.dto.jar";
     }
     
     

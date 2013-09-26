@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -36,6 +37,7 @@ import org.vesna.core.javafx.JavaFXUtils;
 import org.vesna.core.javafx.data.DataRow;
 import org.vesna.core.javafx.data.DataTable;
 import org.vesna.core.sql.MetaDataColumn;
+import org.vesna.core.sql.MetaDataSchema;
 import org.vesna.core.sql.MetaDataTable;
 
 /**
@@ -45,8 +47,30 @@ import org.vesna.core.sql.MetaDataTable;
  */
 public class DatabaseManagementControlController {
     
+    class SchemaListCell extends ListCell<MetaDataSchema> {
+        @Override
+        public void updateItem(MetaDataSchema item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item != null) {
+                setText(item.getTableSchema());
+            }
+        }
+    }
+    
+    class TableListCell extends ListCell<MetaDataTable> {
+        @Override
+        public void updateItem(MetaDataTable item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item != null) {
+                setText(String.format("%s.%s", item.getTableSchema(), item.getTableName()));
+            }
+        }
+    }
+    
     private DatabaseManagementControlModel model;
     
+    @FXML
+    ComboBox schemasCombo;
     @FXML
     ListView tablesList;
     @FXML
@@ -96,42 +120,50 @@ public class DatabaseManagementControlController {
     public void setModel(final DatabaseManagementControlModel model) {
         this.model = model;
         
+        schemasCombo.itemsProperty().bind(model.schemasProperty());
+        schemasCombo.setButtonCell(new SchemaListCell());
+        schemasCombo.setCellFactory(new Callback<ListView<MetaDataSchema>, ListCell<MetaDataSchema>>() {
+            @Override
+            public ListCell<MetaDataSchema> call(ListView<MetaDataSchema> p) {
+                ListCell<MetaDataSchema> cell = new SchemaListCell();
+                return cell;
+            }
+        });
+        schemasCombo.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MetaDataSchema>() {
+            @Override
+            public void changed(ObservableValue<? extends MetaDataSchema> ov, 
+                                MetaDataSchema oldValue, MetaDataSchema newValue) {
+                model.setSelectedSchema(newValue);
+            }
+        });
         tablesList.itemsProperty().bind(model.tablesProperty());
         tablesList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MetaDataTable>() {
-					@Override
-					public void changed(ObservableValue<? extends MetaDataTable> ov, 
-                                                            MetaDataTable oldValue, MetaDataTable newValue) {
-                                            model.setSelectedTable(newValue);
-                                            model.loadTableRows();
-                                            bindRows();
-                                            addColumns();
-                                            setTableNameLabel();
-					}	
+            @Override
+            public void changed(ObservableValue<? extends MetaDataTable> ov, 
+                                MetaDataTable oldValue, MetaDataTable newValue) {
+                model.setSelectedTable(newValue); 
+                bindRows();
+                addColumns();
+                setTableNameLabel();
+            }	
         });
         tablesList.setCellFactory(new Callback<ListView<MetaDataTable>, ListCell<MetaDataTable>>() {
             @Override
             public ListCell<MetaDataTable> call(ListView<MetaDataTable> p) {
-                ListCell<MetaDataTable> cell = new ListCell<MetaDataTable>() {
-                    @Override
-                    public void updateItem(MetaDataTable item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (item != null) {
-                            setText(String.format("%s.%s", item.getTableSchema(), item.getTableName()));
-                        }
-                    };
-                };
+                ListCell<MetaDataTable> cell = new TableListCell();
                 return cell;
             }
         });
         rowsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DataRow>() {
-					@Override
-					public void changed(ObservableValue<? extends DataRow> ov, 
-                                                            DataRow oldValue, DataRow newValue) {
-                                            model.setSelectedRow(newValue);
-                                        }
+            @Override
+            public void changed(ObservableValue<? extends DataRow> ov, 
+                                DataRow oldValue, DataRow newValue) {
+                model.setSelectedRow(newValue);
+            }
         });
         
         model.initialize();
+        schemasCombo.getSelectionModel().selectFirst();
     }
     
     private void addColumns() {

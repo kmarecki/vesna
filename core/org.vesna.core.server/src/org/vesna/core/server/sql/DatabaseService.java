@@ -23,6 +23,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.vesna.core.sql.MetaDataColumn;
+import org.vesna.core.sql.MetaDataSchema;
 import org.vesna.core.sql.MetaDataTable;
 
 /**
@@ -35,6 +36,37 @@ public class DatabaseService {
     
     public DatabaseService(DatabaseAdapter database) {
         this.database = database;
+    }
+    
+     public List<MetaDataColumn> getColumns(
+            String catalog,
+            String schemaPattern,
+            String tableNamePattern,
+            String columnNamePattern
+            ) throws SQLException {
+        
+        List<MetaDataColumn> columns = new ArrayList();
+        DatabaseMetaData dbmd = getDatabaseMetaData();
+        ResultSet resultSet = dbmd.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
+        while (resultSet.next()) {
+            MetaDataColumn column = MetaDataColumn.fromResultSet(resultSet);
+            columns.add(column);
+        }
+        return columns;
+    }
+    
+    public List<MetaDataSchema> getSchemas(
+            String catalog,
+            String schemaPattern) throws SQLException {
+        
+        List<MetaDataSchema> schemas = new ArrayList();
+        DatabaseMetaData dbmd = getDatabaseMetaData();
+        ResultSet resultSet = dbmd.getSchemas(catalog, schemaPattern);
+        while (resultSet.next()) {
+            MetaDataSchema schema = MetaDataSchema.fromResultSet(resultSet);
+            schemas.add(schema);
+        }
+        return schemas;
     }
     
     public List<MetaDataTable> getTables(
@@ -51,23 +83,6 @@ public class DatabaseService {
             tables.add(table);
         }
         return tables;
-    }
-    
-    public List<MetaDataColumn> getColumns(
-            String catalog,
-            String schemaPattern,
-            String tableNamePattern,
-            String columnNamePattern
-            ) throws SQLException {
-        
-        List<MetaDataColumn> columns = new ArrayList();
-        DatabaseMetaData dbmd = getDatabaseMetaData();
-        ResultSet resultSet = dbmd.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
-        while (resultSet.next()) {
-            MetaDataColumn column = MetaDataColumn.fromResultSet(resultSet);
-            columns.add(column);
-        }
-        return columns;
     }
     
     public ResultSet selectAll(MetaDataTable table) throws SQLException {

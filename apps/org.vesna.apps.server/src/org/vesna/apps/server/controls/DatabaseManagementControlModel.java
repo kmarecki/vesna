@@ -30,6 +30,7 @@ import org.vesna.core.javafx.data.DataRow;
 import org.vesna.core.javafx.data.DataTable;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.sql.MetaDataColumn;
+import org.vesna.core.sql.MetaDataSchema;
 import org.vesna.core.sql.MetaDataTable;
 
 /**
@@ -40,6 +41,35 @@ public class DatabaseManagementControlModel {
     
     private static final Logger logger = Logger.getLogger(DatabaseManagementControlModel.class);
     private DatabaseService databaseService;
+    
+    private final ListProperty<MetaDataSchema> schemas = new SimpleListProperty<>(FXCollections.<MetaDataSchema>observableArrayList());
+
+    public ObservableList<MetaDataSchema> getSchemas() {
+        return schemas.get();
+    }
+
+    public void setSchemas(ObservableList<MetaDataSchema> value) {
+        schemas.set(value);
+    }
+
+    public ListProperty schemasProperty() {
+        return schemas;
+    }
+    
+    private final ObjectProperty<MetaDataSchema> selectedSchema = new SimpleObjectProperty();
+
+    public MetaDataSchema getSelectedSchema() {
+        return selectedSchema.get();
+    }
+
+    public void setSelectedSchema(MetaDataSchema value) {
+        selectedSchema.set(value);
+        loadTables();
+    }
+
+    public ObjectProperty<MetaDataSchema> selectedSchemaProperty() {
+        return selectedSchema;
+    }
     
     private final ListProperty<MetaDataTable> tables = new SimpleListProperty<>(FXCollections.<MetaDataTable>observableArrayList());
 
@@ -64,6 +94,7 @@ public class DatabaseManagementControlModel {
 
     public void setSelectedTable(MetaDataTable value) {
         selectedTable.set(value);
+        loadTableRows();
     }
 
     public ObjectProperty<MetaDataTable> selectedTableProperty() {
@@ -101,12 +132,7 @@ public class DatabaseManagementControlModel {
     }
     
     public void initialize() {
-        loadTables();
-    }
-    
-    public void loadTableRows() {
-        loadColumns();
-        loadRows();
+        loadSchemas();
     }
     
     public void deleteSelectedTable() {
@@ -117,17 +143,38 @@ public class DatabaseManagementControlModel {
         }
     }
     
-    private void loadTables() {
+    private void loadSchemas() {
         try {
-            tables.clear();
-            List<MetaDataTable> list = databaseService.getTables(
-                    null, null, null, null);
-            for (MetaDataTable table : list) {
-                tables.add(table);
+            schemas.clear();
+            List<MetaDataSchema> list = databaseService.getSchemas(
+                    null, null);
+            for (MetaDataSchema schema : list) {
+                schemas.add(schema);
             }
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
         }
+    }
+    
+    private void loadTables() {
+        try {
+            tables.clear();
+            MetaDataSchema schema = getSelectedSchema();
+            if (schema != null) {
+                List<MetaDataTable> list = databaseService.getTables(
+                        null, schema.getTableSchema(), null, null);
+                for (MetaDataTable table : list) {
+                    tables.add(table);
+                }
+            }
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+    }
+    
+     private void loadTableRows() {
+        loadColumns();
+        loadRows();
     }
     
     private void loadColumns() {

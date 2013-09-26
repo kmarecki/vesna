@@ -9,42 +9,46 @@
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
          fx:controller="org.vesna.apps.server.controls.DatabaseManagementControlController"
          spacing="10" >
-    <GridPane VBox.vgrow="ALWAYS">
-        <Label GridPane.columnIndex="0" GridPane.rowIndex="0"
-               text="Tables"/>
-        <ListView fx:id="tablesList" 
-                  GridPane.columnIndex="0" GridPane.rowIndex="1"
-                  minWidth="150" >
-            <contextMenu>
-                <ContextMenu>
-                    <items>
-                        <MenuItem fx:id="deleteTableMenuItem"  text="Delete" 
-                                  onAction="#handleActionDeleteTable"
-                                  onMenuValidation="#handleValidateDeleteTable" /> 
-                    </items>
-                </ContextMenu>
-            </contextMenu>
-        </ListView> 
-        <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <left>
-                <HBox spacing="10">
-                    <children>
-                        <Button fx:id="addRowButton" text="Add" 
-                                onAction="#handleActionAddRow" />
-                        <Button fx:id="editRowButton" text="Edit" 
-                                onAction="#handleActionEditRow" />
-                        <Button fx:id="deleteRowButton" text="Remove"
-                                onAction="#handleActionDeleteRow" /> 
-                    </children>
-                </HBox>
-            </left>
-            <right>
-                <Label fx:id="tableNameLabel"
-                       BorderPane.alignment="CENTER_RIGHT" /> 
-            </right>
-        </BorderPane>
-        <TableView fx:id="rowsTable"
-                   GridPane.columnIndex="1" GridPane.rowIndex="1" 
-                   GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/> 
-    </GridPane>
+    <SplitPane VBox.vgrow="ALWAYS" orientation="HORIZONTAL" >
+        <VBox maxWidth="200" >
+            <Label text="Schemas"/>
+            <ComboBox fx:id="schemasCombo"
+                      minWidth="200"/>
+            <Label text="Tables"/>
+            <ListView fx:id="tablesList" 
+                      minWidth="200" VBox.vgrow="ALWAYS" >
+                <contextMenu>
+                    <ContextMenu>
+                        <items>
+                            <MenuItem fx:id="deleteTableMenuItem"  text="Delete" 
+                                      onAction="#handleActionDeleteTable"
+                                      onMenuValidation="#handleValidateDeleteTable" /> 
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
+            </ListView> 
+        </VBox>
+        <VBox>
+            <BorderPane>
+                <left>
+                    <HBox spacing="10">
+                        <children>
+                            <Button fx:id="addRowButton" text="Add" 
+                                    onAction="#handleActionAddRow" />
+                            <Button fx:id="editRowButton" text="Edit" 
+                                    onAction="#handleActionEditRow" />
+                            <Button fx:id="deleteRowButton" text="Remove"
+                                    onAction="#handleActionDeleteRow" /> 
+                        </children>
+                    </HBox>
+                </left>
+                <right>
+                    <Label fx:id="tableNameLabel"
+                           BorderPane.alignment="CENTER_RIGHT" /> 
+                </right>
+            </BorderPane>
+            <TableView fx:id="rowsTable" VBox.vgrow="ALWAYS" 
+                       /> 
+        </VBox>
+    </SplitPane>
 </fx:root>
