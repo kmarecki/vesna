@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 /**
  *
@@ -38,14 +39,8 @@ public class ProcessHelper {
                     ProcessBuilder builder = new ProcessBuilder(commands);
 
                     process = builder.start();
-                    InputStream outputStream = process.getInputStream();
-                    InputStreamReader outputStreamReader = new InputStreamReader(outputStream);
-                    BufferedReader outputBufferedReader = new BufferedReader(outputStreamReader);
-                    
-                    String line;
-                    while((line = outputBufferedReader.readLine()) != null) {
-                        logger.info(line);
-                    }   
+                    readFromStream(process.getErrorStream(), logger, Priority.ERROR);
+                    readFromStream(process.getInputStream(), logger, Priority.INFO);
 
                 } catch (IOException ex) {
                     logger.error(ex.getMessage());
@@ -54,5 +49,17 @@ public class ProcessHelper {
         });
         thread.start();
         return thread;
+    }
+    
+    private static void readFromStream(
+            InputStream stream, final Logger logger, Priority priority) 
+            throws IOException {
+        InputStreamReader streamReader = new InputStreamReader(stream);
+        BufferedReader bufferedReader = new BufferedReader(streamReader);
+
+        String line;
+        while((line = bufferedReader.readLine()) != null) {
+            logger.log(priority, line);
+        }   
     }
 }

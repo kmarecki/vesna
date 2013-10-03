@@ -36,8 +36,12 @@ public class DerbyService implements DatabaseAdapter {
         this.databaseName = databaseName;
     }
     
+    private String getDerbyRunPath() {
+        String path = String.format("dist%1slib%1sderbyrun.jar", File.separator);
+        return path;
+    }
     private void runStandaloneServer() {
-        String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "start"};
+        String[] commands = {"java", "-jar", getDerbyRunPath(), "server", "start"};
         ProcessHelper.StartInSeparateThread(commands, logger);
     }
     
@@ -106,7 +110,7 @@ public class DerbyService implements DatabaseAdapter {
     }
     
     private void shutdownStandaloneServer() {
-        String[] commands = {"java", "-jar", "dist\\lib\\derbyrun.jar", "server", "shutdown"};
+        String[] commands = {"java", "-jar", getDerbyRunPath(), "server", "shutdown"};
         ProcessHelper.StartInSeparateThread(commands, logger);
     } 
     

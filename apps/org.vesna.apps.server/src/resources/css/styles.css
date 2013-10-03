@@ -9,9 +9,9 @@ root {
     display: block;
 }
 
-.table-row-cell:filled:odd {
+/*.table-row-cell:filled:odd {
    -fx-background-color: -fx-table-cell-border-color, white;
-}
+}*/
 /*
 
 .table-row-cell:filled:selected:hover:odd {
