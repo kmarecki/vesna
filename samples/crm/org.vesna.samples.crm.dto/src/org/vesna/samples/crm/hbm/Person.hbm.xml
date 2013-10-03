@@ -3,7 +3,7 @@
 <hibernate-mapping>
   <class name="org.vesna.samples.crm.dto.Person" table="persons">
       <id name="personID" type="integer" column="person_ID">
-          <generator class="native"/>
+          <generator class="identity"/>
       </id>
       <property name="firstName" type="text" column="first_name" length="30"/>
       <property name="lastName" type="text" column="last_name" length="100"/>

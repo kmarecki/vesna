@@ -144,9 +144,11 @@ public class DatabaseService {
     private void addStatementParameters(PreparedStatement statement, MetaDataTable table, DataRow row) throws SQLException {
         int parameterIndex = 1;
         for (MetaDataColumn column : table.getColumns()) {
-            String value = row.getString(column.getColumnName());
-            statement.setString(parameterIndex, value);
-            parameterIndex++;
+            if (!column.isIsAutoincrement()) {
+                String value = row.getString(column.getColumnName());
+                statement.setString(parameterIndex, value);
+                parameterIndex++;
+            }
         }
     }
     

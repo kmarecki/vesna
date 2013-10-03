@@ -17,6 +17,7 @@ package org.vesna.apps.server.controls;
 
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
+import org.vesna.core.lang.ThrowableHelper;
 import org.vesna.core.javafx.data.ObservableDataRow;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.sql.MetaDataTable;
@@ -79,7 +80,7 @@ public class RowEditControlModel {
         }
         return true;
         } catch (SQLException ex) {
-            logger.error(ex.getMessage());
+            logger.error(ThrowableHelper.getErrorMessage(ex));
         }
         return false;
     }
