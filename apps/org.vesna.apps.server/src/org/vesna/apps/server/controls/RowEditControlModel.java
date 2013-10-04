@@ -36,7 +36,8 @@ public class RowEditControlModel {
     }
     
     private DatabaseService databaseService;
-    
+    private Runnable refresh;
+            
     private MetaDataTable table;
     
     public MetaDataTable getTable() {
@@ -59,29 +60,34 @@ public class RowEditControlModel {
             DatabaseService databaseService, 
             MetaDataTable table, 
             ObservableDataRow row, 
-            Mode mode) {
+            Mode mode,
+            Runnable refresh) {
         
         this.databaseService = databaseService;
         this.table = table;
         this.row = row;
         this.mode = mode;
+        this.refresh = refresh;
     }
     
     public Boolean save() {
         try {
-        switch (mode) {
-            case Insert : {
-                databaseService.insertRow(table, row);
+            switch (mode) {
+                case Insert : {
+                    databaseService.insertRow(table, row);
+                }
+                case Update : {
+                    databaseService.updateRow(table, row);
+                    break;
+                }
             }
-            case Update : {
-                databaseService.updateRow(table, row);
-                break;
-            }
-        }
-        return true;
         } catch (SQLException ex) {
             logger.error(ThrowableHelper.getErrorMessage(ex));
+            return false;
         }
-        return false;
+        if (refresh != null) {
+            refresh.run();
+        }
+        return true;
     }
 }

@@ -27,6 +27,7 @@ import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 import org.vesna.core.javafx.data.ObservableDataRow;
 import org.vesna.core.javafx.data.ObservableDataTable;
+import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.sql.MetaDataColumn;
 import org.vesna.core.sql.MetaDataPrimaryKey;
@@ -140,12 +141,35 @@ public class DatabaseManagementControlModel {
         loadSchemas();
     }
     
+    public RowEditControlModel createRowEditModel(
+            ObservableDataRow row, 
+            RowEditControlModel.Mode mode) {
+        MetaDataTable table = getSelectedTable();
+        RowEditControlModel model = new RowEditControlModel(
+            databaseService, table, row, mode, new Runnable() {
+                @Override
+                public void run() {
+                    loadTableRows();
+                }
+            });
+        return model;
+    }
+    
     public void deleteSelectedTable() {
         MetaDataTable table = getSelectedTable();
         if (table != null) {
-            deleteTable(getSelectedTable());
+            deleteTable(table);
             initialize();
         }
+    }
+    
+    public void deleteSelectedRow() {
+        MetaDataTable table = getSelectedTable();
+        ObservableDataRow row = getSelectedRow();
+        if (table != null) {
+            deleteRow(table, row);
+        }
+        loadTableRows();
     }
     
     private void loadSchemas() {
@@ -157,7 +181,7 @@ public class DatabaseManagementControlModel {
                 schemas.add(schema);
             }
         } catch (SQLException ex) {
-            logger.error(ex.getMessage());
+             LoggerHelper.logException(logger, ex);
         }
     }
     
@@ -173,7 +197,7 @@ public class DatabaseManagementControlModel {
                 }
             }
         } catch (SQLException ex) {
-            logger.error(ex.getMessage());
+            LoggerHelper.logException(logger, ex);
         }
     }
     
@@ -198,7 +222,7 @@ public class DatabaseManagementControlModel {
                     table.addPrimaryKeys(list);
                 }
             } catch (SQLException ex) {
-               logger.error(ex.getMessage());
+                LoggerHelper.logException(logger, ex);
             }
         }
     }
@@ -211,7 +235,7 @@ public class DatabaseManagementControlModel {
                ResultSet resultSet = databaseService.selectAll(table);
                rowsTable = ObservableDataTable.fromResultSet(resultSet);
             } catch (SQLException ex) {
-               logger.error(ex.getMessage());
+                LoggerHelper.logException(logger, ex);
             }
         }
     }
@@ -220,7 +244,15 @@ public class DatabaseManagementControlModel {
         try {
             databaseService.deleteTable(table);
         } catch (SQLException ex) {
-           logger.error(ex.getMessage());
+            LoggerHelper.logException(logger, ex);
+        }
+    }
+    
+    private void deleteRow(MetaDataTable table, ObservableDataRow row) {
+        try {
+            databaseService.deleteRow(table, row);
+        } catch (SQLException ex) {
+            LoggerHelper.logException(logger, ex);
         }
     }
 }

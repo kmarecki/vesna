@@ -106,7 +106,21 @@ public class DatabaseManagementControlController {
     
     @FXML
     private void handleActionDeleteRow(ActionEvent event) {
+        ObservableDataRow row = model.getSelectedRow();
+        model.deleteSelectedRow();
+    }
+    
+    private void showEditRowForm(RowEditControlModel.Mode mode, ObservableDataRow row) {
+        Stage stage = new Stage();
+        RowEditControl control = new RowEditControl();
+        stage.setScene(new Scene(control));
+        stage.setTitle(mode.toString());
+        stage.initModality(Modality.APPLICATION_MODAL);
         
+        RowEditControlModel controlModel = model.createRowEditModel(row, mode);
+        control.getController().setModel(controlModel);
+        control.getController().setStage(stage);
+        stage.show();
     }
             
     public void setModel(final DatabaseManagementControlModel model) {
@@ -188,20 +202,6 @@ public class DatabaseManagementControlController {
     private void setTableNameLabel() {
         MetaDataTable table = model.getSelectedTable();
         tableNameLabel.setText(table != null ? table.getTableName() : "");
-    }
-    
-    private void showEditRowForm(RowEditControlModel.Mode mode, ObservableDataRow row) {
-        Stage stage = new Stage();
-        RowEditControl control = new RowEditControl();
-        stage.setScene(new Scene(control));
-        stage.setTitle(mode.toString());
-        stage.initModality(Modality.APPLICATION_MODAL);
-        
-        RowEditControlModel controlModel = new RowEditControlModel(
-                model.getDatabaseService(), model.getSelectedTable(), row, mode);
-        control.getController().setModel(controlModel);
-        control.getController().setStage(stage);
-        stage.show();
     }
     
 }

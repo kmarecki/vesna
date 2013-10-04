@@ -66,6 +66,7 @@ public class RowEditControlController  {
         int rowIndex = 1;
         for (MetaDataColumn column : model.getTable().getColumns()) {
             final String columnName = column.getColumnName();
+            boolean isEditable = !column.isIsAutoincrement();
 
             Label columnLabel = new Label();
             columnLabel.setAlignment(Pos.CENTER_RIGHT);
@@ -73,7 +74,7 @@ public class RowEditControlController  {
             GridPane.setConstraints(columnLabel, 1, rowIndex);
 
             TextField columnText = new TextField();
-            columnText.setEditable(true);
+            columnText.setEditable(isEditable);
             columnText.setText(model.getRow().getString(columnName));
             columnText.textProperty().bindBidirectional(new SimpleObjectProperty<String>() {
                 @Override

@@ -35,9 +35,11 @@ import org.vesna.core.sql.MetaDataTable;
 public class DatabaseService {
     
     private final DatabaseAdapter database;
+    private SqlGenerator sqlGenerator;
     
     public DatabaseService(DatabaseAdapter database) {
         this.database = database;
+        this.sqlGenerator = new SqlGenerator();
     }
     
      public List<MetaDataColumn> getColumns(
@@ -119,53 +121,41 @@ public class DatabaseService {
         return resultSet;
     }
     
-    private String constructSQLInsert(MetaDataTable table) {
-        StringBuilder sql = new StringBuilder();
-        StringBuilder values = new StringBuilder();
-        
-        sql.append(String.format("INSERT INTO %s (", table.getFullTableName()));
-        Boolean firstColumn = true;
-        for (MetaDataColumn column : table.getColumns()) {
-            if (!column.isIsAutoincrement()) {
-                if (!firstColumn) {
-                    sql.append(", ");
-                    values.append(", ");
-                }
-                sql.append(String.format("%s", column.getColumnName()));
-                values.append("?");
-                firstColumn = false;
-            }
-        }
-        sql.append(String.format(") VALUES(%s)", values.toString()));
-        
-        return sql.toString();
-    }
-    
-    private void addStatementParameters(PreparedStatement statement, MetaDataTable table, DataRow row) throws SQLException {
-        int parameterIndex = 1;
-        for (MetaDataColumn column : table.getColumns()) {
-            if (!column.isIsAutoincrement()) {
-                String value = row.getString(column.getColumnName());
-                statement.setString(parameterIndex, value);
-                parameterIndex++;
-            }
+    private void addStatementParameters(
+            SqlGenerator.Query query,
+            PreparedStatement statement, 
+            MetaDataTable table, 
+            DataRow row) throws SQLException {
+        for (SqlGenerator.QueryParameter param : query.getParameters()) {
+            String value = row.getString(param.getParameterName());
+            statement.setString(param.getParameterIndex(), value);
         }
     }
     
-    public void insertRow(MetaDataTable table, DataRow row) throws SQLException {
+    private void executeUpdateQuery(
+            SqlGenerator.Query query, 
+            MetaDataTable table,
+            DataRow row) throws SQLException {
         Connection connection = database.getConnection();
-        String sql = constructSQLInsert(table);
-        PreparedStatement statement = connection.prepareStatement(sql);
-        addStatementParameters(statement, table, row);
+        PreparedStatement statement = connection.prepareStatement(query.getSql());
+        addStatementParameters(query, statement, table, row);
         statement.executeUpdate();
     }
     
-    public void updateRow(MetaDataTable table, DataRow row) {
-        
+    public void insertRow(MetaDataTable table, DataRow row) throws SQLException {
+        SqlGenerator.Query query = sqlGenerator.generateInsert(table);
+        executeUpdateQuery(query, table, row);
     }
     
-    public void deleteRow(MetaDataTable table) {
-        
+     
+    public void updateRow(MetaDataTable table, DataRow row) throws SQLException {
+        SqlGenerator.Query query = sqlGenerator.generateUpdate(table);
+        executeUpdateQuery(query, table, row);
+    }
+    
+    public void deleteRow(MetaDataTable table, DataRow row) throws SQLException {
+        SqlGenerator.Query query = sqlGenerator.generateDelete(table);
+        executeUpdateQuery(query, table, row);
     }
     
     private DatabaseMetaData getDatabaseMetaData() throws SQLException {
