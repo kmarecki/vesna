@@ -126,12 +126,19 @@ public class DatabaseManagementControlModel {
     
     private final ListProperty<String> columns = new SimpleListProperty<>(FXCollections.<String>observableArrayList());
     
-    private ObservableDataTable rowsTable;
+    private ObjectProperty<ObservableDataTable> rowsTable = new SimpleObjectProperty();
     
     public ObservableDataTable getRowsTable() {
-        return rowsTable;
+        return rowsTable.get();
+    }
+  
+    public void setRowsTable(ObservableDataTable value) {
+        rowsTable.set(value);
     }
     
+    public ObjectProperty rowsTableProperty() {
+        return rowsTable;
+    }
    
     public DatabaseManagementControlModel(DatabaseService databaseService) {
         this.databaseService = databaseService;
@@ -228,12 +235,12 @@ public class DatabaseManagementControlModel {
     }
     
     private void loadRows() {
-        rowsTable = null;
+        setRowsTable(null);
         MetaDataTable table = getSelectedTable();
         if (table != null) {
             try {
                ResultSet resultSet = databaseService.selectAll(table);
-               rowsTable = ObservableDataTable.fromResultSet(resultSet);
+               setRowsTable(ObservableDataTable.fromResultSet(resultSet));
             } catch (SQLException ex) {
                 LoggerHelper.logException(logger, ex);
             }

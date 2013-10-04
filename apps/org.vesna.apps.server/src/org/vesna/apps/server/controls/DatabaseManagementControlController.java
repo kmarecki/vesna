@@ -145,14 +145,25 @@ public class DatabaseManagementControlController {
         tablesList.itemsProperty().bind(model.tablesProperty());
         tablesList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MetaDataTable>() {
             @Override
-            public void changed(ObservableValue<? extends MetaDataTable> ov, 
-                                MetaDataTable oldValue, MetaDataTable newValue) {
+            public void changed(
+                ObservableValue<? extends MetaDataTable> ov, 
+                MetaDataTable oldValue, 
+                MetaDataTable newValue) {
                 model.setSelectedTable(newValue); 
+            }	
+        });
+        model.rowsTableProperty().addListener(new ChangeListener<ObservableDataTable>(){
+            @Override
+            public void changed(
+                ObservableValue<? extends ObservableDataTable> ov, 
+                ObservableDataTable oldValue, 
+                ObservableDataTable newValue) {
                 bindRows();
                 addColumns();
                 setTableNameLabel();
-            }	
+            }
         });
+        
         tablesList.setCellFactory(new Callback<ListView<MetaDataTable>, ListCell<MetaDataTable>>() {
             @Override
             public ListCell<MetaDataTable> call(ListView<MetaDataTable> p) {
@@ -171,6 +182,7 @@ public class DatabaseManagementControlController {
         model.initialize();
         schemasCombo.getSelectionModel().selectFirst();
     }
+    
     
     private void addColumns() {
         rowsTable.getColumns().clear();
