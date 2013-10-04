@@ -26,6 +26,7 @@ import javax.xml.ws.Endpoint;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.vesna.core.server.derby.DerbyService;
+import org.vesna.core.server.services.MasterServiceImpl;
 import org.vesna.core.server.sql.DatabaseService;
 
 /**
@@ -36,9 +37,7 @@ public abstract class App extends Application {
     private static final Logger logger = Logger.getLogger(App.class);
     
     private AppModel model;
-	
-    
-//    private Endpoint endpoint;
+    private Endpoint masterEndpoint;
 	
 	
     @Override
@@ -59,19 +58,19 @@ public abstract class App extends Application {
         stage.sizeToScene();
         stage.show();
 		
-//		publishMasterService();
+        publishMasterService();
     }
 	
 	@Override 
 	public void stop() {
-//		if (endpoint != null && endpoint.isPublished()) {
-//			endpoint.stop();
-//		}
+		if (masterEndpoint != null && masterEndpoint.isPublished()) {
+			masterEndpoint.stop();
+		}
 	}
 	
 	private void publishMasterService() {
-//		endpoint = Endpoint.publish("http://0.0.0.0:1234/", new MasterServiceImpl());
-//		logger.log(Priority.INFO, "Master service has been successfully published");
+		masterEndpoint = Endpoint.publish("http://0.0.0.0:1234/", new MasterServiceImpl());
+		logger.log(Priority.INFO, "Master service has been successfully published");
 	}
         
         private void configureServices() {
