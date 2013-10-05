@@ -16,7 +16,7 @@
 package org.vesna.core.javafx.data;
 
 import javafx.collections.ObservableList;
-import org.vesna.core.server.sql.DataRow;
+import org.vesna.core.data.DataRow;
 
 /**
  *

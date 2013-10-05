@@ -15,6 +15,7 @@
  */
 package org.vesna.core.server.sql;
 
+import org.vesna.core.data.DataRow;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;

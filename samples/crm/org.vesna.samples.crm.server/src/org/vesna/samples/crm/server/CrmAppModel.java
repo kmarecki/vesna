@@ -15,17 +15,17 @@
  */
 package org.vesna.samples.crm.server;
 
-import org.vesna.apps.server.AppModel;
+import org.vesna.apps.server.ServerAppModel;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CrmAppModel extends AppModel {
+public class CrmAppModel extends ServerAppModel {
 
     @Override
     public String getApplicationTitle() {
-        return "Vesna CRM 2013";
+        return "Vesna Server CRM 2014";
     }
 
     @Override
@@ -37,6 +37,4 @@ public class CrmAppModel extends AppModel {
     public String getHibernateMappingsJar() {
         return "dist//lib//org.vesna.samples.crm.dto.jar";
     }
-    
-    
 }

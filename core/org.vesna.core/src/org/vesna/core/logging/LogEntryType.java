@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.server.sql;
+package org.vesna.core.logging;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public interface DataTable {
-    
-     public DataRow newRow();
+public enum LogEntryType {
+	Info,
+	Warning,
+	Error,
+	Fatal,
+	Unknown
 }

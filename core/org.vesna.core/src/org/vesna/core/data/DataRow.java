@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.server.logging;
+package org.vesna.core.data;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public enum LogEntryType {
-	Info,
-	Warning,
-	Error,
-	Fatal,
-	Unknown
+public interface DataRow {
+    String getString(int columnIndex);
+    String getString(String columnName);
+    
+    void setString(int columnIndex, String value);
+    void setString(String columnName, String value);
 }

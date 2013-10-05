@@ -15,10 +15,7 @@
  */
 package org.vesna.core.javafx.controls;
 
-import org.vesna.core.server.logging.LogEntriesObserver;
-import org.vesna.core.server.logging.LogEntry;
-import org.vesna.core.server.logging.LogEntryType;
-import org.vesna.core.server.logging.ObservableAppender;
+
 import java.util.Collections;
 import java.util.Comparator;
 import javafx.application.Platform;
@@ -30,7 +27,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import org.vesna.core.logging.LogEntriesObserver;
+import org.vesna.core.logging.LogEntry;
+import org.vesna.core.logging.LogEntryType;
+import org.vesna.core.logging.ObservableAppender;
 /**
  *
  * @author Krzysztof Marecki

@@ -15,8 +15,6 @@
  */
 package org.vesna.core.javafx.controls;
 
-import org.vesna.core.server.logging.LogEntry;
-import org.vesna.core.server.logging.LogEntryType;
 import java.util.Date;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,10 +27,12 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import static org.vesna.core.server.logging.LogEntryType.Error;
-import static org.vesna.core.server.logging.LogEntryType.Fatal;
-import static org.vesna.core.server.logging.LogEntryType.Info;
-import static org.vesna.core.server.logging.LogEntryType.Warning;
+import org.vesna.core.logging.LogEntry;
+import org.vesna.core.logging.LogEntryType;
+import static org.vesna.core.logging.LogEntryType.Error;
+import static org.vesna.core.logging.LogEntryType.Fatal;
+import static org.vesna.core.logging.LogEntryType.Info;
+import static org.vesna.core.logging.LogEntryType.Warning;
 
 /**
  *

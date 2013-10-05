@@ -17,7 +17,6 @@ package org.vesna.apps.server;
 
 //import bt.core.server.services.MasterServiceImpl;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +24,7 @@ import javafx.stage.Stage;
 import javax.xml.ws.Endpoint;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.services.MasterServiceImpl;
 import org.vesna.core.server.sql.DatabaseService;
@@ -33,16 +33,16 @@ import org.vesna.core.server.sql.DatabaseService;
  *
  * @author Krzysztof Marecki
  */
-public abstract class App extends Application {
+public abstract class App extends BaseApp {
     private static final Logger logger = Logger.getLogger(App.class);
     
-    private AppModel model;
+    private ServerAppModel model;
     private Endpoint masterEndpoint;
 	
 	
     @Override
     public void start(Stage stage) throws Exception {
-        model = createAppModel();
+        model = (ServerAppModel) createAppModel();
         configureServices();
         
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -92,6 +92,4 @@ public abstract class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
-    protected abstract AppModel createAppModel();
 }

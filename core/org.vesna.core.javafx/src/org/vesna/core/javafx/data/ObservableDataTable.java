@@ -24,8 +24,8 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import java.util.Map;
 import javafx.collections.ObservableList;
-import org.vesna.core.server.sql.DataRow;
-import org.vesna.core.server.sql.DataTable;
+import org.vesna.core.data.DataRow;
+import org.vesna.core.data.DataTable;
 
 /**
  *

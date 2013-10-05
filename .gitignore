@@ -36,3 +36,13 @@
 /samples/crm/org.vesna.samples.crm.server/dist/
 /samples/crm/org.vesna.samples.crm.server/crm/
 
+/core/org.vesna.core.client/nbproject/private/
+/apps/org.vesna.apps.client/nbproject/private/
+/samples/crm/org.vesna.samples.crm.client/nbproject/private/
+/apps/org.vesna.apps.client/build/
+/samples/crm/org.vesna.samples.crm.client/build/
+/apps/org.vesna.apps.client/dist/
+/samples/crm/org.vesna.samples.crm.client/dist/
+/apps/org.vesna.apps.client2/nbproject/private/
+/apps/org.vesna.apps.client2/build/
+/apps/org.vesna.apps.client2/dist/

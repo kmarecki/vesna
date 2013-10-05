@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.apps.server;
+package org.vesna.apps.client;
+
+import org.vesna.core.javafx.BaseAppModel;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public abstract class AppModel {
+public abstract class ClientAppModel extends BaseAppModel {
     
-    private AppServices services = new AppServices();
-    
-    public AppServices getServices() {
-        return services;
-    }
-    
-    public abstract String getApplicationTitle();
-    
-    public abstract String getDatabaseName();  
-    
-    public abstract String getHibernateMappingsJar();
 }

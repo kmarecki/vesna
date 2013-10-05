@@ -19,7 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.vesna.apps.server.AppModel;
+import org.vesna.apps.server.ServerAppModel;
 import org.vesna.apps.server.MainFormController;
 import org.vesna.core.javafx.controls.LogsList;
 import org.vesna.core.server.derby.DerbyService;
@@ -30,7 +30,7 @@ import org.vesna.core.server.derby.DerbyService;
  */
 public class LogsControlController {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
-    private AppModel appModel;
+    private ServerAppModel appModel;
     private DerbyService derbyService;
     
     @FXML
@@ -75,7 +75,7 @@ public class LogsControlController {
         logger.log(Level.FATAL, "buttonFatal was clicked!");
     }
     
-    public void setModel(AppModel model) {
+    public void setModel(ServerAppModel model) {
         appModel = model;
         derbyService = appModel.getServices().get(DerbyService.class);
         

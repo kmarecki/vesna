@@ -25,7 +25,6 @@ import org.vesna.apps.server.controls.DatabaseManagementControlModel;
 import org.vesna.apps.server.controls.HibernateControl;
 import org.vesna.apps.server.controls.HibernateControlModel;
 import org.vesna.apps.server.controls.LogsControl;
-import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.sql.DatabaseService;
 
 /**
@@ -34,7 +33,7 @@ import org.vesna.core.server.sql.DatabaseService;
  */
 public class MainFormController {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
-    private AppModel appModel;
+    private ServerAppModel appModel;
     
     @FXML
     LogsControl logsControl;
@@ -58,7 +57,7 @@ public class MainFormController {
         setHibernateControlModel();
     }
     
-    public void setModel(AppModel model) {
+    public void setModel(ServerAppModel model) {
         appModel = model;
         
         setLogControlModel();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.vesna.core.server.logging;
+package org.vesna.core.logging;
 
 import java.util.ArrayList;
 import java.util.Date;

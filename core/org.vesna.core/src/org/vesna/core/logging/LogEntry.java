@@ -13,12 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.server.logging;
+package org.vesna.core.logging;
+
+import java.util.Date;
+import org.vesna.core.logging.LogEntryType;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public interface LogEntriesObserver {
-	void addNewLogEntry(LogEntry entry);
+public class LogEntry {
+	
+	private Date date;
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	private String message;
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	private LogEntryType entryType;
+
+	public LogEntryType getEntryType() {
+		return entryType;
+	}
+	
+	public void setEntryType(LogEntryType entryType) {
+		this.entryType = entryType;
+	}
 }

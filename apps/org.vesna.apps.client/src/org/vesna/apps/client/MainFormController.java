@@ -13,43 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.server.logging;
+package org.vesna.apps.client;
 
-import java.util.Date;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import org.vesna.core.javafx.BaseController;
+
 
 /**
+ * 
  *
  * @author Krzysztof Marecki
  */
-public class LogEntry {
-	
-	private Date date;
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	private String message;
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	private LogEntryType entryType;
-
-	public LogEntryType getEntryType() {
-		return entryType;
-	}
-	
-	public void setEntryType(LogEntryType entryType) {
-		this.entryType = entryType;
-	}
+public class MainFormController extends BaseController<ClientAppModel>  {
+   
+    @FXML
+    private void handleMenuItemExit(ActionEvent event) {
+        Platform.exit();
+    }
 }

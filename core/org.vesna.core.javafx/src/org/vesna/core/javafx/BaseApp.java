@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.server.sql;
+package org.vesna.core.javafx;
+
+import javafx.application.Application;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public interface DataRow {
-    String getString(int columnIndex);
-    String getString(String columnName);
+public abstract class BaseApp extends Application {
     
-    void setString(int columnIndex, String value);
-    void setString(String columnName, String value);
+    protected abstract BaseAppModel createAppModel();
 }

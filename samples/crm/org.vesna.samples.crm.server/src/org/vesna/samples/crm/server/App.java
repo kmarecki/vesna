@@ -16,7 +16,7 @@
 package org.vesna.samples.crm.server;
 
 import static javafx.application.Application.launch;
-import org.vesna.apps.server.AppModel;
+import org.vesna.apps.server.ServerAppModel;
 
 
 /**
@@ -37,7 +37,7 @@ public class App extends org.vesna.apps.server.App  {
     }
 
     @Override
-    protected AppModel createAppModel() {
+    protected ServerAppModel createAppModel() {
         CrmAppModel model = new CrmAppModel();
         return model;
     }

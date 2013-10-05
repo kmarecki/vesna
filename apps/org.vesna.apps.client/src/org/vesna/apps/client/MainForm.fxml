@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="vbox" xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="org.vesna.apps.client.MainFormController"
+      prefHeight="664.0" prefWidth="973.999977929685" >
+  <MenuBar>
+    <menus>
+      <Menu mnemonicParsing="false" text="Program">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
+        </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Help">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Server Diagnostics" />
+          <MenuItem mnemonicParsing="false" text="About" />
+        </items>
+      </Menu>
+    </menus>
+  </MenuBar>
+</VBox>
