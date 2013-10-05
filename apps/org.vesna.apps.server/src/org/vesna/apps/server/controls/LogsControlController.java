@@ -21,7 +21,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.vesna.apps.server.ServerAppModel;
 import org.vesna.apps.server.MainFormController;
-import org.vesna.core.javafx.controls.LogsList;
+import org.vesna.core.javafx.logging.LogsList;
 import org.vesna.core.server.derby.DerbyService;
 
 /**

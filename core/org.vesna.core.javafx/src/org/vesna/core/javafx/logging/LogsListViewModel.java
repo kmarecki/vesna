@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.javafx.controls;
+package org.vesna.core.javafx.logging;
 
 
 import java.util.Collections;

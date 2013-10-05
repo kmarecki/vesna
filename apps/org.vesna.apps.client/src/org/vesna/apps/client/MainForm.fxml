@@ -13,12 +13,14 @@
     <menus>
       <Menu mnemonicParsing="false" text="Program">
         <items>
-          <MenuItem mnemonicParsing="false" onAction="#handleMenuItemExit" text="Exit" />
+          <MenuItem mnemonicParsing="false" text="Exit" 
+                    onAction="#handleMenuItemExit"/>
         </items>
       </Menu>
       <Menu mnemonicParsing="false" text="Help">
         <items>
-          <MenuItem mnemonicParsing="false" text="Server Diagnostics" />
+          <MenuItem mnemonicParsing="false" text="Server Diagnostics"
+                    onAction="#handleMenuServerDiagnostics"/>
           <MenuItem mnemonicParsing="false" text="About" />
         </items>
       </Menu>

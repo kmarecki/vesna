@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.vesna.core.javafx.controls;
+package org.vesna.core.javafx.logging;
 
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
