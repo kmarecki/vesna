@@ -33,7 +33,8 @@ public class ServerDiagnosticsControlController extends BaseController<ServerDia
     
     @FXML 
     private void handleActionGetInfo(ActionEvent event) {
-
+        ServerDiagnosticsControlModel model = getModel();
+        model.refreshServerInfo();
     }
     
     @Override

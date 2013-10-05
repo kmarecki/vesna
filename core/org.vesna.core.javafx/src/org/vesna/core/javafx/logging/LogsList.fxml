@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
-         fx:controller="org.vesna.core.javafx.controls.LogsListController" >
+         fx:controller="org.vesna.core.javafx.logging.LogsListController" >
   <HBox fx:id="hboxHeader">
     <Label fx:id="logtypeLabel" text="Show only">
       <HBox.margin>

@@ -5,7 +5,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.vesna.core.javafx.controls.*?>
+<?import org.vesna.core.javafx.logging.*?>
 
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
          fx:controller="org.vesna.apps.server.controls.LogsControlController">
