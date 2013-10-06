@@ -15,8 +15,6 @@
  */
 package org.vesna.apps.server;
 
-//import bt.core.server.services.MasterServiceImpl;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

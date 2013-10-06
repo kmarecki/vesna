@@ -23,7 +23,7 @@
   </HBox>
   <TableView fx:id="logsTableView" VBox.vgrow="ALWAYS">
     <columns>
-      <TableColumn prefWidth="100.0" text="Type" fx:id="typeColumn" />
+      <TableColumn prefWidth="100.0" text="Type" fx:id="typeColumn"  />
       <TableColumn prefWidth="150.0" text="Date" fx:id="dateColumn" />
       <TableColumn text="Message" fx:id="messageColumn" />
     </columns>

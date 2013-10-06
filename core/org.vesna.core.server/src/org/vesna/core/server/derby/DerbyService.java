@@ -37,7 +37,7 @@ public class DerbyService implements DatabaseAdapter {
     }
     
     private String getDerbyRunPath() {
-        String path = String.format("dist%1slib%1sderbyrun.jar", File.separator);
+        String path = String.format("dist%1$lib%1$sderbyrun.jar", File.separator);
         return path;
     }
     private void runStandaloneServer() {

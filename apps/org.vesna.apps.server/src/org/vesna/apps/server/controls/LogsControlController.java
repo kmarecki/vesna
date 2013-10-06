@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.vesna.apps.server.ServerAppModel;
 import org.vesna.apps.server.MainFormController;
 import org.vesna.core.javafx.logging.LogsList;
+import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.server.derby.DerbyService;
 
 /**
@@ -53,10 +54,13 @@ public class LogsControlController {
     
     @FXML 
      private void handleButtonInfo(ActionEvent event) {
-        if (derbyService.isRunning()) {
-            derbyService.shutdown();
-        }
+        
+        try {
+        derbyService.shutdown();
         logger.info("buttonInfo was clicked!");
+        } catch(Throwable ex) {
+            LoggerHelper.logException(logger, ex);
+        }
     }
 	
     
