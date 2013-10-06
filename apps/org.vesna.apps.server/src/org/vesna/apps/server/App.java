@@ -26,6 +26,7 @@ import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.services.MasterServiceImpl;
 import org.vesna.core.server.sql.DatabaseService;
+import org.vesna.core.util.StreamHelper;
 
 /**
  *
@@ -67,7 +68,7 @@ public abstract class App extends BaseApp {
 	}
 	
 	private void publishMasterService() {
-		masterEndpoint = Endpoint.publish("http://0.0.0.0:1234/", new MasterServiceImpl());
+		masterEndpoint = Endpoint.publish("http://localhost:1234/", new MasterServiceImpl());
 		logger.log(Priority.INFO, "Master service has been successfully published");
 	}
         

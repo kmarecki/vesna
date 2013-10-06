@@ -15,6 +15,7 @@
  */
 package org.vesna.core.javafx.logging;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -118,7 +119,7 @@ public class LogsListController {
         dateColumn.setCellValueFactory(
                 new PropertyValueFactory<LogEntry, Date>("date"));
         dateColumn.setCellFactory(new FormattedTableCellFactory(
-                Pos.TOP_LEFT, TextAlignment.LEFT, null));
+                Pos.TOP_LEFT, TextAlignment.LEFT, new SimpleDateFormat("yyyy.MM.dd HH:mm:ss")));
         messageColumn.setCellValueFactory(
                 new PropertyValueFactory<LogEntry, String>("message"));
         messageColumn.prefWidthProperty().bind(logsTableView.widthProperty().subtract(252));

@@ -15,12 +15,18 @@
  */
 package org.vesna.apps.client;
 
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.util.logging.Level;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.vesna.core.javafx.BaseApp;
+import org.vesna.core.logging.LoggerHelper;
+import org.vesna.core.util.StreamHelper;
 
 /**
  *
@@ -34,16 +40,38 @@ public abstract class App extends BaseApp {
         ClientAppModel model = (ClientAppModel) createAppModel();
 
          FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(App.class.getResource("MainForm.fxml"));
-         Parent root = (Parent)fxmlLoader.load();
+         fxmlLoader.setLocation(this.getClass().getResource("MainFormMenu.fxml"));
+         String fxml = StreamHelper.readToEnd(App.class.getResourceAsStream("MainForm.templ.fxml"));
+         
+         final MainFormController controller = newMainFormController();
+         fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
+
+            @Override
+            public Object call(Class<?> clazz) {
+                if (MainFormController.class.isAssignableFrom(clazz)) {
+                    return controller;
+                }
+                try {
+                    return clazz.newInstance();
+                } catch (InstantiationException | IllegalAccessException ex) {
+                   LoggerHelper.logException(logger, ex);
+                }
+                return null;
+            }
+             
+         });
+         Parent root = (Parent)fxmlLoader.load(new ByteArrayInputStream(fxml.getBytes()));
          Scene scene = new Scene(root);
 //         scene.getStylesheets().add("resources/css/styles.css");
-         MainFormController controller = (MainFormController)fxmlLoader.getController();
          controller.setModel(model);
 
          stage.setTitle(model.getApplicationTitle());
          stage.setScene(scene);
          stage.sizeToScene();
          stage.show();
+    }
+    
+    protected MainFormController newMainFormController() {
+        return new MainFormController();
     }
 }

@@ -16,6 +16,7 @@
 package org.vesna.samples.crm.client;
 
 import static javafx.application.Application.launch;
+import org.vesna.apps.client.MainFormController;
 import org.vesna.core.javafx.BaseAppModel;
 
 /**
@@ -40,5 +41,9 @@ public class App extends org.vesna.apps.client.App {
         CrmAppModel model = new CrmAppModel();
         return model;
     }
-    
+
+    @Override
+    protected MainFormController newMainFormController() {
+        return new CrmMainFormController();
+    }
 }

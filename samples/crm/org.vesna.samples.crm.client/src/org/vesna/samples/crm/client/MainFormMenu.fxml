@@ -6,10 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vbox" xmlns:fx="http://javafx.com/fxml" 
-      fx:controller="org.vesna.apps.client.MainFormController"
-      prefHeight="664.0" prefWidth="973.999977929685" >
-  <MenuBar>
+<MenuBar xmlns:fx="http://javafx.com/fxml"  fx:controller="org.vesna.samples.crm.client.CrmMainFormController" >
     <menus>
       <Menu mnemonicParsing="false" text="Program">
         <items>
@@ -17,6 +14,12 @@
                     onAction="#handleMenuItemExit"/>
         </items>
       </Menu>
+      <Menu mnemonicParsing="false" text="Dictionaries">
+          <items>
+              <MenuItem mnemonicParsing="false" text="Persons"
+                        onAction="#handleMenuItemPersons" /> 
+          </items>
+      </Menu> 
       <Menu mnemonicParsing="false" text="Help">
         <items>
           <MenuItem mnemonicParsing="false" text="Server Diagnostics"
@@ -25,8 +28,4 @@
         </items>
       </Menu>
     </menus>
-  </MenuBar>
-  <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS">
-      
-  </TabPane>
-</VBox>
+</MenuBar>

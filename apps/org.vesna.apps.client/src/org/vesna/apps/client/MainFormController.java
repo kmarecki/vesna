@@ -18,11 +18,8 @@ package org.vesna.apps.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+
 import org.vesna.apps.client.controls.ServerDiagnosticsControl;
-import org.vesna.apps.client.controls.ServerDiagnosticsControlController;
 import org.vesna.apps.client.controls.ServerDiagnosticsControlModel;
 import org.vesna.core.javafx.BaseController;
 
@@ -35,11 +32,12 @@ import org.vesna.core.javafx.BaseController;
 public class MainFormController extends BaseController<ClientAppModel>  {
    
     @FXML
-    private void handleMenuItemExit(ActionEvent event) {
+    protected void handleMenuItemExit(ActionEvent event) {
         Platform.exit();
     }
     
-    @FXML void handleMenuServerDiagnostics(ActionEvent event) {
+    @FXML 
+    protected void handleMenuServerDiagnostics(ActionEvent event) {
 //        Stage stage = new Stage();
 //        ServerDiagnosticsControl control = new  ServerDiagnosticsControl();
 //        stage.setScene(new Scene(control));
