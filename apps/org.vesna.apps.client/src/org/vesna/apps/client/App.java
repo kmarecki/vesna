@@ -16,8 +16,6 @@
 package org.vesna.apps.client;
 
 import java.io.ByteArrayInputStream;
-import java.net.URL;
-import java.util.logging.Level;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
