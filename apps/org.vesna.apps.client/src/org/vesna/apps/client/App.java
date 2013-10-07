@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.vesna.core.javafx.BaseApp;
+import org.vesna.core.javafx.fxml.FXMLCombiner;
 import org.vesna.core.logging.LoggerHelper;
-import org.vesna.core.util.StreamHelper;
 
 /**
  *
@@ -37,12 +37,16 @@ public abstract class App extends BaseApp {
     public void start(Stage stage) throws Exception {
         ClientAppModel model = (ClientAppModel) createAppModel();
 
-         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(this.getClass().getResource("MainFormMenu.fxml"));
-         String fxml = StreamHelper.readToEnd(App.class.getResourceAsStream("MainForm.templ.fxml"));
+         FXMLCombiner combiner = new FXMLCombiner();
+         combiner.loadTemplate(App.class.getResourceAsStream("MainForm.templ.fxml"));
+         addCombinerVariables(combiner);
+         String fxml = combiner.getCombinedFXML();
          
+         FXMLLoader loader = new FXMLLoader();
+         loader.setLocation(this.getClass().getResource("MainFormMenu.fxml"));
+        
          final MainFormController controller = newMainFormController();
-         fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
+         loader.setControllerFactory(new Callback<Class<?>, Object>() {
 
             @Override
             public Object call(Class<?> clazz) {
@@ -58,7 +62,7 @@ public abstract class App extends BaseApp {
             }
              
          });
-         Parent root = (Parent)fxmlLoader.load(new ByteArrayInputStream(fxml.getBytes()));
+         Parent root = (Parent)loader.load(new ByteArrayInputStream(fxml.getBytes()));
          Scene scene = new Scene(root);
 //         scene.getStylesheets().add("resources/css/styles.css");
          controller.setModel(model);
@@ -71,5 +75,10 @@ public abstract class App extends BaseApp {
     
     protected MainFormController newMainFormController() {
         return new MainFormController();
+    }
+    
+    protected void addCombinerVariables(FXMLCombiner combiner) {
+        combiner.addAttributeVariable("CONTROLLER", MainFormController.class.getName());
+        combiner.addFXMLVariable("MAIN_FORM_MENU", App.class.getResourceAsStream("MainFormMenu.fxml"));
     }
 }
