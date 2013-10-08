@@ -38,15 +38,6 @@ public class MainFormController extends BaseController<ClientAppModel>  {
     
     @FXML 
     protected void handleMenuServerDiagnostics(ActionEvent event) {
-//        Stage stage = new Stage();
-//        ServerDiagnosticsControl control = new  ServerDiagnosticsControl();
-//        stage.setScene(new Scene(control));
-//        stage.setTitle("Server diagnostics");
-//        stage.initModality(Modality.APPLICATION_MODAL);
-//        
-//        ServerDiagnosticsControlModel controlModel = new ServerDiagnosticsControlModel();
-//        control.getController().setModel(controlModel);
-//        stage.show();
         ServerDiagnosticsControl control = new  ServerDiagnosticsControl();
         ServerDiagnosticsControlModel controlModel = new ServerDiagnosticsControlModel();
         showStage(control, controlModel, "Server diagnostics");

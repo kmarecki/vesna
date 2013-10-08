@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!--<?tfx:remove attribute="fx:controller">-->
+<!--<tfx:remove attribute="fx:controller"/>-->
 <MenuBar xmlns:fx="http://javafx.com/fxml"  fx:controller="org.vesna.samples.crm.client.CrmMainFormController" >
     <menus>
       <Menu mnemonicParsing="false" text="Program">

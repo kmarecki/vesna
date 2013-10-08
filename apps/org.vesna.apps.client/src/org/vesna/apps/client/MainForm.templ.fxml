@@ -6,12 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!--<?tfx:replace attribute="fx:controller" value="$CONTROLLER">-->
+<!--<tfx:replace attribute="fx:controller" value="$CONTROLLER"/>-->
 <VBox fx:id="vbox" xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.vesna.apps.client.MainFormController"
       prefHeight="664.0" prefWidth="973.999977929685" >
-  <fx:include source="MainFormMenu.fxml" />
-  <!--<?tfx:include source="$MAIN_FORM_MENU"/>-->
+  <!--<tfx:include source="$MAIN_FORM_MENU"/>-->
   <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS">
   </TabPane>
 </VBox>
