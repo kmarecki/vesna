@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Krzysztof Marecki
  *
- * Licensed under te Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.vesna.apps.client.MainFormController;
-import org.vesna.samples.crm.client.controls.PersonsList;
+package org.vesna.apps.client.controls;
+
+import org.vesna.core.javafx.controls.VBoxEx;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CrmMainFormController extends MainFormController {
-        
-    @FXML
-    protected void handleMenuItemPersons(ActionEvent event) {
-        PersonsList list = new PersonsList();
-        addTabPage(list, "Persons");
+public class EntitiesList<TModel extends EntitiesListModel, 
+                          TController extends EntitiesListController<TModel>>
+    extends VBoxEx<TModel, TController> {
+    
+    public EntitiesList() {
+        super("EntitiesList.fxml");
     }
+    
 }

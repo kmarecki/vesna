@@ -45,26 +45,10 @@ public abstract class App extends BaseApp {
          FXMLLoader loader = new FXMLLoader();
          loader.setLocation(this.getClass().getResource("MainFormMenu.fxml"));
         
-         final MainFormController controller = newMainFormController();
-         loader.setControllerFactory(new Callback<Class<?>, Object>() {
-
-            @Override
-            public Object call(Class<?> clazz) {
-                if (MainFormController.class.isAssignableFrom(clazz)) {
-                    return controller;
-                }
-                try {
-                    return clazz.newInstance();
-                } catch (InstantiationException | IllegalAccessException ex) {
-                   LoggerHelper.logException(logger, ex);
-                }
-                return null;
-            }
-             
-         });
          Parent root = (Parent)loader.load(new ByteArrayInputStream(fxml.getBytes()));
          Scene scene = new Scene(root);
 //         scene.getStylesheets().add("resources/css/styles.css");
+         MainFormController controller = loader.getController();
          controller.setModel(model);
 
          stage.setTitle(model.getApplicationTitle());

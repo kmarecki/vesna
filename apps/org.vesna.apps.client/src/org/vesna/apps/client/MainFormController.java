@@ -18,10 +18,15 @@ package org.vesna.apps.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import org.apache.log4j.Logger;
 
 import org.vesna.apps.client.controls.ServerDiagnosticsControl;
 import org.vesna.apps.client.controls.ServerDiagnosticsControlModel;
 import org.vesna.core.javafx.BaseController;
+import org.vesna.core.logging.LoggerHelper;
 
 
 /**
@@ -30,7 +35,11 @@ import org.vesna.core.javafx.BaseController;
  * @author Krzysztof Marecki
  */
 public class MainFormController extends BaseController<ClientAppModel>  {
-   
+    private static final Logger logger = Logger.getLogger(MainFormController.class);
+    
+    @FXML
+    protected TabPane tabPane;
+    
     @FXML
     protected void handleMenuItemExit(ActionEvent event) {
         Platform.exit();
@@ -41,5 +50,16 @@ public class MainFormController extends BaseController<ClientAppModel>  {
         ServerDiagnosticsControl control = new  ServerDiagnosticsControl();
         ServerDiagnosticsControlModel controlModel = new ServerDiagnosticsControlModel();
         showStage(control, controlModel, "Server diagnostics");
+    }
+    
+    protected void addTabPage(Node content, String title) {
+        try {
+            Tab tab = new Tab(title);
+            tab.setContent(content);
+            tabPane.getTabs().add(tab);
+            tabPane.getSelectionModel().selectLast();
+        } catch (IllegalArgumentException ex) {
+            LoggerHelper.logException(logger, ex);
+        }
     }
 }

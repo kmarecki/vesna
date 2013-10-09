@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client;
+package org.vesna.samples.crm.client.controls;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.vesna.apps.client.MainFormController;
-import org.vesna.samples.crm.client.controls.PersonsList;
+import org.vesna.apps.client.controls.EntitiesList;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CrmMainFormController extends MainFormController {
-        
-    @FXML
-    protected void handleMenuItemPersons(ActionEvent event) {
-        PersonsList list = new PersonsList();
-        addTabPage(list, "Persons");
-    }
+public class PersonsList 
+    extends EntitiesList<PersonsListModel, PersonsListController> {
+    
 }
