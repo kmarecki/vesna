@@ -32,8 +32,10 @@ import org.apache.log4j.Logger;
 import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.util.StreamHelper;
 import org.vesna.core.xml.DocumentHelper;
+import org.vesna.core.xml.NodeHelper;
 import org.vesna.core.xml.NodeTypeConstraints;
 import org.w3c.dom.Comment;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -74,8 +76,8 @@ public class FXMLCombiner {
     }
     
     private abstract class CombinerMethod {
-        public abstract void invoke(Node node)
-            throws TransformerException, SAXException, IOException;
+        public abstract void invoke(Node node, Node parentNode)
+            throws TransformerException, SAXException, IOException, DOMException;
     }
     
     private class IncludeMethod extends CombinerMethod {
@@ -91,9 +93,8 @@ public class FXMLCombiner {
         }
 
         @Override 
-        public void invoke(Node node) 
-            throws TransformerException, SAXException, IOException {
-            Node workNode = node.getPreviousSibling();
+        public void invoke(Node node, Node parentNode) 
+            throws TransformerException, SAXException, DOMException, IOException {
             InputStream templateStream = (InputStream)context.resolveVariable(source);
             
             CombinedDocument childNodeCombined = new CombinedDocument();
@@ -103,8 +104,9 @@ public class FXMLCombiner {
             String childNodeXml = childNodeCombined.getCombinedFXML();
             InputStream childNodeStream = new ByteArrayInputStream(childNodeXml.getBytes());
             Document childNodeDocument = context.builder.parse(childNodeStream);
-            Element childNode = childNodeDocument.getDocumentElement();
-            workNode.appendChild(childNode);
+            Node childNode = parentNode.getOwnerDocument().importNode(
+                    childNodeDocument.getDocumentElement(), true);
+            parentNode.replaceChild(childNode, node);
         }
     }
     
@@ -128,12 +130,14 @@ public class FXMLCombiner {
         }
         
         @Override 
-        public void invoke(Node node) 
-            throws TransformerException, SAXException, IOException {
-            Node workNode = node.getNextSibling();
-            Node attributeNode = workNode.getAttributes().getNamedItem(attribute);
+        public void invoke(Node node, Node parentNode) 
+            throws TransformerException, SAXException, DOMException, IOException {
+            int methodNodeIndex = NodeHelper.indexOfChildNode(parentNode, node);
+            Node nextNode = parentNode.getChildNodes().item(methodNodeIndex + 1);
+            Node attributeNode = nextNode.getAttributes().getNamedItem(attribute);
             String resolvedValue = (String)context.resolveVariable(value);
             attributeNode.setNodeValue(resolvedValue);
+            parentNode.removeChild(node);
         }
     }
     
@@ -150,11 +154,12 @@ public class FXMLCombiner {
         }
         
         @Override 
-        public void invoke(Node node) 
-            throws TransformerException, SAXException, IOException {
-            Node workNode = node.getNextSibling();
-            Node attributeNode = workNode.getAttributes().getNamedItem(attribute);
-            workNode.removeChild(attributeNode);
+        public void invoke(Node node, Node parentNode) 
+            throws TransformerException, SAXException, DOMException, IOException {
+            int methodNodeIndex = NodeHelper.indexOfChildNode(parentNode, node);
+            Element nextNode = (Element)parentNode.getChildNodes().item(methodNodeIndex + 1);
+            nextNode.removeAttribute(attribute);
+            parentNode.removeChild(node);
         }
     }
     
@@ -219,14 +224,24 @@ public class FXMLCombiner {
             return methodNode;
         }
         
-        public MethodPoint(CombinerMethod method, Node methodNode) {
+        private Node parentNode;
+
+        public Node getParentNode() {
+            return parentNode;
+        }
+        
+        public MethodPoint(
+                CombinerMethod method, 
+                Node methodNode,
+                Node parentNode) {
             this.method = method;
             this.methodNode = methodNode;
+            this.parentNode = parentNode;
         }
         
         public void invokeMethod() 
             throws TransformerException, SAXException, IOException {
-            method.invoke(methodNode);
+            method.invoke(methodNode, parentNode);
         }
     }
     
@@ -247,15 +262,14 @@ public class FXMLCombiner {
             try {
                 parsedTemplate = context.builder.parse(templateStream);
                 methodPoints = new ArrayList();
-                findComments(parsedTemplate.getChildNodes());
+                findComments(parsedTemplate);
             } catch (SAXException | IOException ex) {
                 LoggerHelper.logException(logger, ex);
             }
         }
         
         public void combine() 
-            throws TransformerException, SAXException, IOException {
-            removeMethodNodes();
+            throws TransformerException, SAXException, DOMException, IOException {
             invokeCombinerMethods();
         }
         
@@ -266,19 +280,20 @@ public class FXMLCombiner {
             return fxml;
         }
 
-        private void findComments(NodeList nodes) 
+        private void findComments(Node parentNode) 
                 throws SAXException, IOException {
+            NodeList nodes = parentNode.getChildNodes();
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
                 switch(node.getNodeType()) {
                     case NodeTypeConstraints.ELEMENT_NODE: {
                         Element element = (Element)node;
-                        findComments(element.getChildNodes());
+                        findComments(element);
                         break;
                     }
                     case NodeTypeConstraints.COMMENT_NODE: {
                         Comment comment = (Comment)node;
-                        MethodPoint point = parseComment(comment);
+                        MethodPoint point = parseComment(comment, parentNode);
                         methodPoints.add(point);
                         break;
                     }
@@ -286,12 +301,12 @@ public class FXMLCombiner {
             }
         }
 
-        private MethodPoint parseComment(Comment comment) 
+        private MethodPoint parseComment(Comment comment, Node parentNode) 
             throws SAXException, IOException {
             String methodXml = comment.getNodeValue();
             Document methodDocument = getMethodDocument(methodXml);
             CombinerMethod method = methodFactory.fromXml(methodDocument);
-            MethodPoint point = new MethodPoint(method, comment);
+            MethodPoint point = new MethodPoint(method, comment, parentNode);
             return point;
         }
         
@@ -308,15 +323,8 @@ public class FXMLCombiner {
              }
         }
         
-        private void removeMethodNodes() {
-            for(MethodPoint point : methodPoints) {
-                Node methodNode = point.methodNode;
-                methodNode.getParentNode().removeChild(methodNode);
-            }
-        }
-        
         private void invokeCombinerMethods() 
-            throws TransformerException, SAXException, IOException {
+            throws TransformerException, SAXException, DOMException, IOException {
             for(MethodPoint point : methodPoints) {
                 point.invokeMethod();
             }
@@ -345,7 +353,7 @@ public class FXMLCombiner {
             rootDocument.combine();
             String fxml = rootDocument.getCombinedFXML();
             return fxml;
-        } catch (TransformerException | SAXException | IOException | NullPointerException ex) {
+        } catch (TransformerException | SAXException |  DOMException | IOException | NullPointerException ex) {
             LoggerHelper.logException(logger, ex);
         }
         return "";

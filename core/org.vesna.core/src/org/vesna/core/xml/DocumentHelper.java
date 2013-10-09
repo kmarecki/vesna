@@ -43,6 +43,5 @@ public class DocumentHelper {
 
         transformer.transform(new DOMSource(document), new StreamResult(writer));
         return writer.toString();
-        
     }
 }
