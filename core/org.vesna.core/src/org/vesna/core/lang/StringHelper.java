@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.vesna.apps.client.controls;
-
-import org.vesna.core.javafx.controls.VBoxEx;
+package org.vesna.core.lang;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EntitiesList<TModel extends EntitiesListModel, 
-                          TController extends EntitiesListController<TModel>>
-    extends VBoxEx<TModel, TController> {
+public class StringHelper {
     
-    public EntitiesList() {
-        super("org/vesna/apps/client/controls/EntitiesList.fxml");
+    public static Boolean isNullOrEmpty(String string) {
+        return (string == null || string.isEmpty());
     }
-    
 }

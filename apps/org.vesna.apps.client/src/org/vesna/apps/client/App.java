@@ -16,6 +16,7 @@
 package org.vesna.apps.client;
 
 import java.io.ByteArrayInputStream;
+import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
 import org.vesna.core.logging.LoggerHelper;
+import org.vesna.core.net.ClasspathURLHandler;
 
 /**
  *
@@ -43,7 +45,8 @@ public abstract class App extends BaseApp {
          String fxml = combiner.getCombinedFXML();
          
          FXMLLoader loader = new FXMLLoader();
-         loader.setLocation(this.getClass().getResource("MainFormMenu.fxml"));
+         URL url = new URL(null, "classpath:org/vesna/apps/client", new ClasspathURLHandler(ClassLoader.getSystemClassLoader()));
+         loader.setLocation(url);
         
          Parent root = (Parent)loader.load(new ByteArrayInputStream(fxml.getBytes()));
          Scene scene = new Scene(root);

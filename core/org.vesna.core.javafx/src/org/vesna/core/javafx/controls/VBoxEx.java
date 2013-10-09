@@ -16,10 +16,16 @@
 package org.vesna.core.javafx.controls;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import org.vesna.core.javafx.BaseController;
 import org.vesna.core.javafx.BaseModel;
+import org.vesna.core.lang.StringHelper;
+import org.vesna.core.net.ClasspathURLHandler;
 
 /**
  *
@@ -34,10 +40,20 @@ public class VBoxEx<TModel extends BaseModel,
     public TController getController() {
         return controller;
     }
+    
 
     public VBoxEx(String fxml) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+        FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setRoot(this);
+        if (!StringHelper.isNullOrEmpty(fxml)) {
+            URL url;
+            try {
+                url = new URL(null, "classpath:"+fxml, new ClasspathURLHandler(Thread.currentThread().getContextClassLoader()));
+                fxmlLoader.setLocation(url);
+            } catch (MalformedURLException ex) {
+               
+            }
+        }
         try {
             fxmlLoader.load();
             controller = fxmlLoader.getController();
