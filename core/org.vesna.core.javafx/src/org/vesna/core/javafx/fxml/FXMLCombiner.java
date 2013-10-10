@@ -18,10 +18,13 @@ package org.vesna.core.javafx.fxml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,6 +32,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import org.vesna.core.logging.LoggerHelper;
+import org.vesna.core.net.ClasspathURLHandler;
 import org.vesna.core.xml.DocumentHelper;
 import org.vesna.core.xml.NodeHelper;
 import org.vesna.core.xml.NodeTypeConstraints;
@@ -330,11 +334,29 @@ public class FXMLCombiner {
     }
     
     private static final Logger logger = Logger.getLogger(FXMLCombiner.class);
+    
     private CombinedDocument rootDocument;
     private CombinerContext context;
     private MethodFactory methodFactory;
     
-    public void loadTemplate(InputStream stream)  {
+    private URL templateLocation;
+     
+    public URL getTemplateLocation() {
+        return templateLocation;
+    }
+    
+    public void loadTemplate(String classpath) {
+        try {
+            templateLocation = new URL(null, "classpath:"+classpath, 
+                    new ClasspathURLHandler(Thread.currentThread().getContextClassLoader()));
+            InputStream stream = templateLocation.openStream();
+            loadTemplate(stream);
+        } catch (IOException ex) {
+            LoggerHelper.logException(logger, ex);
+        }
+    }
+    
+    void loadTemplate(InputStream stream)  {
         try {
             context = new CombinerContext();
             context.initializeContext();

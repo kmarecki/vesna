@@ -15,6 +15,8 @@
  */
 package org.vesna.apps.client.controls;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import org.vesna.core.javafx.BaseController;
 
 
@@ -24,5 +26,18 @@ import org.vesna.core.javafx.BaseController;
  */
 public class EntitiesListController<TModel extends EntitiesListModel>
     extends BaseController<TModel> {
+    
+    @FXML
+    private void handleActionAdd(ActionEvent event) {
+    }
+    
+    @FXML
+    private void handleActionEdit(ActionEvent event) {  
+    }
+    
+    @FXML
+    private void handleActionDelete(ActionEvent event) {
+       
+    }
 
 }

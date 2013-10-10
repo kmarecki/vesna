@@ -16,6 +16,7 @@
 package org.vesna.apps.client.controls;
 
 import org.vesna.core.javafx.controls.VBoxEx;
+import org.vesna.core.javafx.fxml.FXMLCombiner;
 
 /**
  *
@@ -23,9 +24,11 @@ import org.vesna.core.javafx.controls.VBoxEx;
  */
 public class ServerDiagnosticsControl 
        extends VBoxEx<ServerDiagnosticsControlModel, ServerDiagnosticsControlController> {
-    
-    public ServerDiagnosticsControl() {
-        super("ServerDiagnosticsControl.fxml");
+     
+    @Override
+    public FXMLCombiner getCombiner() {
+        FXMLCombiner combiner = super.getCombiner();
+        combiner.loadTemplate("org/vesna/apps/client/controls/ServerDiagnosticsControl.fxml");
+        return combiner;
     }
-    
 }

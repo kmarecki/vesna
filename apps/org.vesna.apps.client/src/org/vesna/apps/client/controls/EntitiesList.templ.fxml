@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
+         fx:controller="org.vesna.apps.client.controls.EntitiesListController">
+    <HBox spacing="10">
+        <children>
+            <Button fx:id="insertButton" text="Add" 
+                    onAction="#handleActionAdd" />
+            <Button fx:id="updateButton" text="Edit" 
+                    onAction="#handleActionEdit" />
+            <Button fx:id="deleteButton" text="Delete"
+                    onAction="#handleActionDelete" /> 
+        </children>
+    </HBox>
+    <!--<tfx:include source="$ENTITIES_TABLE_VIEW"/>-->
+</fx:root>

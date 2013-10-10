@@ -15,9 +15,6 @@
  */
 package org.vesna.core.javafx.controls;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import org.vesna.core.javafx.BaseController;
@@ -25,23 +22,21 @@ import org.vesna.core.javafx.BaseModel;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
 import org.vesna.core.javafx.fxml.FXMLLoaderHelper;
 
-
 /**
  *
  * @author Krzysztof Marecki
  */
-public class VBoxEx<TModel extends BaseModel, 
-                    TController extends BaseController<TModel>>  
+public class HBoxEx <TModel extends BaseModel, 
+                     TController extends BaseController<TModel>>  
              extends VBox implements ControlEx<TModel, TController> {
-    private TController controller;
+     private TController controller;
 
     @Override
     public TController getController() {
         return controller;
     }
     
-
-    public VBoxEx() {
+    public HBoxEx() {
         FXMLLoader fxmlLoader = FXMLLoaderHelper.loadRoot(this, getCombiner());
         controller = fxmlLoader.getController();
     }

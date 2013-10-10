@@ -17,6 +17,7 @@
 package org.vesna.apps.client.controls;
 
 import org.vesna.core.javafx.controls.VBoxEx;
+import org.vesna.core.javafx.fxml.FXMLCombiner;
 
 /**
  *
@@ -26,8 +27,11 @@ public class EntitiesList<TModel extends EntitiesListModel,
                           TController extends EntitiesListController<TModel>>
     extends VBoxEx<TModel, TController> {
     
-    public EntitiesList() {
-        super("org/vesna/apps/client/controls/EntitiesList.fxml");
+    @Override
+    protected FXMLCombiner getCombiner() {
+        FXMLCombiner combiner = super.getCombiner();
+        combiner.loadTemplate("org/vesna/apps/client/controls/EntitiesList.templ.fxml");
+        return combiner;
     }
     
 }

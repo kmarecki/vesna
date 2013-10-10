@@ -40,7 +40,7 @@ public abstract class App extends BaseApp {
         ClientAppModel model = (ClientAppModel) createAppModel();
 
          FXMLCombiner combiner = new FXMLCombiner();
-         combiner.loadTemplate(App.class.getResourceAsStream("MainForm.templ.fxml"));
+         combiner.loadTemplate("org/vesna/apps/client/MainForm.templ.fxml");
          addCombinerVariables(combiner);
          String fxml = combiner.getCombinedFXML();
          
