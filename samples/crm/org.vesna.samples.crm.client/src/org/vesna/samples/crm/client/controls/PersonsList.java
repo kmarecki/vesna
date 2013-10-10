@@ -28,6 +28,7 @@ public class PersonsList
     @Override
     protected FXMLCombiner getCombiner() {
         FXMLCombiner combiner = super.getCombiner();
+        combiner.addAttributeVariable("CONTROLLER", PersonsListController.class.getName());
         combiner.addFXMLVariable("ENTITIES_TABLE_VIEW", this.getClass().getResourceAsStream("PersonsListTableView.fxml"));
         return combiner;
     }

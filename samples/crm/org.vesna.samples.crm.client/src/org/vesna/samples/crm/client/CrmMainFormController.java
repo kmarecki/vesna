@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.vesna.apps.client.MainFormController;
 import org.vesna.samples.crm.client.controls.PersonsList;
+import org.vesna.samples.crm.client.controls.PersonsListModel;
 
 /**
  *
@@ -29,6 +30,9 @@ public class CrmMainFormController extends MainFormController {
     @FXML
     protected void handleMenuItemPersons(ActionEvent event) {
         PersonsList list = new PersonsList();
+        PersonsListModel model = new PersonsListModel();
+        list.getController().setModel(model);
+        
         addTabPage(list, "Persons");
     }
 }

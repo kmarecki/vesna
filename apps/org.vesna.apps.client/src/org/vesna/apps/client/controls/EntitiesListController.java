@@ -28,15 +28,15 @@ public class EntitiesListController<TModel extends EntitiesListModel>
     extends BaseController<TModel> {
     
     @FXML
-    private void handleActionAdd(ActionEvent event) {
+    protected void handleActionAdd(ActionEvent event) {
     }
     
     @FXML
-    private void handleActionEdit(ActionEvent event) {  
+    protected void handleActionEdit(ActionEvent event) {  
     }
     
     @FXML
-    private void handleActionDelete(ActionEvent event) {
+    protected void handleActionDelete(ActionEvent event) {
        
     }
 

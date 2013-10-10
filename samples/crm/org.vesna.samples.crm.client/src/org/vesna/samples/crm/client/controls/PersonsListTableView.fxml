@@ -8,7 +8,7 @@
 
  <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" VBox.vgrow="ALWAYS">
     <columns>
-        <TableColumn text="First Name"/>
-        <TableColumn text="Last Name"/>
+        <TableColumn fx:id="firstNameColumn"  text="First Name"/>
+        <TableColumn fx:id="lastNameColumn" text="Last Name"/>
     </columns>
  </TableView>

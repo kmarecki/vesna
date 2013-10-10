@@ -13,29 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client.controls;
-
-import org.vesna.apps.client.controls.EntitiesListModel;
-import org.vesna.samples.crm.dto.Person;
+package org.vesna.samples.crm.client.entities;
 
 /**
  *
- * @author Krzysztof Marecki
+ * @author Krzysztof Mareck
  */
-public class PersonsListModel extends EntitiesListModel<Person> {
+public class PersonEntity {
     
-    public PersonsListModel() {
-        
-       Person p1 = new Person();
-       p1.setPersonID(1);
-       p1.setFirstName("John");
-       p1.setLastName("Doe");
-       Person p2 = new Person();
-       p2.setPersonID(2);
-       p2.setFirstName("Alice");
-       p2.setLastName("Key");
-       
-       getEntities().add(p1);
-       getEntities().add(p2);
-    }
 }

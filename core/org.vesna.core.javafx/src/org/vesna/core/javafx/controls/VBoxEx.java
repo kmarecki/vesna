@@ -15,9 +15,6 @@
  */
 package org.vesna.core.javafx.controls;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import org.vesna.core.javafx.BaseController;
