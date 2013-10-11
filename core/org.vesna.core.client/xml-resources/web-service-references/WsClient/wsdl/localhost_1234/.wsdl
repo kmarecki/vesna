@@ -10,15 +10,34 @@
 <message name="getServerInfoResponse">
 <part name="parameters" element="tns:getServerInfoResponse"></part>
 </message>
+<message name="execRepositoryMethod">
+<part name="parameters" element="tns:execRepositoryMethod"></part>
+</message>
+<message name="execRepositoryMethodResponse">
+<part name="parameters" element="tns:execRepositoryMethodResponse"></part>
+</message>
 <portType name="MasterServiceImpl">
 <operation name="getServerInfo">
 <input wsam:Action="http://services.server.core.vesna.org/MasterServiceImpl/getServerInfoRequest" message="tns:getServerInfo"></input>
 <output wsam:Action="http://services.server.core.vesna.org/MasterServiceImpl/getServerInfoResponse" message="tns:getServerInfoResponse"></output>
 </operation>
+<operation name="execRepositoryMethod">
+<input wsam:Action="http://services.server.core.vesna.org/MasterServiceImpl/execRepositoryMethodRequest" message="tns:execRepositoryMethod"></input>
+<output wsam:Action="http://services.server.core.vesna.org/MasterServiceImpl/execRepositoryMethodResponse" message="tns:execRepositoryMethodResponse"></output>
+</operation>
 </portType>
 <binding name="MasterServiceImplPortBinding" type="tns:MasterServiceImpl">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
 <operation name="getServerInfo">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal"></soap:body>
+</input>
+<output>
+<soap:body use="literal"></soap:body>
+</output>
+</operation>
+<operation name="execRepositoryMethod">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal"></soap:body>

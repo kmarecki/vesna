@@ -10,4 +10,6 @@ package org.vesna.core.javafx;
  */
 public class BaseModel {
     
+    public void initialize() {
+    }
 }

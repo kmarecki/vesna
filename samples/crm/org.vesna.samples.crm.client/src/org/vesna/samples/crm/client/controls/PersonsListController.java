@@ -45,6 +45,8 @@ public class PersonsListController
         lastNameColumn.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("lastName"));
         entitiesTable.itemsProperty().bind(model.entitiesProperty());
+        
+        model.initialize();
     }
     
     

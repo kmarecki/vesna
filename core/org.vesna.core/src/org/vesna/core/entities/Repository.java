@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.core.server.services;
+package org.vesna.core.entities;
 
-import javax.jws.WebService;
-import org.vesna.core.services.ServiceCallReturn;
+import java.util.List;
 
 /**
  *
- * @author Krzysztof Marecki
+ * @author KrzysztofMarecki
  */
-@WebService
-public interface MasterService {
+public interface Repository<TEntity> {
     
-    String getServerInfo();
+    TEntity insert(TEntity entity);
     
-    ServiceCallReturn execRepositoryMethod(String repository, String methodName, String[] arguments);
+    TEntity update(TEntity entity);
+    
+    void delete(TEntity entity);
+    
+    
+    List<TEntity> getAll();
+    
+    TEntity getSingle(Object id);
 }

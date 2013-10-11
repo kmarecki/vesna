@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.4-b01. --><xs:schema xmlns:tns="http://services.server.core.vesna.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://services.server.core.vesna.org/">
 
+<xs:element name="execRepositoryMethod" type="tns:execRepositoryMethod"></xs:element>
+
+<xs:element name="execRepositoryMethodResponse" type="tns:execRepositoryMethodResponse"></xs:element>
+
 <xs:element name="getServerInfo" type="tns:getServerInfo"></xs:element>
 
 <xs:element name="getServerInfoResponse" type="tns:getServerInfoResponse"></xs:element>
@@ -12,5 +16,26 @@
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
 </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="execRepositoryMethod">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg2" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="execRepositoryMethodResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:ServiceCallReturn" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ServiceCallReturn">
+<xs:sequence></xs:sequence>
+<xs:attribute name="success" type="xs:boolean"></xs:attribute>
+<xs:attribute name="returnValue" type="xs:string"></xs:attribute>
+<xs:attribute name="errorMessage" type="xs:string"></xs:attribute>
 </xs:complexType>
 </xs:schema>
