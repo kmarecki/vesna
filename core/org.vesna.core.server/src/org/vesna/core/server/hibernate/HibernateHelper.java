@@ -26,9 +26,9 @@ import org.hibernate.SessionFactory;
  *
  * @author Krzysztof Marecki
  */
-public class HibernateUtil {
+public class HibernateHelper {
 
-        private static final Logger logger = Logger.getLogger(HibernateUtil.class);
+        private static final Logger logger = Logger.getLogger(HibernateHelper.class);
         
 	private static SessionFactory sessionFactory;
 	

@@ -23,12 +23,6 @@ import org.vesna.core.javafx.BaseAppModel;
  */
 public abstract class ServerAppModel extends BaseAppModel {
     
-    private AppServices services = new AppServices();
-    
-    public AppServices getServices() {
-        return services;
-    }
-    
     public abstract String getDatabaseName();  
     
     public abstract String getHibernateMappingsJar();

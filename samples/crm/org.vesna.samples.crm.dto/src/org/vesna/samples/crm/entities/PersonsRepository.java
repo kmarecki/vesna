@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.vesna.samples.crm.entities;
 
-package org.vesna.apps.server;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.vesna.core.entities.Repository;
+import org.vesna.samples.crm.dto.Person;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class AppServices {
-    Map<Class, Object> services = new HashMap<>();
+public interface PersonsRepository extends Repository<Person>{
     
-    public void add(Object service) {
-        services.put(service.getClass(), service);
-    }
-    
-    public <T> T get(Class<T> clazz) {
-        T service = (T)services.get(clazz);
-        return service;
-    }
 }

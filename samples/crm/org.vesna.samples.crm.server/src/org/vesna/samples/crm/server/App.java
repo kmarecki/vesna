@@ -17,6 +17,9 @@ package org.vesna.samples.crm.server;
 
 import static javafx.application.Application.launch;
 import org.vesna.apps.server.ServerAppModel;
+import org.vesna.core.app.Core;
+import org.vesna.core.entities.EntitiesService;
+import org.vesna.samples.crm.server.entities.PersonsRepositoryImpl;
 
 
 /**
@@ -41,4 +44,14 @@ public class App extends org.vesna.apps.server.App  {
         CrmAppModel model = new CrmAppModel();
         return model;
     }
+
+    @Override
+    protected void configureServices() {
+        super.configureServices(); 
+        
+        EntitiesService entityService = Core.getServices().get(EntitiesService.class);
+        entityService.addRepository("Persons", new PersonsRepositoryImpl());
+    }
+    
+    
 }

@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import javax.xml.ws.Endpoint;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.vesna.core.app.Core;
+import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.services.MasterServiceImpl;
@@ -72,12 +74,14 @@ public abstract class App extends BaseApp {
 		logger.log(Priority.INFO, "Master service has been successfully published");
 	}
         
-        private void configureServices() {
+        protected void configureServices() {
             DerbyService derbyService = new DerbyService(model.getDatabaseName());
             DatabaseService databaseService = new DatabaseService(derbyService);
+            EntitiesService entitiesService = new EntitiesService();
             
-            model.getServices().add(derbyService);
-            model.getServices().add(databaseService);
+            Core.getServices().add(derbyService);
+            Core.getServices().add(databaseService);
+            Core.getServices().add(entitiesService);
         }
 
     /**

@@ -13,30 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.apps.server.controls;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.hibernate.SessionFactory;
-import org.vesna.core.server.hibernate.HibernateHelper;
-
+package org.vesna.core.app;
 
 /**
- * 
  *
  * @author Krzysztof Marecki
  */
-public class HibernateControlController {
-
-     private HibernateControlModel model;
+public class Core {
     
-     @FXML 
-     private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateHelper.setMappingsJar(model.getMappingsJar());
-         SessionFactory session = HibernateHelper.getSessionFactory();
-     }
+    private static AppServices services = new AppServices();
     
-    public void setModel(final HibernateControlModel model) {
-        this.model = model;
+    public static AppServices getServices() {
+        return services;
     }
 }

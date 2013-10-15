@@ -21,6 +21,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.vesna.apps.server.ServerAppModel;
 import org.vesna.apps.server.MainFormController;
+import org.vesna.core.app.Core;
 import org.vesna.core.javafx.logging.LogsList;
 import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.server.derby.DerbyService;
@@ -81,7 +82,7 @@ public class LogsControlController {
     
     public void setModel(ServerAppModel model) {
         appModel = model;
-        derbyService = appModel.getServices().get(DerbyService.class);
+        derbyService = Core.getServices().get(DerbyService.class);
         
         logsList.getController().setModel();
     }

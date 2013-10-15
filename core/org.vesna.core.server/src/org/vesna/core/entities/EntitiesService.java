@@ -13,30 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.apps.server.controls;
+package org.vesna.core.entities;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.hibernate.SessionFactory;
-import org.vesna.core.server.hibernate.HibernateHelper;
-
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 
  *
  * @author Krzysztof Marecki
  */
-public class HibernateControlController {
-
-     private HibernateControlModel model;
+public class EntitiesService {
     
-     @FXML 
-     private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateHelper.setMappingsJar(model.getMappingsJar());
-         SessionFactory session = HibernateHelper.getSessionFactory();
-     }
+    Map<String, Repository> entities = new HashMap<>();
     
-    public void setModel(final HibernateControlModel model) {
-        this.model = model;
+    public void addRepository(String name, Repository repository) {
+        entities.put(name, repository);
     }
+    
+    public Repository  getRepository(String name) {
+        Repository repository = entities.containsKey(name) ?
+                                entities.get(name) :
+                                null;
+        return repository;
+    }
+    
 }
