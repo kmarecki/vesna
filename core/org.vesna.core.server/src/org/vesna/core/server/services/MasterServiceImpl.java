@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
+import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.services.ServiceCallReturn;
 
 /**
@@ -73,19 +74,27 @@ public class MasterServiceImpl implements MasterService {
     
     @Override
     public ServiceCallReturn execRepositoryMethod(String repositoryName, String methodName, String[] arguments) {
-        Repository repository = Core.getServices().get(EntitiesService.class).getRepository(repositoryName);
-        if (repository == null) {
-            return new ServiceCallReturn(false, null, String.format("%s is unknown repository", repositoryName));
+        try {
+            Repository repository = Core.getServices().get(EntitiesService.class).getRepository(repositoryName);
+            if (repository == null) {
+                return new ServiceCallReturn(
+                        false, null, String.format("%s is unknown repository", repositoryName));
+            }
+
+            if (!methodName.equals("getAll")) {
+                return new ServiceCallReturn(
+                        false, null, String.format("%s is unknown method", methodName));
+            }
+
+            List entities = repository.getAll();
+            Gson gson = new Gson();
+
+            ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(entities), null);
+            return ret;
+        } catch (Throwable ex) {
+            LoggerHelper.logException(logger, ex);
+            return new ServiceCallReturn(
+                    false, null, String.format("MasterService exception: %s", ex.getLocalizedMessage()));
         }
-        
-        if (!methodName.equals("getAll")) {
-            return new ServiceCallReturn(false, null, String.format("%s is unknown method", methodName));
-        }
-        
-       List entities = repository.getAll();
-       Gson gson = new Gson();
-       
-       ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(entities), null);
-       return ret;
     }
 }
