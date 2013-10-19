@@ -187,7 +187,7 @@ public class DatabaseManagementControlModel {
             for (MetaDataSchema schema : list) {
                 schemas.add(schema);
             }
-        } catch (SQLException ex) {
+        } catch (Throwable ex) {
              LoggerHelper.logException(logger, ex);
         }
     }

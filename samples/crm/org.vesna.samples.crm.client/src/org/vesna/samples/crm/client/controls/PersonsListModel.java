@@ -19,11 +19,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.List;
 import org.vesna.apps.client.controls.EntitiesListModel;
+import org.vesna.core.app.Core;
 import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
+import org.vesna.core.entities.EntitiesService;
 import org.vesna.samples.crm.dto.Person;
+import org.vesna.samples.crm.entities.PersonsRepository;
 
 /**
  *
@@ -31,6 +35,7 @@ import org.vesna.samples.crm.dto.Person;
  */
 public class PersonsListModel extends EntitiesListModel<Person> {
     
+    PersonsRepository repository;
     public PersonsListModel() {
     }
 
@@ -38,23 +43,14 @@ public class PersonsListModel extends EntitiesListModel<Person> {
     public void initialize() {
         super.initialize(); 
         
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
-        ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
-        if (ret.isSuccess()) {
-            String json = ret.getReturnValue();
-
-            Gson gson = new Gson();
-            Type collectionType = new TypeToken<Collection<Person>>(){}.getType();
-            Collection<Person> dtos = gson.fromJson(json, collectionType);
-
-            for(Person dto : dtos) {
+        EntitiesService entitiesService = Core.getServices().get(EntitiesService.class);
+        repository = (PersonsRepository) entitiesService.getRepository("Persons");
+        List<Person> dtos = repository.getAll();
+        
+        for(Person dto : dtos) {
                 getEntities().add(dto);
             }
-        } else {
-            String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
-            throw new RuntimeException(msg);
-        }
+        
     }
     
     

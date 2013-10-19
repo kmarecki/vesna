@@ -16,6 +16,7 @@
 package org.vesna.core.server.services;
 
 import com.google.gson.Gson;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import javax.jws.WebService;
@@ -81,15 +82,18 @@ public class MasterServiceImpl implements MasterService {
                         false, null, String.format("%s is unknown repository", repositoryName));
             }
 
-            if (!methodName.equals("getAll")) {
-                return new ServiceCallReturn(
-                        false, null, String.format("%s is unknown method", methodName));
+            Method method;
+            try {
+                method = repository.getClass().getMethod(methodName);
+            } catch(NoSuchMethodException | SecurityException ex) {
+                LoggerHelper.logException(logger, ex);
+                    return new ServiceCallReturn(
+                            false, null, String.format("%s is unknown method", methodName));
             }
-
-            List entities = repository.getAll();
+            
+            Object result = method.invoke(repository);
             Gson gson = new Gson();
-
-            ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(entities), null);
+            ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(result), null);
             return ret;
         } catch (Throwable ex) {
             LoggerHelper.logException(logger, ex);

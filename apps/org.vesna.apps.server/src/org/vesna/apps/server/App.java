@@ -37,14 +37,12 @@ import org.vesna.core.util.StreamHelper;
 public abstract class App extends BaseApp {
     private static final Logger logger = Logger.getLogger(App.class);
     
-    private ServerAppModel model;
     private Endpoint masterEndpoint;
-	
 	
     @Override
     public void start(Stage stage) throws Exception {
-        model = (ServerAppModel) createAppModel();
-        configureServices();
+        super.start(stage);
+        ServerAppModel model = (ServerAppModel) getAppModel();
         
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(App.class.getResource("MainForm.fxml"));
@@ -62,27 +60,29 @@ public abstract class App extends BaseApp {
         publishMasterService();
     }
 	
-	@Override 
-	public void stop() {
-		if (masterEndpoint != null && masterEndpoint.isPublished()) {
-			masterEndpoint.stop();
-		}
-	}
-	
-	private void publishMasterService() {
-		masterEndpoint = Endpoint.publish("http://localhost:1234/", new MasterServiceImpl());
-		logger.log(Priority.INFO, "Master service has been successfully published");
-	}
-        
-        protected void configureServices() {
-            DerbyService derbyService = new DerbyService(model.getDatabaseName());
-            DatabaseService databaseService = new DatabaseService(derbyService);
-            EntitiesService entitiesService = new EntitiesService();
-            
-            Core.getServices().add(derbyService);
-            Core.getServices().add(databaseService);
-            Core.getServices().add(entitiesService);
-        }
+    @Override 
+    public void stop() {
+            if (masterEndpoint != null && masterEndpoint.isPublished()) {
+                    masterEndpoint.stop();
+            }
+    }
+
+    private void publishMasterService() {
+            masterEndpoint = Endpoint.publish("http://localhost:1234/", new MasterServiceImpl());
+            logger.log(Priority.INFO, "Master service has been successfully published");
+    }
+
+    @Override
+    protected void configureServices() {
+        ServerAppModel model = (ServerAppModel) getAppModel();
+        DerbyService derbyService = new DerbyService(model.getDatabaseName());
+        DatabaseService databaseService = new DatabaseService(derbyService);
+        EntitiesService entitiesService = new EntitiesService();
+
+        Core.getServices().add(derbyService);
+        Core.getServices().add(databaseService);
+        Core.getServices().add(entitiesService);
+    }
 
     /**
      * The main() method is ignored in correctly deployed JavaFX application.

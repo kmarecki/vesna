@@ -17,8 +17,11 @@ package org.vesna.samples.crm.client;
 
 import static javafx.application.Application.launch;
 import org.vesna.apps.client.MainFormController;
+import org.vesna.core.app.Core;
+import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseAppModel;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
+import org.vesna.samples.crm.client.entities.PersonsRepositoryImpl;
 
 /**
  *
@@ -52,5 +55,13 @@ public class CrmApp extends org.vesna.apps.client.App {
     protected void addCombinerVariables(FXMLCombiner combiner) {
         combiner.addAttributeVariable("CONTROLLER", CrmMainFormController.class.getName());
         combiner.addFXMLVariable("MAIN_FORM_MENU", CrmApp.class.getResourceAsStream("MainFormMenu.fxml"));
+    }
+    
+    @Override
+    protected void configureServices() {
+        super.configureServices(); 
+        
+        EntitiesService entityService = Core.getServices().get(EntitiesService.class);
+        entityService.addRepository("Persons", new PersonsRepositoryImpl());
     }
 }

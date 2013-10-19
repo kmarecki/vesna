@@ -16,6 +16,7 @@
 package org.vesna.core.javafx;
 
 import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  *
@@ -23,5 +24,20 @@ import javafx.application.Application;
  */
 public abstract class BaseApp extends Application {
     
+    private BaseAppModel model;
+    
+    @Override
+    public void start(Stage stage) throws Exception {
+        model = createAppModel();
+        configureServices();
+    }
+    
     protected abstract BaseAppModel createAppModel();
+    
+    protected BaseAppModel getAppModel() {
+        return model;
+    }
+    
+    protected abstract void configureServices();
+    
 }

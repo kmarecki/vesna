@@ -23,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
+import org.vesna.core.app.Core;
+import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
 import org.vesna.core.logging.LoggerHelper;
@@ -37,8 +39,9 @@ public abstract class App extends BaseApp {
     
     @Override
     public void start(Stage stage) throws Exception {
-        ClientAppModel model = (ClientAppModel) createAppModel();
-
+         super.start(stage);
+         ClientAppModel model = (ClientAppModel) getAppModel();
+        
          FXMLCombiner combiner = new FXMLCombiner();
          combiner.loadTemplate("org/vesna/apps/client/MainForm.templ.fxml");
          addCombinerVariables(combiner);
@@ -60,6 +63,13 @@ public abstract class App extends BaseApp {
          stage.show();
     }
     
+     @Override
+    protected void configureServices() {
+        EntitiesService entitiesService = new EntitiesService();
+
+        Core.getServices().add(entitiesService);
+    }
+    
     protected MainFormController newMainFormController() {
         return new MainFormController();
     }
@@ -68,4 +78,5 @@ public abstract class App extends BaseApp {
         combiner.addAttributeVariable("CONTROLLER", MainFormController.class.getName());
         combiner.addFXMLVariable("MAIN_FORM_MENU", App.class.getResourceAsStream("MainFormMenu.fxml"));
     }
+    
 }
