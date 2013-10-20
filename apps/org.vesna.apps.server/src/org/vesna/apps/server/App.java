@@ -80,11 +80,12 @@ public abstract class App extends BaseApp {
         DatabaseService databaseService = new DatabaseService(derbyService);
         EntitiesService entitiesService = new EntitiesService();
         HibernateService hibernateService = new HibernateService();
-        Core.getServices().add(hibernateService);
+        hibernateService.setMappingsJar(model.getHibernateMappingsJar());
 
         Core.getServices().add(derbyService);
         Core.getServices().add(databaseService);
         Core.getServices().add(entitiesService);
+        Core.getServices().add(hibernateService);
     }
 
     /**

@@ -25,12 +25,12 @@ import java.lang.reflect.Type;
  */
 public class JasonHelper {
     
-    public static <T> T fromJason(String value) {
+    public static <T> T fromJason(TypeToken<T> typeToken , String value) {
         String json = value;
 
         Gson gson = new Gson();
-        Type valueType = new TypeToken<T>() {
-        }.getType();
+ 
+        Type valueType = typeToken.getType();
         T dtos = gson.fromJson(json, valueType);
         return dtos;
     }

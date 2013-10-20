@@ -54,7 +54,7 @@ public class PersonsRepositoryImpl implements PersonsRepository {
         MasterServiceImpl impl = service.getMasterServiceImplPort();
         ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
         if (ret.isSuccess()) {
-            List<Person> dtos = JasonHelper.fromJason(ret.getReturnValue());
+            List<Person> dtos = JasonHelper.fromJason(new TypeToken<List<Person>>(){}, ret.getReturnValue());
             return dtos;
         }
         String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());

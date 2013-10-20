@@ -15,6 +15,7 @@
  */
 package org.vesna.samples.crm.server;
 
+import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -83,7 +84,7 @@ public class MasterServiceTest {
     public void repositoryGetAll() {
         ServiceCallReturn result = masterService.execRepositoryMethod("Persons", "getAll", null);
         assertTrue(result.getSuccess());
-        List<Person> persons = JasonHelper.fromJason(result.getReturnValue());
+        List<Person> persons = JasonHelper.fromJason(new TypeToken<List<Person>>(){}, result.getReturnValue());
         assertTrue(persons.size() == 0);
     }
 

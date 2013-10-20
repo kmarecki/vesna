@@ -35,6 +35,7 @@
 /samples/crm/org.vesna.samples.crm.dto/dist/
 /samples/crm/org.vesna.samples.crm.server/dist/
 /samples/crm/org.vesna.samples.crm.server/crm/
+/samples/crm/org.vesna.samples.crm.server/crm_test/
 
 /core/org.vesna.core.client/nbproject/private/
 /apps/org.vesna.apps.client/nbproject/private/
