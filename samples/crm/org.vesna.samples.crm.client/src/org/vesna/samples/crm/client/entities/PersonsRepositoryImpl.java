@@ -23,6 +23,7 @@ import java.util.List;
 import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
+import org.vesna.core.lang.JasonHelper;
 import org.vesna.samples.crm.dto.Person;
 import org.vesna.samples.crm.entities.PersonsRepository;
 
@@ -49,15 +50,11 @@ public class PersonsRepositoryImpl implements PersonsRepository {
 
     @Override
     public List<Person> getAll() {
-       MasterServiceImplService service = new MasterServiceImplService();
+        MasterServiceImplService service = new MasterServiceImplService();
         MasterServiceImpl impl = service.getMasterServiceImplPort();
         ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
         if (ret.isSuccess()) {
-            String json = ret.getReturnValue();
-
-            Gson gson = new Gson();
-            Type collectionType = new TypeToken<List<Person>>(){}.getType();
-            List<Person> dtos = gson.fromJson(json, collectionType);
+            List<Person> dtos = JasonHelper.fromJason(ret.getReturnValue());
             return dtos;
         }
         String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());

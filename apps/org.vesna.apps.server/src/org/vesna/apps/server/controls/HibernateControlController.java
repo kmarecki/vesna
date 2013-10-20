@@ -18,7 +18,8 @@ package org.vesna.apps.server.controls;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.hibernate.SessionFactory;
-import org.vesna.core.server.hibernate.HibernateHelper;
+import org.vesna.core.app.Core;
+import org.vesna.core.server.hibernate.HibernateService;
 
 
 /**
@@ -32,8 +33,8 @@ public class HibernateControlController {
     
      @FXML 
      private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateHelper.setMappingsJar(model.getMappingsJar());
-         SessionFactory session = HibernateHelper.getSessionFactory();
+         HibernateService hibernateService = Core.getServices().get(HibernateService.class);
+         SessionFactory session = hibernateService.getSessionFactory();
      }
     
     public void setModel(final HibernateControlModel model) {

@@ -150,6 +150,7 @@ public class DatabaseManagementControlController {
                 MetaDataTable oldValue, 
                 MetaDataTable newValue) {
                 model.setSelectedTable(newValue); 
+                setTableNameLabel();
             }	
         });
         model.rowsTableProperty().addListener(new ChangeListener<ObservableDataTable>(){
@@ -160,7 +161,6 @@ public class DatabaseManagementControlController {
                 ObservableDataTable newValue) {
                 bindRows();
                 addColumns();
-                setTableNameLabel();
             }
         });
         

@@ -26,6 +26,7 @@ import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.server.derby.DerbyService;
+import org.vesna.core.server.hibernate.HibernateService;
 import org.vesna.core.server.services.MasterServiceImpl;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.util.StreamHelper;
@@ -78,6 +79,8 @@ public abstract class App extends BaseApp {
         DerbyService derbyService = new DerbyService(model.getDatabaseName());
         DatabaseService databaseService = new DatabaseService(derbyService);
         EntitiesService entitiesService = new EntitiesService();
+        HibernateService hibernateService = new HibernateService();
+        Core.getServices().add(hibernateService);
 
         Core.getServices().add(derbyService);
         Core.getServices().add(databaseService);

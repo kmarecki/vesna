@@ -21,28 +21,37 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory
- * object.
- *
  * @author Krzysztof Marecki
  */
-public class HibernateHelper {
+public class HibernateService {
 
-        private static final Logger logger = Logger.getLogger(HibernateHelper.class);
+        private static final Logger logger = Logger.getLogger(HibernateService.class);
         
-	private static SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 	
-        private static String mappingsJar;
+        private String mappingsJar;
 
-        public static String getMappingsJar() {
+        public String getMappingsJar() {
             return mappingsJar;
         }
 
-        public static void setMappingsJar(String jarPath) {
+        public void setMappingsJar(String jarPath) {
            mappingsJar = jarPath;
         }
+        
+        private String configurationResource;
+
+        public String getConfigurationResource() {
+            return configurationResource;
+        }
+
+        public void setConfigurationResource(String configurationResource) {
+            this.configurationResource = configurationResource;
+        }
+
+        
 	
-	public static SessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
                 if (sessionFactory == null) {
                     try {
 			// Create the SessionFactory from standard (hibernate.cfg.xml) 
@@ -56,7 +65,12 @@ public class HibernateHelper {
                                 configuration.addJar(jar);
                             }
                         }
-			sessionFactory = configuration.configure().buildSessionFactory();
+                        if (configurationResource != null) {
+                            configuration.configure(configurationResource);
+                        } else {
+                            configuration.configure();
+                        }
+			sessionFactory = configuration.buildSessionFactory();
                     } catch (Throwable ex) {
                             logger.error(ex.getMessage());
                     }

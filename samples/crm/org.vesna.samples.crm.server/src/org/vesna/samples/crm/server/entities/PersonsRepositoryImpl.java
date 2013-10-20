@@ -19,9 +19,10 @@ import java.util.Collections;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.vesna.core.app.Core;
 import org.vesna.samples.crm.dto.Person;
 import org.vesna.samples.crm.entities.PersonsRepository;
-import org.vesna.core.server.hibernate.HibernateHelper;
+import org.vesna.core.server.hibernate.HibernateService;
 
 /**
  *
@@ -46,7 +47,8 @@ public class PersonsRepositoryImpl implements PersonsRepository {
 
     @Override
     public List<Person> getAll() {
-        Session session = HibernateHelper.getSessionFactory().openSession();
+        HibernateService hibernateService = Core.getServices().get(HibernateService.class);
+        Session session = hibernateService.getSessionFactory().openSession();
         Criteria crit = session.createCriteria(Person.class);
         
         List<Person> result = Collections.checkedList(crit.list(), Person.class);

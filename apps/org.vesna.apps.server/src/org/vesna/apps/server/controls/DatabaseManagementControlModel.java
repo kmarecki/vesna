@@ -235,7 +235,6 @@ public class DatabaseManagementControlModel {
     }
     
     private void loadRows() {
-        setRowsTable(null);
         MetaDataTable table = getSelectedTable();
         if (table != null) {
             try {

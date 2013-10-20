@@ -17,8 +17,6 @@ package org.vesna.core.server.services;
 
 import com.google.gson.Gson;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import javax.jws.WebService;
 import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
