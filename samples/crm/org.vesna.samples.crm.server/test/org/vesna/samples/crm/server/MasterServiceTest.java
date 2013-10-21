@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
-import org.vesna.core.lang.JasonHelper;
+import org.vesna.core.lang.JsonHelper;
 import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.hibernate.HibernateService;
 import org.vesna.core.server.services.MasterServiceImpl;
@@ -84,8 +84,21 @@ public class MasterServiceTest {
     public void repositoryGetAll() {
         ServiceCallReturn result = masterService.execRepositoryMethod("Persons", "getAll", null);
         assertTrue(result.getSuccess());
-        List<Person> persons = JasonHelper.fromJason(new TypeToken<List<Person>>(){}, result.getReturnValue());
+        List<Person> persons = JsonHelper.fromJson(new TypeToken<List<Person>>(){}, result.getReturnValue());
         assertTrue(persons.size() == 0);
+    }
+    
+    @Test
+    public void repositoryUpdate() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("XXX");
+        String personJason = JsonHelper.toJson(person);
+        ServiceCallReturn result = masterService.execRepositoryMethod(
+                "Persons", "update", new String[]{ personJason });
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertTrue(person.getPersonID() > 0);
     }
 
     

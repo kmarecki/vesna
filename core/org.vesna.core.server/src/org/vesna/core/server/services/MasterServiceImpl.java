@@ -17,11 +17,16 @@ package org.vesna.core.server.services;
 
 import com.google.gson.Gson;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import javax.jws.WebService;
 import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
+import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
+import org.vesna.core.lang.JsonHelper;
+import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.services.ServiceCallReturn;
 
@@ -82,14 +87,14 @@ public class MasterServiceImpl implements MasterService {
 
             Method method;
             try {
-                method = repository.getClass().getMethod(methodName);
+                method = ReflectionHelper.findMethod(repository.getClass(), methodName);
             } catch(NoSuchMethodException | SecurityException ex) {
                 LoggerHelper.logException(logger, ex);
                     return new ServiceCallReturn(
                             false, null, String.format("%s is unknown method", methodName));
             }
-            
-            Object result = method.invoke(repository);
+            Object[] parameters = toMethodParameters(method, arguments);
+            Object result = method.invoke(repository, parameters);
             Gson gson = new Gson();
             ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(result), null);
             return ret;
@@ -99,4 +104,15 @@ public class MasterServiceImpl implements MasterService {
                     false, null, String.format("MasterService exception: %s", ex.getLocalizedMessage()));
         }
     }
+    
+    private Object[] toMethodParameters(Method method, String[] arguments) {
+        List<Object> parameters = new ArrayList();
+        Class[] parameterTypes = method.getParameterTypes();
+        for(int i = 0; i < parameterTypes.length; i++) {
+            Object parameter = JsonHelper.fromJson(parameterTypes[i], arguments[i]);
+            parameters.add(parameter);
+        }
+        return parameters.toArray();
+    }
+    
 }

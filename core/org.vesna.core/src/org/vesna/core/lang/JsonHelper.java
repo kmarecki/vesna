@@ -23,15 +23,23 @@ import java.lang.reflect.Type;
  *
  * @author Krzysztof Marecki
  */
-public class JasonHelper {
+public class JsonHelper {
     
-    public static <T> T fromJason(TypeToken<T> typeToken , String value) {
-        String json = value;
-
-        Gson gson = new Gson();
- 
+    public static Gson gson = new Gson();
+    
+    public static <T> T fromJson(TypeToken<T> typeToken , String jsonValue) {
         Type valueType = typeToken.getType();
-        T dtos = gson.fromJson(json, valueType);
-        return dtos;
+        T value = gson.fromJson(jsonValue, valueType);
+        return value;
+    }
+    
+    public static <T> T fromJson(Class valueType , String jsonValue) {
+        T value = (T)gson.fromJson(jsonValue, valueType);
+        return value;
+    }
+    
+    public static String toJson(Object value) {
+        String  jsonValue = gson.toJson(value);
+        return jsonValue;
     }
 }
