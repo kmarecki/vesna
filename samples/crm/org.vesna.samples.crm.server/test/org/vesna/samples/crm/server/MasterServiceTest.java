@@ -79,6 +79,7 @@ public class MasterServiceTest {
     @After
     public void tearDown() {
     }
+    
 
     @Test
     public void repositoryGetAll() {

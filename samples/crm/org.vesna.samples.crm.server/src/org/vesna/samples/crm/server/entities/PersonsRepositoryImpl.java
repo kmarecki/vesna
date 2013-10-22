@@ -18,6 +18,7 @@ package org.vesna.samples.crm.server.entities;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.vesna.core.app.Core;
 import org.vesna.samples.crm.dto.Person;
@@ -51,6 +52,7 @@ public class PersonsRepositoryImpl implements PersonsRepository {
     public List<Person> getAll() {
         Session session = getSession();
         Criteria crit = session.createCriteria(Person.class);
+        crit.setLockMode(LockMode.READ);
         
         List<Person> result = Collections.checkedList(crit.list(), Person.class);
         return result;
