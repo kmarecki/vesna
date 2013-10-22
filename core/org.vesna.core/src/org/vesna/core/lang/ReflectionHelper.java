@@ -26,7 +26,8 @@ public class ReflectionHelper {
      public static Method findMethod(Class<?> klass, String methodName) throws NoSuchMethodException {
         Method[] methods = klass.getMethods();
         for(Method method : methods) {
-            if (method.getName().equals(methodName)) {
+            //return only public methods
+            if (method.getName().equals(methodName) && method.getModifiers() == 1) {
                 return method;
             }
         }

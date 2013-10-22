@@ -89,16 +89,26 @@ public class MasterServiceTest {
     }
     
     @Test
-    public void repositoryUpdate() {
+    public void repositoryiInsert() {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("XXX");
         String personJason = JsonHelper.toJson(person);
         ServiceCallReturn result = masterService.execRepositoryMethod(
-                "Persons", "update", new String[]{ personJason });
+                "Persons", "insert", new String[]{ personJason });
         assertTrue(result.getErrorMessage(), result.getSuccess());
         person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertTrue(person.getPersonID() > 0);
+    }
+    
+    @Test
+    public void repositoryUpdate() {
+        
+    }
+    
+    @Test
+    public void repositoryDelete() {
+        
     }
 
     

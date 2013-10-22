@@ -32,7 +32,9 @@ public class PersonsRepositoryImpl implements PersonsRepository {
 
     @Override
     public Person insert(Person entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = getSession();
+        session.saveOrUpdate(entity);
+        return entity;
     }
 
     @Override
@@ -47,8 +49,7 @@ public class PersonsRepositoryImpl implements PersonsRepository {
 
     @Override
     public List<Person> getAll() {
-        HibernateService hibernateService = Core.getServices().get(HibernateService.class);
-        Session session = hibernateService.getSessionFactory().openSession();
+        Session session = getSession();
         Criteria crit = session.createCriteria(Person.class);
         
         List<Person> result = Collections.checkedList(crit.list(), Person.class);
@@ -60,4 +61,9 @@ public class PersonsRepositoryImpl implements PersonsRepository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    private Session getSession() {
+        HibernateService hibernateService = Core.getServices().get(HibernateService.class);
+        Session session = hibernateService.getSessionFactory().openSession();
+        return session;
+    }
 }

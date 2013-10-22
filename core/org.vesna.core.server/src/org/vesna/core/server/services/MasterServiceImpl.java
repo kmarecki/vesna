@@ -17,6 +17,7 @@ package org.vesna.core.server.services;
 
 import com.google.gson.Gson;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import javax.jws.WebService;
@@ -107,7 +108,7 @@ public class MasterServiceImpl implements MasterService {
     
     private Object[] toMethodParameters(Method method, String[] arguments) {
         List<Object> parameters = new ArrayList();
-        Class[] parameterTypes = method.getParameterTypes();
+        Type[] parameterTypes = method.getGenericParameterTypes();
         for(int i = 0; i < parameterTypes.length; i++) {
             Object parameter = JsonHelper.fromJson(parameterTypes[i], arguments[i]);
             parameters.add(parameter);

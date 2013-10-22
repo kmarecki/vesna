@@ -33,7 +33,7 @@ public class JsonHelper {
         return value;
     }
     
-    public static <T> T fromJson(Class valueType , String jsonValue) {
+    public static <T> T fromJson(Type valueType , String jsonValue) {
         T value = (T)gson.fromJson(jsonValue, valueType);
         return value;
     }
