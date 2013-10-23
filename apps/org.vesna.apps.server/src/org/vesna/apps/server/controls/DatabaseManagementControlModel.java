@@ -219,15 +219,8 @@ public class DatabaseManagementControlModel {
         if (table != null) {
             try {
                 if (table.getColumns().isEmpty()) {
-                    List<MetaDataColumn> list = databaseService.getColumns(
-                            null, table.getTableSchema(), table.getTableName(), null);
-                    table.addColumns(list);
+                    databaseService.loadTable(table);
                 }  
-                if (table.getPrimaryKeys().isEmpty()) {
-                    List<MetaDataPrimaryKey> list = databaseService.getPrimaryKeys(
-                            null, table.getTableSchema(), table.getTableName());
-                    table.addPrimaryKeys(list);
-                }
             } catch (SQLException ex) {
                 LoggerHelper.logException(logger, ex);
             }

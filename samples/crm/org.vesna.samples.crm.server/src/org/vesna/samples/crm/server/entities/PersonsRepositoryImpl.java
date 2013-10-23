@@ -15,57 +15,19 @@
  */
 package org.vesna.samples.crm.server.entities;
 
-import java.util.Collections;
-import java.util.List;
-import org.hibernate.Criteria;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.vesna.core.app.Core;
+import org.vesna.core.server.entities.RepositoryImpl;
 import org.vesna.samples.crm.dto.Person;
 import org.vesna.samples.crm.entities.PersonsRepository;
-import org.vesna.core.server.hibernate.HibernateService;
+
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class PersonsRepositoryImpl implements PersonsRepository {
+public class PersonsRepositoryImpl extends RepositoryImpl<Person> implements PersonsRepository {
 
     @Override
     public Person insert(Person entity) {
-        Session session = getSession();
-        session.saveOrUpdate(entity);
-        return entity;
-    }
-
-    @Override
-    public Person update(Person entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete(Person entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Person> getAll() {
-        Session session = getSession();
-        Criteria crit = session.createCriteria(Person.class);
-        crit.setLockMode(LockMode.READ);
-        
-        List<Person> result = Collections.checkedList(crit.list(), Person.class);
-        return result;
-    }
-
-    @Override
-    public Person getSingle(Object id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    private Session getSession() {
-        HibernateService hibernateService = Core.getServices().get(HibernateService.class);
-        Session session = hibernateService.getSessionFactory().openSession();
-        return session;
+        return super.insert(entity); 
     }
 }

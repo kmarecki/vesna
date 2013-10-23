@@ -58,7 +58,7 @@ public class DatabaseService {
             columns.add(column);
         }
         return columns;
-    }
+     }
     
     public List<MetaDataPrimaryKey> getPrimaryKeys(
             String catalog,
@@ -104,6 +104,18 @@ public class DatabaseService {
             tables.add(table);
         }
         return tables;
+    }
+    
+    public MetaDataTable loadTable(MetaDataTable table) throws SQLException {
+        List<MetaDataColumn> columns = getColumns(
+                null, table.getTableSchema(), table.getTableName(), null);
+        List<MetaDataPrimaryKey> primaryKeys = getPrimaryKeys(
+                null, table.getTableSchema(), table.getTableName());
+        
+        table.addColumns(columns);
+        table.addPrimaryKeys(primaryKeys);
+        
+        return table;
     }
     
     public void deleteTable(MetaDataTable table) throws SQLException {

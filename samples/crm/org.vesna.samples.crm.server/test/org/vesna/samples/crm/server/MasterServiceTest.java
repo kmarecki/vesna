@@ -16,6 +16,7 @@
 package org.vesna.samples.crm.server;
 
 import com.google.gson.reflect.TypeToken;
+import java.sql.SQLException;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,6 +25,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.vesna.core.app.Core;
+import org.vesna.core.data.DataRow;
+import org.vesna.core.data.HashDataRow;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.lang.JsonHelper;
 import org.vesna.core.server.derby.DerbyService;
@@ -31,6 +34,7 @@ import org.vesna.core.server.hibernate.HibernateService;
 import org.vesna.core.server.services.MasterServiceImpl;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.services.ServiceCallReturn;
+import org.vesna.core.sql.MetaDataTable;
 import org.vesna.samples.crm.dto.Person;
 import org.vesna.samples.crm.server.entities.PersonsRepositoryImpl;
 
@@ -50,7 +54,7 @@ public class MasterServiceTest {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws SQLException {
         derbyService = new DerbyService("crm_test");
         derbyService.check();
         databaseService = new DatabaseService(derbyService);
@@ -66,6 +70,8 @@ public class MasterServiceTest {
         Core.getServices().add(entitiesService);
         Core.getServices().add(hibernateService);
         
+        createSchema();
+        insertRows();
     }
     
     @AfterClass
@@ -86,7 +92,7 @@ public class MasterServiceTest {
         ServiceCallReturn result = masterService.execRepositoryMethod("Persons", "getAll", null);
         assertTrue(result.getSuccess());
         List<Person> persons = JsonHelper.fromJson(new TypeToken<List<Person>>(){}, result.getReturnValue());
-        assertTrue(persons.size() == 0);
+        assertTrue(persons.size() > 0);
     }
     
     @Test
@@ -111,6 +117,24 @@ public class MasterServiceTest {
     public void repositoryDelete() {
         
     }
-
     
+    private static void createSchema() {
+        hibernateService.getSessionFactory();
+    }
+
+    private static void insertRows() throws SQLException {
+        MetaDataTable personsTable = databaseService.getTables(
+                null, "APP", "PERSONS", null).get(0);
+        databaseService.loadTable(personsTable);
+        
+        DataRow person1 = new HashDataRow();
+        person1.setString("first_name", "Tom");
+        person1.setString("last_name", "Johnson");        
+        databaseService.insertRow(personsTable, person1);
+        
+        DataRow person2 = new HashDataRow();
+        person2.setString("first_name", "Julia");
+        person2.setString("last_name", "Smith");        
+        databaseService.insertRow(personsTable, person2);
+    }
 }
