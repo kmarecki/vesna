@@ -30,4 +30,18 @@ public class PersonsRepositoryImpl extends RepositoryImpl<Person> implements Per
     public Person insert(Person entity) {
         return super.insert(entity); 
     }
+
+    @Override
+    public Person update(Person entity) {
+        return super.update(entity);
+    }
+
+    @Override
+    public void delete(Person entity) {
+        super.delete(entity); 
+    }
+
+    public Person getSingle(int id) {
+        return super.getSingle(id); 
+    }
 }

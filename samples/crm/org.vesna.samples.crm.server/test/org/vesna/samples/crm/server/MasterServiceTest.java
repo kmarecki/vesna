@@ -100,17 +100,42 @@ public class MasterServiceTest {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("XXX");
-        String personJason = JsonHelper.toJson(person);
+        String personJasn = JsonHelper.toJson(person);
         ServiceCallReturn result = masterService.execRepositoryMethod(
-                "Persons", "insert", new String[]{ personJason });
+                "Persons", "insert", new String[]{ personJasn });
         assertTrue(result.getErrorMessage(), result.getSuccess());
         person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertTrue(person.getPersonID() > 0);
+        String idJson = JsonHelper.toJson(person.getPersonID());
+        result = masterService.execRepositoryMethod(
+                "Persons", "getSingle", new String[] { idJson });
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertEquals("John", person.getFirstName());
+        assertEquals("XXX", person.getLastName());
     }
     
     @Test
     public void repositoryUpdate() {
-        
+        String idJson = JsonHelper.toJson(1);
+        ServiceCallReturn result = masterService.execRepositoryMethod(
+                "Persons", "getSingle", new String[] { idJson });
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        Person person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertTrue(person.getPersonID() == 1);
+        assertTrue("Tom".equals(person.getFirstName()));
+        person.setFirstName("Alex");
+        String personJson = JsonHelper.toJson(person);
+        result = masterService.execRepositoryMethod(
+                "Persons", "update", new String[] { personJson });
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        assertTrue(person.getPersonID() == 1);
+        result = masterService.execRepositoryMethod(
+                "Persons", "getSingle", new String[] { idJson });
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertTrue(person.getPersonID() == 1);
+        assertTrue("Alex".equals(person.getFirstName()));
     }
     
     @Test

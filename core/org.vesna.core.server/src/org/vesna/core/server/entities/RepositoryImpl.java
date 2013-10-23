@@ -15,6 +15,7 @@
  */
 package org.vesna.core.server.entities;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +61,9 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public TEntity getSingle(Object id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = getSession();
+        TEntity entity = (TEntity)session.get(getTEntityClass(), (Serializable)id);
+        return entity;
     }
     
     private Class getTEntityClass() {

@@ -102,7 +102,7 @@ public class MasterServiceImpl implements MasterService {
         } catch (Throwable ex) {
             LoggerHelper.logException(logger, ex);
             return new ServiceCallReturn(
-                    false, null, String.format("MasterService exception: %s", ex.getLocalizedMessage()));
+                    false, null, String.format("MasterService exception: %s", ex.getMessage()));
         }
     }
     
