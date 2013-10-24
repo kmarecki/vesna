@@ -16,6 +16,7 @@
 package org.vesna.core.lang;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 
 /**
  *
@@ -33,5 +34,14 @@ public class ReflectionHelper {
         }
         String msg = String.format("%s.%s", klass.getName(), methodName);
         throw new NoSuchMethodException(msg);
+    }
+     
+    public static Class getTemplateTypeParameter(Class<?> klass) {
+        return getTemplateTypeParameter(klass, 0);
+    } 
+    public static Class getTemplateTypeParameter(Class<?> klass, int index) {
+        ParameterizedType superklass = (ParameterizedType)klass.getGenericSuperclass();
+        Class typeParameter = (Class)superklass.getActualTypeArguments()[index];
+        return typeParameter;
     }
 }

@@ -28,7 +28,7 @@ import org.vesna.core.app.Core;
 import org.vesna.core.data.DataRow;
 import org.vesna.core.data.HashDataRow;
 import org.vesna.core.entities.EntitiesService;
-import org.vesna.core.lang.JsonHelper;
+import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.hibernate.HibernateService;
 import org.vesna.core.server.services.MasterServiceImpl;
@@ -90,7 +90,7 @@ public class MasterServiceTest {
     @Test
     public void repositoryGetAll() {
         ServiceCallReturn result = execRepositoryMethod("Persons", "getAll", null);
-        List<Person> persons = JsonHelper.fromJson(new TypeToken<List<Person>>(){}, result.getReturnValue());
+        List<Person> persons = GsonHelper.fromJson(new TypeToken<List<Person>>(){}, result.getReturnValue());
         assertTrue(persons.size() > 0);
     }
     
@@ -99,54 +99,54 @@ public class MasterServiceTest {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("XXX");
-        String personJasn = JsonHelper.toJson(person);
+        String personJasn = GsonHelper.toJson(person);
         ServiceCallReturn result = execRepositoryMethod(
                 "Persons", "insert", new String[]{ personJasn });
-        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertTrue(person.getPersonID() > 0);
-        String idJson = JsonHelper.toJson(person.getPersonID());
+        String idJson = GsonHelper.toJson(person.getPersonID());
         result = execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertEquals("John", person.getFirstName());
         assertEquals("XXX", person.getLastName());
     }
     
     @Test
     public void repositoryUpdate() {
-        String idJson = JsonHelper.toJson(1);
+        String idJson = GsonHelper.toJson(1);
         ServiceCallReturn result =execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        Person person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        Person person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertEquals(1, person.getPersonID());
         assertEquals("Tom", person.getFirstName());
         person.setFirstName("Alex");
-        String personJson = JsonHelper.toJson(person);
+        String personJson = GsonHelper.toJson(person);
         result = execRepositoryMethod(
                 "Persons", "update", new String[] { personJson });
-        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertEquals(1, person.getPersonID());
         assertEquals("Alex", person.getFirstName());
         result = execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertEquals(1, person.getPersonID());
         assertEquals("Alex", person.getFirstName());
     }
     
     @Test
     public void repositoryDelete() {
-        String idJson = JsonHelper.toJson(2);
+        String idJson = GsonHelper.toJson(2);
         ServiceCallReturn result = execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        Person person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        Person person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertTrue(person != null);
-        String personJson = JsonHelper.toJson(person);
+        String personJson = GsonHelper.toJson(person);
         execRepositoryMethod(
                 "Persons", "delete", new String[] { personJson });
         result = execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertTrue(person == null);
         
     }

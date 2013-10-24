@@ -23,6 +23,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.Repository;
+import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.server.hibernate.HibernateService;
 
 /**
@@ -74,8 +75,7 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     }
     
     private Class getTEntityClass() {
-        ParameterizedType superklass = (ParameterizedType)this.getClass().getGenericSuperclass();
-        Class entityClass = (Class)superklass.getActualTypeArguments()[0];
+        Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
         return entityClass;
     }
     

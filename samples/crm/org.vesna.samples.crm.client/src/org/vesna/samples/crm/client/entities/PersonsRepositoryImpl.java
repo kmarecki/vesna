@@ -15,15 +15,9 @@
  */
 package org.vesna.samples.crm.client.entities;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
-import org.vesna.core.client.services.MasterServiceImpl;
-import org.vesna.core.client.services.MasterServiceImplService;
-import org.vesna.core.client.services.ServiceCallReturn;
-import org.vesna.core.lang.JsonHelper;
+import org.vesna.core.client.entities.RepositoryImpl;
 import org.vesna.samples.crm.dto.Person;
 import org.vesna.samples.crm.entities.PersonsRepository;
 
@@ -31,39 +25,16 @@ import org.vesna.samples.crm.entities.PersonsRepository;
  *
  * @author Krzysztof Marecki
  */
-public class PersonsRepositoryImpl implements PersonsRepository {
+public class PersonsRepositoryImpl extends RepositoryImpl<Person> implements PersonsRepository {
 
     @Override
-    public Person insert(Person entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected TypeToken getTEntityTypeToken() {
+        return new TypeToken<Person>(){};
     }
 
     @Override
-    public Person update(Person entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete(Person entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Person> getAll() {
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
-        ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
-        if (ret.isSuccess()) {
-            List<Person> dtos = JsonHelper.fromJson(new TypeToken<List<Person>>(){}, ret.getReturnValue());
-            return dtos;
-        }
-        String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
-        throw new RuntimeException(msg);
-    }
-
-    @Override
-    public Person getSingle(Object id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected TypeToken getListTEntityTypeToken() {
+        return new TypeToken<List<Person>>(){};
     }
     
 }

@@ -26,7 +26,7 @@ import org.vesna.core.app.Core;
 import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
-import org.vesna.core.lang.JsonHelper;
+import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.services.ServiceCallReturn;
@@ -110,7 +110,7 @@ public class MasterServiceImpl implements MasterService {
         List<Object> parameters = new ArrayList();
         Type[] parameterTypes = method.getGenericParameterTypes();
         for(int i = 0; i < parameterTypes.length; i++) {
-            Object parameter = JsonHelper.fromJson(parameterTypes[i], arguments[i]);
+            Object parameter = GsonHelper.fromJson(parameterTypes[i], arguments[i]);
             parameters.add(parameter);
         }
         return parameters.toArray();

@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
  *
  * @author Krzysztof Marecki
  */
-public class JsonHelper {
+public class GsonHelper {
     
     public static Gson gson = new Gson();
     
