@@ -89,8 +89,7 @@ public class MasterServiceTest {
 
     @Test
     public void repositoryGetAll() {
-        ServiceCallReturn result = masterService.execRepositoryMethod("Persons", "getAll", null);
-        assertTrue(result.getSuccess());
+        ServiceCallReturn result = execRepositoryMethod("Persons", "getAll", null);
         List<Person> persons = JsonHelper.fromJson(new TypeToken<List<Person>>(){}, result.getReturnValue());
         assertTrue(persons.size() > 0);
     }
@@ -101,15 +100,13 @@ public class MasterServiceTest {
         person.setFirstName("John");
         person.setLastName("XXX");
         String personJasn = JsonHelper.toJson(person);
-        ServiceCallReturn result = masterService.execRepositoryMethod(
+        ServiceCallReturn result = execRepositoryMethod(
                 "Persons", "insert", new String[]{ personJasn });
-        assertTrue(result.getErrorMessage(), result.getSuccess());
         person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertTrue(person.getPersonID() > 0);
         String idJson = JsonHelper.toJson(person.getPersonID());
-        result = masterService.execRepositoryMethod(
+        result = execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        assertTrue(result.getErrorMessage(), result.getSuccess());
         person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
         assertEquals("John", person.getFirstName());
         assertEquals("XXX", person.getLastName());
@@ -118,28 +115,39 @@ public class MasterServiceTest {
     @Test
     public void repositoryUpdate() {
         String idJson = JsonHelper.toJson(1);
-        ServiceCallReturn result = masterService.execRepositoryMethod(
+        ServiceCallReturn result =execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
-        assertTrue(result.getErrorMessage(), result.getSuccess());
         Person person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
-        assertTrue(person.getPersonID() == 1);
-        assertTrue("Tom".equals(person.getFirstName()));
+        assertEquals(1, person.getPersonID());
+        assertEquals("Tom", person.getFirstName());
         person.setFirstName("Alex");
         String personJson = JsonHelper.toJson(person);
-        result = masterService.execRepositoryMethod(
+        result = execRepositoryMethod(
                 "Persons", "update", new String[] { personJson });
-        assertTrue(result.getErrorMessage(), result.getSuccess());
-        assertTrue(person.getPersonID() == 1);
-        result = masterService.execRepositoryMethod(
-                "Persons", "getSingle", new String[] { idJson });
-        assertTrue(result.getErrorMessage(), result.getSuccess());
         person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
-        assertTrue(person.getPersonID() == 1);
-        assertTrue("Alex".equals(person.getFirstName()));
+        assertEquals(1, person.getPersonID());
+        assertEquals("Alex", person.getFirstName());
+        result = execRepositoryMethod(
+                "Persons", "getSingle", new String[] { idJson });
+        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertEquals(1, person.getPersonID());
+        assertEquals("Alex", person.getFirstName());
     }
     
     @Test
     public void repositoryDelete() {
+        String idJson = JsonHelper.toJson(2);
+        ServiceCallReturn result = execRepositoryMethod(
+                "Persons", "getSingle", new String[] { idJson });
+        Person person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertTrue(person != null);
+        String personJson = JsonHelper.toJson(person);
+        execRepositoryMethod(
+                "Persons", "delete", new String[] { personJson });
+        result = execRepositoryMethod(
+                "Persons", "getSingle", new String[] { idJson });
+        person = JsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
+        assertTrue(person == null);
         
     }
     
@@ -149,7 +157,7 @@ public class MasterServiceTest {
 
     private static void insertRows() throws SQLException {
         MetaDataTable personsTable = databaseService.getTables(
-                null, "APP", "PERSONS", null).get(0);
+                null, "app", "persons", null).get(0);
         databaseService.loadTable(personsTable);
         
         DataRow person1 = new HashDataRow();
@@ -161,5 +169,13 @@ public class MasterServiceTest {
         person2.setString("first_name", "Julia");
         person2.setString("last_name", "Smith");        
         databaseService.insertRow(personsTable, person2);
+    }
+    
+    private ServiceCallReturn execRepositoryMethod(
+            String repositoryName, String methodName, String[] arguments) {
+        ServiceCallReturn result = masterService.execRepositoryMethod(
+                repositoryName, methodName, arguments);
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        return result;
     }
 }

@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.vesna.core.lang.StringHelper;
 import org.vesna.core.sql.MetaDataColumn;
 import org.vesna.core.sql.MetaDataPrimaryKey;
 import org.vesna.core.sql.MetaDataSchema;
@@ -66,6 +67,10 @@ public class DatabaseService {
             String table
             ) throws SQLException {
         
+        catalog = StringHelper.toUpperCase(catalog);
+        schema = StringHelper.toUpperCase(schema);
+        table = StringHelper.toUpperCase(table);
+        
         List<MetaDataPrimaryKey> primaryKeys = new ArrayList();
         DatabaseMetaData dbmd = getDatabaseMetaData();
         ResultSet resultSet = dbmd.getPrimaryKeys(catalog, schema, table);
@@ -79,6 +84,9 @@ public class DatabaseService {
     public List<MetaDataSchema> getSchemas(
             String catalog,
             String schemaPattern) throws SQLException {
+        
+        catalog = StringHelper.toUpperCase(catalog);
+        schemaPattern = StringHelper.toUpperCase(schemaPattern);
         
         List<MetaDataSchema> schemas = new ArrayList();
         DatabaseMetaData dbmd = getDatabaseMetaData();
@@ -95,6 +103,10 @@ public class DatabaseService {
             String schemaPattern,
             String tableNamePattern,
             String[] types) throws SQLException {
+      
+        catalog = StringHelper.toUpperCase(catalog);
+        schemaPattern = StringHelper.toUpperCase(schemaPattern);
+        tableNamePattern = StringHelper.toUpperCase(tableNamePattern);
         
         List<MetaDataTable> tables = new ArrayList();
         DatabaseMetaData dbmd = getDatabaseMetaData();

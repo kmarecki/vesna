@@ -17,6 +17,7 @@ package org.vesna.core.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.vesna.core.lang.StringHelper;
 
 /**
  *
@@ -33,7 +34,7 @@ public class HashDataRow implements DataRow {
 
     @Override
     public String getString(String columnName) {
-       return values.get(columnName);
+       return values.get(getColumnName(columnName));
     }
 
     @Override
@@ -43,7 +44,11 @@ public class HashDataRow implements DataRow {
 
     @Override
     public void setString(String columnName, String value) {
-        values.put(columnName, value);
+        values.put(getColumnName(columnName), value);
+    }
+    
+    private String getColumnName(String columnName) {
+        return StringHelper.toLowerCase(columnName);
     }
     
 }

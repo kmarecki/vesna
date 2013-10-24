@@ -20,7 +20,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.Repository;
@@ -35,25 +34,33 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     @Override
     public TEntity insert(TEntity entity) {
         Session session = getSession();
-        session.saveOrUpdate(entity);
+        session.save(entity);
+        session.flush();
+        session.close();
         return entity;
     }
 
     @Override
     public TEntity update(TEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = getSession();
+        session.update(entity);
+        session.flush();
+        session.close();
+        return entity;
     }
 
     @Override
     public void delete(TEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = getSession();
+        session.delete(entity);
+        session.flush();
+        session.close();
     }
 
     @Override
     public List<TEntity> getAll() {
         Session session = getSession();
         Criteria crit = session.createCriteria(getTEntityClass());
-        crit.setLockMode(LockMode.READ);
         
         List<TEntity> result = Collections.checkedList(crit.list(), getTEntityClass());
         return result;

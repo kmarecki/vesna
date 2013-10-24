@@ -15,6 +15,8 @@
  */
 package org.vesna.core.lang;
 
+import java.util.Locale;
+
 /**
  *
  * @author Krzysztof Marecki
@@ -23,5 +25,21 @@ public class StringHelper {
     
     public static Boolean isNullOrEmpty(String string) {
         return (string == null || string.isEmpty());
+    }
+    
+    public static String toLowerCase(String string) {
+        return string != null ? string.toLowerCase() : null;
+    }
+    
+     public static String toLowerCase(String string, Locale locale) {
+        return string != null ? string.toLowerCase(locale) : null;
+    }
+    
+    public static String toUpperCase(String string) {
+        return string != null ? string.toUpperCase() : null;
+    }
+    
+     public static String toUpperCase(String string, Locale locale) {
+        return string != null ? string.toUpperCase(locale) : null;
     }
 }
