@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--<tfx:replace attribute="fx:controller" value="$CONTROLLER"/>-->
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
+         fx:controller="org.vesna.apps.client.controls.EntitiesEditController">
+    <HBox spacing="10">
+        <children>
+            <Button fx:id="cancelButton" text="Cancel" 
+                    onAction="#handleActionCancel" />
+            <Button fx:id="applyButton" text="Apply" 
+                    onAction="#handleActionApply" />
+        </children>
+    </HBox>
+    <!--<tfx:include source="$ENTITIES_ROW_VIEW"/>-->
+</fx:root>

@@ -18,26 +18,38 @@ package org.vesna.apps.client.controls;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.vesna.core.javafx.BaseController;
+import org.vesna.core.javafx.BaseModel;
+import org.vesna.core.javafx.controls.ControlEx;
 
 
 /**
  * 
  * @author Krzysztof Marecki
  */
-public class EntitiesListController<TModel extends EntitiesListModel>
+public abstract class EntitiesListController<TModel extends EntitiesListModel>
     extends BaseController<TModel> {
     
     @FXML
     protected void handleActionAdd(ActionEvent event) {
+        ControlEx control = createRowEditControl();
+        BaseModel model = createRowEditModel();
+        showStage(control, model, "Add");
     }
     
     @FXML
     protected void handleActionEdit(ActionEvent event) {  
+        ControlEx control = createRowEditControl();
+        BaseModel model = createRowEditModel();
+        showStage(control, model, "Edit");
     }
     
     @FXML
     protected void handleActionDelete(ActionEvent event) {
        
     }
+    
+    protected abstract BaseModel createRowEditModel();
+    
+    protected abstract ControlEx createRowEditControl();
 
 }

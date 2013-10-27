@@ -15,28 +15,12 @@
  */
 package org.vesna.apps.client.controls;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.vesna.core.javafx.BaseModel;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EntitiesListModel<TEntity> extends BaseModel {
-    private final ListProperty<TEntity> entities = new SimpleListProperty<>(FXCollections.<TEntity>observableArrayList());
-
-    public ObservableList getEntities() {
-        return entities.get();
-    }
-
-    public void setEntities(ObservableList value) {
-        entities.set(value);
-    }
-
-    public ListProperty entitiesProperty() {
-        return entities;
-    }
+public class EntitiesEditModel<TEntity> extends BaseModel {
+    
 }

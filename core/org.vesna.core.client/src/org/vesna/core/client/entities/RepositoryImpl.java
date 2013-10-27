@@ -16,6 +16,8 @@
 package org.vesna.core.client.entities;
 
 import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
@@ -37,7 +39,16 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public TEntity update(TEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MasterServiceImplService service = new MasterServiceImplService();
+        MasterServiceImpl impl = service.getMasterServiceImplPort();
+        String entityJson = GsonHelper.toJson(entity);
+        ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "update", Arrays.asList(new String[] { entityJson }));
+        if (ret.isSuccess()) {
+            TEntity dtos = (TEntity)GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
+            return dtos;
+        }
+        String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+        throw new RuntimeException(msg);
     }
 
     @Override

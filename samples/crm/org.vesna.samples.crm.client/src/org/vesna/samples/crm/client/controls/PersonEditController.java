@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.vesna.apps.client.controls.EntitiesEditController;
 import org.vesna.apps.client.controls.EntitiesListController;
 import org.vesna.samples.crm.dto.Person;
 
@@ -26,25 +27,15 @@ import org.vesna.samples.crm.dto.Person;
  *
  * @author Krzysztof Marecki
  */
-public class PersonsListController 
-    extends EntitiesListController<PersonsListModel> {
-    
-    @FXML
-    TableColumn firstNameColumn;
-    @FXML
-    TableColumn lastNameColumn;
-    @FXML
-    TableView entitiesTable;
+public class PersonEditController 
+    extends EntitiesEditController<PersonEditModel> {
+   
 
     @Override
-    public void setModel(PersonsListModel model) {
+    public void setModel(PersonEditModel model) {
         super.setModel(model); 
         
-        firstNameColumn.setCellValueFactory(
-               new PropertyValueFactory<Person, String>("firstName"));
-        lastNameColumn.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("lastName"));
-        entitiesTable.itemsProperty().bind(model.entitiesProperty());
+        
         
         model.initialize();
     }

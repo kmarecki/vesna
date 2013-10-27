@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client;
+package org.vesna.samples.crm.client.controls;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import org.vesna.apps.client.MainFormController;
-import org.vesna.samples.crm.client.controls.PersonList;
-import org.vesna.samples.crm.client.controls.PersonListModel;
+import org.vesna.apps.client.controls.EntitiesList;
+import org.vesna.core.javafx.fxml.FXMLCombiner;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CrmMainFormController extends MainFormController {
-        
-    @FXML
-    protected void handleMenuItemPersons(ActionEvent event) {
-        PersonList list = new PersonList();
-        PersonListModel model = new PersonListModel();
-        list.getController().setModel(model);
-        
-        addTabPage(list, "Persons");
+public class PersonList 
+    extends EntitiesList<PersonListModel, PersonListController> {
+    
+    @Override
+    protected FXMLCombiner getCombiner() {
+        FXMLCombiner combiner = super.getCombiner();
+        combiner.addAttributeVariable("CONTROLLER", PersonListController.class.getName());
+        combiner.addFXMLVariable("ENTITIES_TABLE_VIEW", this.getClass().getResourceAsStream("PersonListTableView.fxml"));
+        return combiner;
     }
+    
 }

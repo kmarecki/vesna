@@ -13,30 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.vesna.apps.client.controls;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import org.vesna.core.javafx.BaseModel;
+import org.vesna.core.javafx.controls.VBoxEx;
+import org.vesna.core.javafx.fxml.FXMLCombiner;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EntitiesListModel<TEntity> extends BaseModel {
-    private final ListProperty<TEntity> entities = new SimpleListProperty<>(FXCollections.<TEntity>observableArrayList());
-
-    public ObservableList getEntities() {
-        return entities.get();
+public class EntitiesEdit<TModel extends EntitiesEditModel, 
+                          TController extends EntitiesEditController<TModel>>
+    extends VBoxEx<TModel, TController> {
+    
+    @Override
+    protected FXMLCombiner getCombiner() {
+        FXMLCombiner combiner = super.getCombiner();
+        combiner.loadTemplate("org/vesna/apps/client/controls/EntitiesEdit.templ.fxml");
+        return combiner;
     }
-
-    public void setEntities(ObservableList value) {
-        entities.set(value);
-    }
-
-    public ListProperty entitiesProperty() {
-        return entities;
-    }
+    
 }

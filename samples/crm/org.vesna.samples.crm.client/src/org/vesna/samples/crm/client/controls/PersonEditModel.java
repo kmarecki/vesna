@@ -15,22 +15,13 @@
  */
 package org.vesna.samples.crm.client.controls;
 
-import org.vesna.apps.client.controls.EntitiesList;
-import org.vesna.core.javafx.fxml.FXMLCombiner;
+import org.vesna.apps.client.controls.EntitiesEditModel;
+import org.vesna.samples.crm.dto.Person;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class PersonsList 
-    extends EntitiesList<PersonsListModel, PersonsListController> {
-    
-    @Override
-    protected FXMLCombiner getCombiner() {
-        FXMLCombiner combiner = super.getCombiner();
-        combiner.addAttributeVariable("CONTROLLER", PersonsListController.class.getName());
-        combiner.addFXMLVariable("ENTITIES_TABLE_VIEW", this.getClass().getResourceAsStream("PersonsListTableView.fxml"));
-        return combiner;
-    }
+public class PersonEditModel extends EntitiesEditModel<Person> {
     
 }

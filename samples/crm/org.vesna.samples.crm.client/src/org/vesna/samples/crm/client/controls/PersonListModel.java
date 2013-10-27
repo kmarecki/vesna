@@ -33,10 +33,10 @@ import org.vesna.samples.crm.entities.PersonsRepository;
  *
  * @author Krzysztof Marecki
  */
-public class PersonsListModel extends EntitiesListModel<Person> {
+public class PersonListModel extends EntitiesListModel<Person> {
     
     PersonsRepository repository;
-    public PersonsListModel() {
+    public PersonListModel() {
     }
 
     @Override
