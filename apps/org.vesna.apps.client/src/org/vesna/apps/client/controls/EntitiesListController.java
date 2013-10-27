@@ -32,7 +32,9 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     @FXML
     protected void handleActionAdd(ActionEvent event) {
         ControlEx control = createRowEditControl();
-        BaseModel model = createRowEditModel();
+        EntitiesEditModel model = createRowEditModel();
+        
+        model.getEntity();
         showStage(control, model, "Add");
     }
     
@@ -48,7 +50,7 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
        
     }
     
-    protected abstract BaseModel createRowEditModel();
+    protected abstract EntitiesEditModel createRowEditModel();
     
     protected abstract ControlEx createRowEditControl();
 

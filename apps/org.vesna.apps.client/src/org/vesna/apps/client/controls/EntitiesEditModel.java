@@ -15,6 +15,8 @@
  */
 package org.vesna.apps.client.controls;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.vesna.core.javafx.BaseModel;
 
 /**
@@ -22,5 +24,19 @@ import org.vesna.core.javafx.BaseModel;
  * @author Krzysztof Marecki
  */
 public class EntitiesEditModel<TEntity> extends BaseModel {
+    private final ObjectProperty<TEntity> entity = new SimpleObjectProperty();
+
+    public TEntity getEntity() {
+        return entity.get();
+    }
+
+    public void setEntity(TEntity value) {
+        entity.set(value);
+    }
+
+    public ObjectProperty entityProperty() {
+        return entity;
+    }
+    
     
 }
