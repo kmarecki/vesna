@@ -56,6 +56,7 @@ public class MainFormController extends BaseController<ClientAppModel>  {
         try {
             Tab tab = new Tab(title);
             tab.setContent(content);
+   
             tabPane.getTabs().add(tab);
             tabPane.getSelectionModel().selectLast();
         } catch (IllegalArgumentException ex) {

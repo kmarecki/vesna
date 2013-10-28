@@ -40,16 +40,6 @@ public class LogsControlController {
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
-//        JednmiarRepositoryImpl repository = new JednmiarRepositoryImpl();
-//		Jednmiary[] jednmiar = repository.getAllEntities();
-//		
-//		for(Jednmiary jednmiary : jednmiar) {
-//			System.out.printf("Id=%s, Nazwa=%s, Symbol=%s\n", 
-//								jednmiary.getJednmiaryId(),
-//								jednmiary.getNazwa(),
-//								jednmiary.getSymbol());
-//		}
-        
         derbyService.check();
     }
     

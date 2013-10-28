@@ -94,10 +94,13 @@ public class FXMLCombiner {
             return childNode;
         }
         
-        protected Node getNextNode(Node node, Node parentNode) {
+        @SuppressWarnings("empty-statement")
+        protected Element getNextElement(Node node, Node parentNode) {
             int methodNodeIndex = NodeHelper.indexOfChildNode(parentNode, node);
-            Node nextNode = parentNode.getChildNodes().item(methodNodeIndex + 1);
-            return nextNode;
+            Node nextNode = null;
+            while(!((nextNode = parentNode.getChildNodes().item(++methodNodeIndex)) instanceof Element));
+            
+            return (Element)nextNode;
         }
     }
     
@@ -143,7 +146,7 @@ public class FXMLCombiner {
         @Override 
         public void invoke(Node node, Node parentNode) 
             throws TransformerException, SAXException, DOMException, IOException {
-            Node nextNode = getNextNode(node, parentNode);
+            Node nextNode = getNextElement(node, parentNode);
             Node attributeNode = nextNode.getAttributes().getNamedItem(attribute);
             String resolvedValue = (String)context.resolveVariable(value);
             attributeNode.setNodeValue(resolvedValue);
@@ -165,7 +168,7 @@ public class FXMLCombiner {
         @Override
         public void invoke(Node node, Node parentNode) 
             throws TransformerException, SAXException, IOException, DOMException {
-            Node nextNode = getNextNode(node, parentNode);
+            Node nextNode = getNextElement(node, parentNode);
             Node childNode = getChildNode(parentNode.getOwnerDocument(), source);
             parentNode.removeChild(nextNode);
             parentNode.replaceChild(childNode, node);
