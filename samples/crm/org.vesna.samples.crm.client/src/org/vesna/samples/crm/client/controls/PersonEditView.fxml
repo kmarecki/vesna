@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="org.vesna.apps.client.controls.ServerDiagnosticsControlController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <GridPane prefHeight="47.0">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -17,8 +17,8 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <Label text="First name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <TextField fx:id="firstNameText" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
     <Label text="Last name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <TextField  fx:id="lastNameText" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
   </GridPane>
-</fx:root>
+</VBox>

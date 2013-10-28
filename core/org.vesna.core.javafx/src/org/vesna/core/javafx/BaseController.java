@@ -25,7 +25,7 @@ import org.vesna.core.javafx.controls.ControlEx;
  *
  * @author Krzysztof Marecki
  */
-public class BaseController<TModel extends BaseModel> {
+public abstract class BaseController<TModel extends BaseModel> {
    
     private TModel model;
 
@@ -35,7 +35,11 @@ public class BaseController<TModel extends BaseModel> {
 
     public void setModel(TModel model) {
         this.model = model;
+        configureView(this.model);
+        this.model.initialize();
     }
+    
+    protected abstract void configureView(TModel model);
     
     protected <TNewModel extends BaseModel> Stage showStage(
             ControlEx control,

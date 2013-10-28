@@ -23,7 +23,7 @@ import org.vesna.core.javafx.BaseModel;
  *
  * @author Krzysztof Marecki
  */
-public class EntitiesEditModel<TEntity> extends BaseModel {
+public abstract class EntitiesEditModel<TEntity> extends BaseModel {
     private final ObjectProperty<TEntity> entity = new SimpleObjectProperty();
 
     public TEntity getEntity() {
@@ -37,6 +37,15 @@ public class EntitiesEditModel<TEntity> extends BaseModel {
     public ObjectProperty entityProperty() {
         return entity;
     }
+
+    @Override
+    public void initialize() {
+        super.initialize(); 
+        
+        fromEntity(getEntity());
+    }
     
+    protected abstract void fromEntity(TEntity entity);
     
+    protected abstract void toEntity(TEntity entity);
 }

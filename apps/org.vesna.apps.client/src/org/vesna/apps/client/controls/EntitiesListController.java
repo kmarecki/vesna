@@ -15,11 +15,14 @@
  */
 package org.vesna.apps.client.controls;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
 import org.vesna.core.javafx.BaseController;
-import org.vesna.core.javafx.BaseModel;
 import org.vesna.core.javafx.controls.ControlEx;
+import org.vesna.core.sql.MetaDataTable;
 
 
 /**
@@ -30,27 +33,44 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     extends BaseController<TModel> {
     
     @FXML
+    TableView entitiesTable;
+    
+    @FXML
     protected void handleActionAdd(ActionEvent event) {
+        TModel model = getModel();
         ControlEx control = createRowEditControl();
-        EntitiesEditModel model = createRowEditModel();
-        
-        model.getEntity();
-        showStage(control, model, "Add");
+        EntitiesEditModel editModel = model.createNewEntityEditModel();
+        showStage(control, editModel, "Add");
     }
     
     @FXML
-    protected void handleActionEdit(ActionEvent event) {  
+    protected void handleActionEdit(ActionEvent event) { 
+        TModel model = getModel();
         ControlEx control = createRowEditControl();
-        BaseModel model = createRowEditModel();
-        showStage(control, model, "Edit");
+        EntitiesEditModel editModel = model.createSelectedEntityEditModel();
+        showStage(control, editModel, "Edit");
     }
     
     @FXML
     protected void handleActionDelete(ActionEvent event) {
        
     }
+
+    @Override
+    protected void configureView(final TModel model) {
+        entitiesTable.itemsProperty().bind(model.entitiesProperty());
+        entitiesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(
+                ObservableValue ov, 
+                Object oldValue, 
+                Object newValue) {
+                model.setSelectedEntity(newValue);
+            }	
+        });
+    }
+
     
-    protected abstract EntitiesEditModel createRowEditModel();
     
     protected abstract ControlEx createRowEditControl();
 

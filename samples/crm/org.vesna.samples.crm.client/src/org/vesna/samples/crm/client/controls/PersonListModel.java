@@ -15,19 +15,9 @@
  */
 package org.vesna.samples.crm.client.controls;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
+import org.vesna.apps.client.controls.EntitiesEditModel;
 import org.vesna.apps.client.controls.EntitiesListModel;
-import org.vesna.core.app.Core;
-import org.vesna.core.client.services.MasterServiceImpl;
-import org.vesna.core.client.services.MasterServiceImplService;
-import org.vesna.core.client.services.ServiceCallReturn;
-import org.vesna.core.entities.EntitiesService;
 import org.vesna.samples.crm.dto.Person;
-import org.vesna.samples.crm.entities.PersonsRepository;
 
 /**
  *
@@ -35,23 +25,17 @@ import org.vesna.samples.crm.entities.PersonsRepository;
  */
 public class PersonListModel extends EntitiesListModel<Person> {
     
-    PersonsRepository repository;
     public PersonListModel() {
+    }
+    
+    @Override
+    protected EntitiesEditModel createRowEditModel() {
+        PersonEditModel editModel = new PersonEditModel();
+        return editModel;
     }
 
     @Override
-    public void initialize() {
-        super.initialize(); 
-        
-        EntitiesService entitiesService = Core.getServices().get(EntitiesService.class);
-        repository = (PersonsRepository) entitiesService.getRepository("Persons");
-        List<Person> dtos = repository.getAll();
-        
-        for(Person dto : dtos) {
-                getEntities().add(dto);
-            }
-        
+    protected String getRepositoryName() {
+        return "Persons";
     }
-    
-    
 }

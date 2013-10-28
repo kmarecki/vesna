@@ -16,12 +16,8 @@
 package org.vesna.samples.crm.client.controls;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TextField;
 import org.vesna.apps.client.controls.EntitiesEditController;
-import org.vesna.apps.client.controls.EntitiesListController;
-import org.vesna.samples.crm.dto.Person;
 
 /**
  *
@@ -30,15 +26,17 @@ import org.vesna.samples.crm.dto.Person;
 public class PersonEditController 
     extends EntitiesEditController<PersonEditModel> {
    
+    @FXML
+    TextField firstNameText;
+    @FXML
+    TextField lastNameText;
 
     @Override
-    public void setModel(PersonEditModel model) {
-        super.setModel(model); 
+    protected void configureView(PersonEditModel model) {
+        super.configureView(model);
         
-        
-        
-        model.initialize();
+        firstNameText.textProperty().bindBidirectional(model.firstNameProperty());
+        lastNameText.textProperty().bindBidirectional(model.lastNameProperty());
     }
-    
     
 }

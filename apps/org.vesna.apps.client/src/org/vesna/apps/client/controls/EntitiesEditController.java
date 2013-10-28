@@ -24,7 +24,7 @@ import org.vesna.core.javafx.BaseController;
  * 
  * @author Krzysztof Marecki
  */
-public class EntitiesEditController<TModel extends EntitiesEditModel>
+public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
     extends BaseController<TModel> {
 
     @FXML
@@ -33,5 +33,10 @@ public class EntitiesEditController<TModel extends EntitiesEditModel>
     
     @FXML
     protected void handleActionApply(ActionEvent event) {  
+    }
+
+    @Override
+    protected void configureView(TModel model) {
+      
     }
 }

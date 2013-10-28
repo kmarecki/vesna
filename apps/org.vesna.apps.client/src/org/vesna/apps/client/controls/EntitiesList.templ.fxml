@@ -20,4 +20,5 @@
         </children>
     </HBox>
     <!--<tfx:include source="$ENTITIES_TABLE_VIEW"/>-->
+    <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" VBox.vgrow="ALWAYS"/>
 </fx:root>

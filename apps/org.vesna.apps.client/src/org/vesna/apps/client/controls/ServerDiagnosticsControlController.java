@@ -36,11 +36,9 @@ public class ServerDiagnosticsControlController extends BaseController<ServerDia
         ServerDiagnosticsControlModel model = getModel();
         model.refreshServerInfo();
     }
-    
+
     @Override
-    public void setModel(ServerDiagnosticsControlModel model) {
-        super.setModel(model);
-        
+    protected void configureView(ServerDiagnosticsControlModel model) {
         infoLabel.textProperty().bind(model.serverInfoProperty());
     }
 }

@@ -19,7 +19,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.vesna.apps.client.controls.EntitiesEditModel;
 import org.vesna.apps.client.controls.EntitiesListController;
+import org.vesna.core.javafx.controls.ControlEx;
 import org.vesna.samples.crm.dto.Person;
 
 /**
@@ -33,20 +35,21 @@ public class PersonListController
     TableColumn firstNameColumn;
     @FXML
     TableColumn lastNameColumn;
-    @FXML
-    TableView entitiesTable;
 
     @Override
-    public void setModel(PersonListModel model) {
-        super.setModel(model); 
+    protected void configureView(PersonListModel model) {
+        super.configureView(model); //To change body of generated methods, choose Tools | Templates.
         
         firstNameColumn.setCellValueFactory(
                new PropertyValueFactory<Person, String>("firstName"));
         lastNameColumn.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("lastName"));
-        entitiesTable.itemsProperty().bind(model.entitiesProperty());
-        
-        model.initialize();
+    }
+    
+    @Override
+    protected ControlEx createRowEditControl() {
+       PersonEdit control = new PersonEdit();
+       return control;
     }
     
     

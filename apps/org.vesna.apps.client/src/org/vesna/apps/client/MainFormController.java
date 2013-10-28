@@ -62,4 +62,9 @@ public class MainFormController extends BaseController<ClientAppModel>  {
             LoggerHelper.logException(logger, ex);
         }
     }
+
+    @Override
+    protected void configureView(ClientAppModel model) {
+       
+    }
 }

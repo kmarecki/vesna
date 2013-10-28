@@ -15,17 +15,23 @@
  */
 package org.vesna.apps.client.controls;
 
+import java.util.List;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.vesna.core.app.Core;
+import org.vesna.core.entities.EntitiesService;
+import org.vesna.core.entities.Repository;
 import org.vesna.core.javafx.BaseModel;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EntitiesListModel<TEntity> extends BaseModel {
+public abstract class EntitiesListModel<TEntity> extends BaseModel {
     private final ListProperty<TEntity> entities = new SimpleListProperty<>(FXCollections.<TEntity>observableArrayList());
 
     public ObservableList getEntities() {
@@ -39,4 +45,58 @@ public class EntitiesListModel<TEntity> extends BaseModel {
     public ListProperty entitiesProperty() {
         return entities;
     }
+    
+    private final ObjectProperty<TEntity> selectedEntity = new SimpleObjectProperty();
+
+    public TEntity getSelectedEntity() {
+        return selectedEntity.get();
+    }
+
+    public void setSelectedEntity(TEntity value) {
+        selectedEntity.set(value);
+    }
+
+    public ObjectProperty selectedEntityProperty() {
+        return selectedEntity;
+    }
+    
+    protected Repository<TEntity> entitiesRepository;
+
+    public Repository<TEntity> getEntitiesRepository() {
+        return entitiesRepository;
+    }
+
+
+    @Override
+    public void initialize() {
+        String repositoryName = getRepositoryName();
+        EntitiesService entitiesService = Core.getServices().get(EntitiesService.class);
+        entitiesRepository = entitiesService.getRepository(repositoryName);
+        List<TEntity> dtos = entitiesRepository.getAll();
+        
+        for(TEntity dto : dtos) {
+                getEntities().add(dto);
+        }
+    }
+    
+    public EntitiesEditModel createNewEntityEditModel() {
+        EntitiesEditModel model = createRowEditModel();
+        TEntity entity = entitiesRepository.create();
+        model.setEntity(entity);
+        return model;
+    }
+     
+    public EntitiesEditModel createSelectedEntityEditModel() {
+        EntitiesEditModel model = createRowEditModel();
+        TEntity entity = getSelectedEntity();
+        model.setEntity(entity);
+        return model;
+    }
+    
+    
+    protected abstract EntitiesEditModel createRowEditModel();
+    
+    protected abstract String getRepositoryName();
+    
+
 }

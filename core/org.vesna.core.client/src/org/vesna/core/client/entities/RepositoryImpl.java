@@ -16,22 +16,35 @@
 package org.vesna.core.client.entities;
 
 import com.google.gson.reflect.TypeToken;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.lang.ReflectionHelper;
+import org.vesna.core.logging.LoggerHelper;
 
 /**
  *
  * @author Krzysztof Marecki
  */
 public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
-
+    protected Logger logger = Logger.getLogger(this.getClass());
+            
+    @Override
+    public TEntity create() {
+       TEntity entity = null;
+        try {
+            entity = (TEntity)getTEntityClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+           LoggerHelper.logException(logger, ex);
+        }
+       return entity;
+    }
+     
     @Override
     public TEntity insert(TEntity entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -77,4 +90,9 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     protected abstract TypeToken getTEntityTypeToken();
     
     protected abstract TypeToken getListTEntityTypeToken();
+    
+    private Class getTEntityClass() {
+        Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
+        return entityClass;
+    }
 }

@@ -19,11 +19,13 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.lang.ReflectionHelper;
+import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.server.hibernate.HibernateService;
 
 /**
@@ -32,6 +34,19 @@ import org.vesna.core.server.hibernate.HibernateService;
  */
 public class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
+    protected Logger logger = Logger.getLogger(this.getClass());
+            
+    @Override
+    public TEntity create() {
+       TEntity entity = null;
+        try {
+            entity = (TEntity)getTEntityClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+           LoggerHelper.logException(logger, ex);
+        }
+       return entity;
+    }
+    
     @Override
     public TEntity insert(TEntity entity) {
         Session session = getSession();
@@ -84,5 +99,4 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
         Session session = hibernateService.getSessionFactory().openSession();
         return session;
     }
-    
 }

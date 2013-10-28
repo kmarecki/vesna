@@ -23,6 +23,8 @@ import java.util.List;
  */
 public interface Repository<TEntity> {
     
+    TEntity create();
+    
     TEntity insert(TEntity entity);
     
     TEntity update(TEntity entity);

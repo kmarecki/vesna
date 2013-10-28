@@ -15,6 +15,8 @@
  */
 package org.vesna.samples.crm.client.controls;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import org.vesna.apps.client.controls.EntitiesEditModel;
 import org.vesna.samples.crm.dto.Person;
 
@@ -23,5 +25,48 @@ import org.vesna.samples.crm.dto.Person;
  * @author Krzysztof Marecki
  */
 public class PersonEditModel extends EntitiesEditModel<Person> {
+    private final StringProperty firstName = new SimpleStringProperty();
+
+    public String getFirstName() {
+        return firstName.get();
+    }
+
+    public void setFirstName(String value) {
+        firstName.set(value);
+    }
+
+    public StringProperty firstNameProperty() {
+        return firstName;
+    }
+    private final StringProperty lastName = new SimpleStringProperty();
+
+    public String getLastName() {
+        return lastName.get();
+    }
+
+    public void setLastName(String value) {
+        lastName.set(value);
+    }
+
+    public StringProperty lastNameProperty() {
+        return lastName;
+    }
+
+    @Override
+    protected void fromEntity(Person entity) {
+        setFirstName(entity.getFirstName());
+        setLastName(entity.getLastName());
+    }
+
+    @Override
+    protected void toEntity(Person entity) {
+        entity.setFirstName(getFirstName());
+        entity.setLastName(entity.getLastName());
+    }
+    
+    
+
+    
+    
     
 }
