@@ -65,6 +65,5 @@ public class MainFormController extends BaseController<ClientAppModel>  {
 
     @Override
     protected void configureView(ClientAppModel model) {
-       
     }
 }

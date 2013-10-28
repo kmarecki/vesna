@@ -17,17 +17,11 @@ package org.vesna.core.javafx.fxml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
-import org.vesna.core.lang.StringHelper;
-import org.vesna.core.net.ClasspathURLHandler;
 
 /**
  *
- * @author Administrator
+ * @author Krzysztof Marecki
  */
 public class FXMLLoaderHelper {
     

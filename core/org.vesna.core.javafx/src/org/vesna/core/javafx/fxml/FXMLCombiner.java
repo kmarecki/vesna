@@ -18,13 +18,11 @@ package org.vesna.core.javafx.fxml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -80,6 +78,27 @@ public class FXMLCombiner {
     private abstract class CombinerMethod {
         public abstract void invoke(Node node, Node parentNode)
             throws TransformerException, SAXException, IOException, DOMException;
+        
+        protected Node getChildNode(Document document, String source)
+            throws TransformerException, SAXException, IOException, DOMException {
+            InputStream templateStream = (InputStream)context.resolveVariable(source);
+            
+            CombinedDocument childNodeCombined = new CombinedDocument();
+            childNodeCombined.parseTemplate(templateStream);
+            childNodeCombined.combine();
+            
+            String childNodeXml = childNodeCombined.getCombinedFXML();
+            InputStream childNodeStream = new ByteArrayInputStream(childNodeXml.getBytes());
+            Document childNodeDocument = context.builder.parse(childNodeStream);
+            Node childNode = document.importNode(childNodeDocument.getDocumentElement(), true);
+            return childNode;
+        }
+        
+        protected Node getNextNode(Node node, Node parentNode) {
+            int methodNodeIndex = NodeHelper.indexOfChildNode(parentNode, node);
+            Node nextNode = parentNode.getChildNodes().item(methodNodeIndex + 1);
+            return nextNode;
+        }
     }
     
     private class IncludeMethod extends CombinerMethod {
@@ -97,17 +116,7 @@ public class FXMLCombiner {
         @Override 
         public void invoke(Node node, Node parentNode) 
             throws TransformerException, SAXException, DOMException, IOException {
-            InputStream templateStream = (InputStream)context.resolveVariable(source);
-            
-            CombinedDocument childNodeCombined = new CombinedDocument();
-            childNodeCombined.parseTemplate(templateStream);
-            childNodeCombined.combine();
-            
-            String childNodeXml = childNodeCombined.getCombinedFXML();
-            InputStream childNodeStream = new ByteArrayInputStream(childNodeXml.getBytes());
-            Document childNodeDocument = context.builder.parse(childNodeStream);
-            Node childNode = parentNode.getOwnerDocument().importNode(
-                    childNodeDocument.getDocumentElement(), true);
+            Node childNode = getChildNode(parentNode.getOwnerDocument(), source);
             parentNode.replaceChild(childNode, node);
         }
     }
@@ -134,12 +143,32 @@ public class FXMLCombiner {
         @Override 
         public void invoke(Node node, Node parentNode) 
             throws TransformerException, SAXException, DOMException, IOException {
-            int methodNodeIndex = NodeHelper.indexOfChildNode(parentNode, node);
-            Node nextNode = parentNode.getChildNodes().item(methodNodeIndex + 1);
+            Node nextNode = getNextNode(node, parentNode);
             Node attributeNode = nextNode.getAttributes().getNamedItem(attribute);
             String resolvedValue = (String)context.resolveVariable(value);
             attributeNode.setNodeValue(resolvedValue);
             parentNode.removeChild(node);
+        }
+    }
+    
+    private class ReplaceElementMethod extends CombinerMethod {
+        private String source;
+
+        public String getSource() {
+            return source;
+        }
+        
+        public ReplaceElementMethod(String source) {
+            this.source = source;
+        }
+
+        @Override
+        public void invoke(Node node, Node parentNode) 
+            throws TransformerException, SAXException, IOException, DOMException {
+            Node nextNode = getNextNode(node, parentNode);
+            Node childNode = getChildNode(parentNode.getOwnerDocument(), source);
+            parentNode.removeChild(nextNode);
+            parentNode.replaceChild(childNode, node);
         }
     }
     
@@ -180,6 +209,9 @@ public class FXMLCombiner {
                 case "tfx:replace" : {
                     return newReplaceMethod(element);
                 }
+                case "tfx:replace_element" : {
+                    return newReplaceElementMethod(element);
+                }
                 default: {
                     String msg = String.format(
                             "%s is not valid combiner method name", methodName);
@@ -204,6 +236,12 @@ public class FXMLCombiner {
             String attribute = element.getAttribute("attribute");
             String value = element.getAttribute("value");
             ReplaceMethod method = new ReplaceMethod(attribute, value);
+            return method;
+        }
+        
+        private ReplaceElementMethod newReplaceElementMethod(Element element) {
+            String source = element.getAttribute("source");
+            ReplaceElementMethod method = new ReplaceElementMethod(source);
             return method;
         }
     }
@@ -372,6 +410,7 @@ public class FXMLCombiner {
         try {
             rootDocument.combine();
             String fxml = rootDocument.getCombinedFXML();
+            logger.info(fxml);
             return fxml;
         } catch (TransformerException | SAXException |  DOMException | IOException | NullPointerException ex) {
             LoggerHelper.logException(logger, ex);
