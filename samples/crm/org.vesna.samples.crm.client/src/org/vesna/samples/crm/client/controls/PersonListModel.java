@@ -30,7 +30,7 @@ public class PersonListModel extends EntitiesListModel<Person> {
     
     @Override
     protected EntitiesEditModel createRowEditModel() {
-        PersonEditModel editModel = new PersonEditModel();
+        PersonEditModel editModel = new PersonEditModel(entitiesRepository);
         return editModel;
     }
 

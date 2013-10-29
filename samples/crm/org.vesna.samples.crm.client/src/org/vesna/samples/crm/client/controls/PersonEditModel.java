@@ -18,6 +18,7 @@ package org.vesna.samples.crm.client.controls;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.vesna.apps.client.controls.EntitiesEditModel;
+import org.vesna.core.entities.Repository;
 import org.vesna.samples.crm.dto.Person;
 
 /**
@@ -52,6 +53,10 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
         return lastName;
     }
 
+    public PersonEditModel(Repository entitiesRepository) {
+        super(entitiesRepository);
+    }
+    
     @Override
     protected void fromEntity(Person entity) {
         setFirstName(entity.getFirstName());

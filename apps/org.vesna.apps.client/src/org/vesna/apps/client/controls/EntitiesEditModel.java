@@ -17,6 +17,7 @@ package org.vesna.apps.client.controls;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.vesna.core.entities.Repository;
 import org.vesna.core.javafx.BaseModel;
 
 /**
@@ -24,6 +25,10 @@ import org.vesna.core.javafx.BaseModel;
  * @author Krzysztof Marecki
  */
 public abstract class EntitiesEditModel<TEntity> extends BaseModel {
+    
+  
+    private Repository entitiesRepository;
+    
     private final ObjectProperty<TEntity> entity = new SimpleObjectProperty();
 
     public TEntity getEntity() {
@@ -38,6 +43,10 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModel {
         return entity;
     }
 
+    public EntitiesEditModel(Repository entitiesRepository) {
+        this.entitiesRepository = entitiesRepository;
+    }
+    
     @Override
     public void initialize() {
         super.initialize(); 
@@ -45,7 +54,13 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModel {
         fromEntity(getEntity());
     }
     
+    public void saveEntity() {
+        
+    }
+    
     protected abstract void fromEntity(TEntity entity);
     
     protected abstract void toEntity(TEntity entity);
+    
+    
 }

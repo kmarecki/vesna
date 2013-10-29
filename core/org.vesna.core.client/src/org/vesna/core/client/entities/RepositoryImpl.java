@@ -23,6 +23,7 @@ import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
 import org.vesna.core.entities.Repository;
+import org.vesna.core.lang.Func;
 import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.logging.LoggerHelper;
@@ -46,22 +47,37 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     }
      
     @Override
-    public TEntity insert(TEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public TEntity insert(final TEntity entity) {
+        return execMasterService(new Func<MasterServiceImpl, TEntity>() {
+            @Override
+            public TEntity apply(MasterServiceImpl impl) {
+                String entityJson = GsonHelper.toJson(entity);
+                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "insert", Arrays.asList(new String[]{entityJson}));
+                if (ret.isSuccess()) {
+                    TEntity dtos = (TEntity) GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
+                    return dtos;
+                }
+                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+                throw new RuntimeException(msg);
+            }
+        });
     }
 
     @Override
-    public TEntity update(TEntity entity) {
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
-        String entityJson = GsonHelper.toJson(entity);
-        ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "update", Arrays.asList(new String[] { entityJson }));
-        if (ret.isSuccess()) {
-            TEntity dtos = (TEntity)GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
-            return dtos;
-        }
-        String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
-        throw new RuntimeException(msg);
+    public TEntity update(final TEntity entity) {
+        return execMasterService(new Func<MasterServiceImpl, TEntity>() {
+            @Override
+            public TEntity apply(MasterServiceImpl impl) {
+                String entityJson = GsonHelper.toJson(entity);
+                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "update", Arrays.asList(new String[]{entityJson}));
+                if (ret.isSuccess()) {
+                    TEntity dtos = (TEntity) GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
+                    return dtos;
+                }
+                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+                throw new RuntimeException(msg);
+            }
+        });
     }
 
     @Override
@@ -71,15 +87,18 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public List<TEntity> getAll() {
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
-        ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
-        if (ret.isSuccess()) {
-            List<TEntity> dtos = (List<TEntity>)GsonHelper.fromJson(getListTEntityTypeToken(), ret.getReturnValue());
-            return dtos;
-        }
-        String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
-        throw new RuntimeException(msg);
+        return execMasterService(new Func<MasterServiceImpl, List<TEntity>>() {
+            @Override
+            public List<TEntity> apply(MasterServiceImpl impl) {
+                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
+                if (ret.isSuccess()) {
+                    List<TEntity> dtos = (List<TEntity>) GsonHelper.fromJson(getListTEntityTypeToken(), ret.getReturnValue());
+                    return dtos;
+                }
+                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+                throw new RuntimeException(msg);
+            }
+        });
     }
 
     @Override
@@ -90,6 +109,13 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     protected abstract TypeToken getTEntityTypeToken();
     
     protected abstract TypeToken getListTEntityTypeToken();
+    
+    protected <TResult> TResult execMasterService(Func<MasterServiceImpl, TResult> method) {
+        MasterServiceImplService service = new MasterServiceImplService();
+        MasterServiceImpl impl = service.getMasterServiceImplPort();
+        TResult result = method.apply(impl);
+        return result;
+    }
     
     private Class getTEntityClass() {
         Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());

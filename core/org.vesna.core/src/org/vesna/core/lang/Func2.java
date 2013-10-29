@@ -19,7 +19,6 @@ package org.vesna.core.lang;
  *
  * @author Krzysztof Marecki
  */
-public interface Func<T1, TResult> {
-    public TResult apply(T1 arg1);
+public interface Func2<T1, T2, TResult> {
+    public TResult apply(T1 arg1, T2 arg2);
 }
-
