@@ -17,7 +17,9 @@ package org.vesna.apps.client.controls;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import org.vesna.core.app.Core;
 import org.vesna.core.javafx.BaseController;
+import org.vesna.core.javafx.navigation.NavigationService;
 
 
 /**
@@ -29,10 +31,14 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
 
     @FXML
     protected void handleActionCancel(ActionEvent event) {
+        NavigationService navigationService = Core.getServices().get(NavigationService.class);
+        navigationService.closeCurrentScreen();
     }
     
     @FXML
     protected void handleActionApply(ActionEvent event) {  
+        NavigationService navigationService = Core.getServices().get(NavigationService.class);
+        navigationService.closeCurrentScreen();
     }
 
     @Override

@@ -31,8 +31,6 @@ public class CrmMainFormController extends MainFormController {
     protected void handleMenuItemPersons(ActionEvent event) {
         PersonList list = new PersonList();
         PersonListModel model = new PersonListModel();
-        list.getController().setModel(model);
-        
-        addTabPage(list, "Persons");
+        showScreenInNewWindow(list, model, "Persons");
     }
 }

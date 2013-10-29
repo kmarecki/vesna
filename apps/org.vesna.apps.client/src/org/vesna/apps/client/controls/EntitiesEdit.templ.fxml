@@ -11,10 +11,10 @@
          fx:controller="org.vesna.apps.client.controls.EntitiesEditController">
     <HBox spacing="10">
         <children>
-            <Button fx:id="cancelButton" text="Cancel" 
-                    onAction="#handleActionCancel" />
             <Button fx:id="applyButton" text="Apply" 
                     onAction="#handleActionApply" />
+            <Button fx:id="cancelButton" text="Cancel" 
+                    onAction="#handleActionCancel" />
         </children>
     </HBox>
     <!--<tfx:include source="$ENTITIES_ROW_VIEW"/>-->

@@ -25,7 +25,10 @@ import org.apache.log4j.Logger;
 
 import org.vesna.apps.client.controls.ServerDiagnosticsControl;
 import org.vesna.apps.client.controls.ServerDiagnosticsControlModel;
+import org.vesna.core.app.Core;
 import org.vesna.core.javafx.BaseController;
+import org.vesna.core.javafx.navigation.NavigationService;
+import org.vesna.core.javafx.navigation.TabPaneNavigationAdapter;
 import org.vesna.core.logging.LoggerHelper;
 
 
@@ -36,6 +39,8 @@ import org.vesna.core.logging.LoggerHelper;
  */
 public class MainFormController extends BaseController<ClientAppModel>  {
     private static final Logger logger = Logger.getLogger(MainFormController.class);
+    
+    private TabPaneNavigationAdapter navigationAdapter;
     
     @FXML
     protected TabPane tabPane;
@@ -51,20 +56,12 @@ public class MainFormController extends BaseController<ClientAppModel>  {
         ServerDiagnosticsControlModel controlModel = new ServerDiagnosticsControlModel();
         showStage(control, controlModel, "Server diagnostics");
     }
-    
-    protected void addTabPage(Node content, String title) {
-        try {
-            Tab tab = new Tab(title);
-            tab.setContent(content);
-   
-            tabPane.getTabs().add(tab);
-            tabPane.getSelectionModel().selectLast();
-        } catch (IllegalArgumentException ex) {
-            LoggerHelper.logException(logger, ex);
-        }
-    }
 
     @Override
     protected void configureView(ClientAppModel model) {
+        NavigationService navigationServices = Core.getServices().get(NavigationService.class);
+        navigationAdapter = new TabPaneNavigationAdapter(tabPane);
+        navigationServices.setAdapter(navigationAdapter);
+        
     }
 }

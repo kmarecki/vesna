@@ -15,10 +15,12 @@
  */
 package org.vesna.core.javafx.navigation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import javafx.scene.control.Control;
+import javafx.scene.Node;
 
 /**
  *
@@ -26,8 +28,63 @@ import javafx.scene.control.Control;
  */
 public class NavigationService {
     
+    class Screen {
+    
+        private Node control;
+
+        public Node getControl() {
+            return control;
+        }
+        
+        private String title;
+
+        public String getTitle() {
+            return title;
+        }
+        
+        public Screen(Node control, String title) {
+            this.control = control;
+            this.title = title;
+        }
+    }
+    
     class WindowStack {
-        private Map<String, Stack<Control>> columns = new HashMap();
+        private Map<String, Stack<Screen>> screens = new HashMap();
+        
+        public void addWindow(String windowTag) {
+            Stack<Screen> window = new Stack<>();
+            screens.put(windowTag, window);
+        }
+        
+        public void closeWindow(String windowTag) {
+            screens.remove(windowTag);
+        }
+        
+        public Screen getCurrentScreen(String windowTag) {
+            Stack<Screen> window = screens.get(windowTag);
+            Screen screen = window.peek();
+            return screen;
+        }
+        
+        public void addNextScreen(String windowTag, Screen screen) {
+             Stack<Screen> window = screens.get(windowTag);
+             window.push(screen);
+        }
+        
+        public Screen navigateToPreviousScreen(String windowTag) {
+             Stack<Screen> window = screens.get(windowTag);
+             window.pop();
+             Screen screen = window.peek();
+             return  screen;
+        }
+        
+        public Iterable<Screen> getWindowScreens(String windowTag) {
+            List<Screen> result = new ArrayList();
+            for(Screen screen : screens.get(windowTag)) {
+                result.add(screen);
+            }
+            return result;
+        }
     }
     
     private NavigationAdapter adapter;
@@ -36,33 +93,65 @@ public class NavigationService {
     public void setAdapter(NavigationAdapter adapter) {
         this.adapter = adapter;
     }
-    
-    private Control currentScreen;
 
-    public Control getCurrentScreen() {
+    public Node getCurrentScreen() {
         String windowTag = adapter.getCurrentWindowTag();
-        Stack<Control> screens = windows.columns.get(windowTag);
-        Control screen = screens.peek();
-        return adapter.getCurrentScreen();
+        Screen screen = windows.getCurrentScreen(windowTag);
+        Node control = screen.getControl();
+        Node currentControl = adapter.getCurrentScreen();
+        assert control == currentControl;
+        return control;
     }
 
-    
     public void closeCurrentScreen() {
         String windowTag = adapter.getCurrentWindowTag();
-        Stack<Control> screens = windows.columns.get(windowTag);
         
+        adapter.closeCurrentScreen();
+        Screen screen = windows.navigateToPreviousScreen(windowTag);
+        adapter.openScreenInCurrentWindow(screen.control, screen.title);
     }
     
     public void closeCurrentWindow() {
+        String windowTag = adapter.getCurrentWindowTag();
         
+        adapter.closeCurrentWindow();
+        windows.closeWindow(windowTag);
     }
     
-    public void openScreenInCurrentWindow(Control screen) {
+    public void openScreenInCurrentWindow(Node control, String title) {
+        Screen screen = new Screen(control, title);
+        String windowTag = adapter.getCurrentWindowTag();
         
+        String pathTitle = getFutureScreenPathTitle(windowTag, title);
+        adapter.openScreenInCurrentWindow(screen.control, pathTitle);
+        windows.addNextScreen(windowTag, screen);
     }
     
-    public void openScreenInNewWindow(Control screen) {
+    public void openScreenInNewWindow(Node control, String title) {
+        Screen screen = new Screen(control, title);
         
+        adapter.openScreenInNewWindow(screen.control, title);
+        String windowTag = adapter.getCurrentWindowTag();
+        windows.addWindow(windowTag);
+        windows.addNextScreen(windowTag, screen);
     }
-
+    
+    private String getScreenPathTitle(String windowTag) {
+        Iterable<Screen> screens = windows.getWindowScreens(windowTag);
+        StringBuilder title = new StringBuilder();
+        Boolean first = true;
+        for (Screen screen : screens) {
+            if(!first) {
+                title.append("->");
+            }
+            title.append(screen.title);
+            first = false;
+        }
+        return title.toString();
+    }
+    
+    private String getFutureScreenPathTitle(String windowTag, String title) {
+       String pathTitle = String.format("%s->%s", getScreenPathTitle(windowTag), title);
+       return pathTitle;
+    }
 }

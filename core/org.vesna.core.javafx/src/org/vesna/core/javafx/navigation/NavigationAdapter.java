@@ -15,6 +15,7 @@
  */
 package org.vesna.core.javafx.navigation;
 
+import javafx.scene.Node;
 import javafx.scene.control.Control;
 
 /**
@@ -29,9 +30,9 @@ public interface NavigationAdapter {
     
     public void closeCurrentWindow();
     
-    public void openScreenInCurrentWindow(Control screen);
+    public void openScreenInCurrentWindow(Node screen, String title);
     
-    public void openScreenInNewWindow(Control screen);
+    public void openScreenInNewWindow(Node screen, String title);
     
     public String getCurrentWindowTag();
 }

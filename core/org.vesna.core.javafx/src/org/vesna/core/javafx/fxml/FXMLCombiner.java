@@ -170,8 +170,8 @@ public class FXMLCombiner {
             throws TransformerException, SAXException, IOException, DOMException {
             Node nextNode = getNextElement(node, parentNode);
             Node childNode = getChildNode(parentNode.getOwnerDocument(), source);
-            parentNode.removeChild(nextNode);
-            parentNode.replaceChild(childNode, node);
+            parentNode.replaceChild(childNode, nextNode);
+            parentNode.removeChild(node);
         }
     }
     

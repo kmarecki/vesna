@@ -22,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import org.vesna.core.javafx.BaseController;
 import org.vesna.core.javafx.controls.ControlEx;
-import org.vesna.core.sql.MetaDataTable;
 
 
 /**
@@ -40,7 +39,6 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
         TModel model = getModel();
         ControlEx control = createRowEditControl();
         EntitiesEditModel editModel = model.createNewEntityEditModel();
-        showStage(control, editModel, "Add");
     }
     
     @FXML
@@ -48,7 +46,7 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
         TModel model = getModel();
         ControlEx control = createRowEditControl();
         EntitiesEditModel editModel = model.createSelectedEntityEditModel();
-        showStage(control, editModel, "Edit");
+        showScreenInCurrentWindow(control, editModel, "Edit");
     }
     
     @FXML
@@ -69,9 +67,6 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
             }	
         });
     }
-
-    
     
     protected abstract ControlEx createRowEditControl();
-
 }
