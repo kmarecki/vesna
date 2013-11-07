@@ -70,7 +70,7 @@ public abstract class EntitiesListModel<TEntity> extends BaseModel {
     @Override
     public void initialize() {
         String repositoryName = getRepositoryName();
-        EntitiesService entitiesService = Core.getServices().get(EntitiesService.class);
+        EntitiesService entitiesService = Core.getService(EntitiesService.class);
         entitiesRepository = entitiesService.getRepository(repositoryName);
         List<TEntity> dtos = entitiesRepository.getAll();
         

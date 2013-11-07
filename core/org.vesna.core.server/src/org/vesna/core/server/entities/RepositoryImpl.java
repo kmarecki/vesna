@@ -95,7 +95,7 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     }
     
     private Session getSession() {
-        HibernateService hibernateService = Core.getServices().get(HibernateService.class);
+        HibernateService hibernateService = Core.getService(HibernateService.class);
         Session session = hibernateService.getSessionFactory().openSession();
         return session;
     }

@@ -69,7 +69,7 @@ public class MainFormController {
     }
     
     private void setDatabaseManagementControlModel() {
-        DatabaseService databaseService = Core.getServices().get(DatabaseService.class);
+        DatabaseService databaseService = Core.getService(DatabaseService.class);
         DatabaseManagementControlModel model = new DatabaseManagementControlModel(databaseService);
         databaseControl.getController().setModel(model);
     }

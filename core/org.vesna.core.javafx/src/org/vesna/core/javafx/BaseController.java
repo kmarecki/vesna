@@ -64,7 +64,7 @@ public abstract class BaseController<TModel extends BaseModel> {
             ControlEx control,
             TNewModel model,
             String title) {
-        NavigationService navigationServices = Core.getServices().get(NavigationService.class);
+        NavigationService navigationServices = Core.getService(NavigationService.class);
         control.getController().setModel(model);
         navigationServices.openScreenInCurrentWindow((Node)control, title);
     }
@@ -73,7 +73,7 @@ public abstract class BaseController<TModel extends BaseModel> {
             ControlEx control,
             TNewModel model,
             String title) {
-        NavigationService navigationServices = Core.getServices().get(NavigationService.class);
+        NavigationService navigationServices = Core.getService(NavigationService.class);
         control.getController().setModel(model);
         navigationServices.openScreenInNewWindow((Node)control, title);
     }

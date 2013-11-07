@@ -61,7 +61,7 @@ public class CrmApp extends org.vesna.apps.client.App {
     protected void configureServices() {
         super.configureServices(); 
         
-        EntitiesService entityService = Core.getServices().get(EntitiesService.class);
+        EntitiesService entityService = Core.getService(EntitiesService.class);
         entityService.addRepository("Persons", new PersonsRepositoryImpl());
     }
 }

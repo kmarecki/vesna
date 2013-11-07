@@ -69,8 +69,8 @@ public abstract class App extends BaseApp {
         EntitiesService entitiesService = new EntitiesService();
         NavigationService navigationService = new NavigationService();
 
-        Core.getServices().add(entitiesService);
-        Core.getServices().add(navigationService);
+        Core.addService(entitiesService);
+        Core.addService(navigationService);
     }
     
     protected MainFormController newMainFormController() {

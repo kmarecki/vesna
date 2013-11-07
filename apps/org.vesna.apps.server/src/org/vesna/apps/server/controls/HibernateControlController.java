@@ -33,7 +33,7 @@ public class HibernateControlController {
     
      @FXML 
      private void handleButtonUpdateSchema(ActionEvent event) {
-         HibernateService hibernateService = Core.getServices().get(HibernateService.class);
+         HibernateService hibernateService = Core.getService(HibernateService.class);
          SessionFactory session = hibernateService.getSessionFactory();
      }
     

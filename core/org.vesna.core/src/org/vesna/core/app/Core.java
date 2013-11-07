@@ -21,9 +21,26 @@ package org.vesna.core.app;
  */
 public class Core {
     
-    private static AppServices services = new AppServices();
+    private static ServicesCache services = new ServicesCache();
     
-    public static AppServices getServices() {
-        return services;
+    public static void addService(Object service) {
+        Class serviceClass = service.getClass();
+        String serviceName = serviceClass.getName();
+        ServiceInfo serviceInfo = new ServiceInfo(serviceName, serviceClass);
+        addService(serviceInfo, service);
+    }
+    
+    public static void addService(ServiceInfo serviceInfo, Object service) {
+        services.add(serviceInfo, service);
+    }
+    
+    public static <T> T getService(Class<T> serviceClass) {
+        T service = services.get(serviceClass);
+        return service;
+    }
+    
+    public static <T> T getService(String serviceName) {
+       T service = services.get(serviceName);
+       return service;
     }
 }

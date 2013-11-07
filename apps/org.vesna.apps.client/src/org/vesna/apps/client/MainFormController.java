@@ -59,7 +59,7 @@ public class MainFormController extends BaseController<ClientAppModel>  {
 
     @Override
     protected void configureView(ClientAppModel model) {
-        NavigationService navigationServices = Core.getServices().get(NavigationService.class);
+        NavigationService navigationServices = Core.getService(NavigationService.class);
         navigationAdapter = new TabPaneNavigationAdapter(tabPane);
         navigationServices.setAdapter(navigationAdapter);
         

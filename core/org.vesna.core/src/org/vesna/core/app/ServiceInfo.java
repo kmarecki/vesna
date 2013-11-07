@@ -13,25 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.vesna.core.app;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class AppServices {
-    Map<Class, Object> services = new HashMap<>();
+public class ServiceInfo {
     
-    public void add(Object service) {
-        services.put(service.getClass(), service);
+    private String serviceName;
+
+    public String getServiceName() {
+        return serviceName;
     }
     
-    public <T> T get(Class<T> clazz) {
-        T service = (T)services.get(clazz);
-        return service;
+    private Class<?> serviceClass;
+
+    public Class<?> getServiceClass() {
+        return serviceClass;
     }
+
+    public void setServiceClass(Class<?> serviceClass) {
+        this.serviceClass = serviceClass;
+    }
+    
+
+    public ServiceInfo(String serviceName, Class<?> serviceClass) {
+        this.serviceName = serviceName;
+        this.serviceClass = serviceClass;
+    }
+
 }

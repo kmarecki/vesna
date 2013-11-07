@@ -72,7 +72,7 @@ public class LogsControlController {
     
     public void setModel(ServerAppModel model) {
         appModel = model;
-        derbyService = Core.getServices().get(DerbyService.class);
+        derbyService = Core.getService(DerbyService.class);
         
         logsList.getController().setModel();
     }

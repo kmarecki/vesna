@@ -31,14 +31,14 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
 
     @FXML
     protected void handleActionCancel(ActionEvent event) {
-        NavigationService navigationService = Core.getServices().get(NavigationService.class);
+        NavigationService navigationService = Core.getService(NavigationService.class);
         navigationService.closeCurrentScreen();
     }
     
     @FXML
     protected void handleActionApply(ActionEvent event) {  
         TModel model = getModel();
-        NavigationService navigationService = Core.getServices().get(NavigationService.class);
+        NavigationService navigationService = Core.getService(NavigationService.class);
         
         model.saveEntity();
         navigationService.closeCurrentScreen();

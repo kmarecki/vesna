@@ -23,7 +23,6 @@ import java.util.List;
 import javax.jws.WebService;
 import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
-import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.lang.GsonHelper;
@@ -39,39 +38,6 @@ import org.vesna.core.services.ServiceCallReturn;
 public class MasterServiceImpl implements MasterService {
     private static final Logger logger = Logger.getLogger(MasterServiceImpl.class);
     
-    class Person {
-    
-        private int personID;
-
-        public int getPersonID() {
-            return personID;
-        }
-
-        public void setPersonID(int personID) {
-            this.personID = personID;
-        }
-
-        private String firstName;
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        private String lastName;
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-    }
-    
     @Override
     public String getServerInfo() {
         return "Vesna Server 2013";
@@ -80,10 +46,10 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public ServiceCallReturn execRepositoryMethod(String repositoryName, String methodName, String[] arguments) {
         try {
-            Repository repository = Core.getServices().get(EntitiesService.class).getRepository(repositoryName);
+            Repository repository = Core.getService(EntitiesService.class).getRepository(repositoryName);
             if (repository == null) {
                 return new ServiceCallReturn(
-                        false, null, String.format("%s is unknown repository", repositoryName));
+                        false, null, String.format("%s is unknown repository.", repositoryName));
             }
 
             Method method;
@@ -92,10 +58,40 @@ public class MasterServiceImpl implements MasterService {
             } catch(NoSuchMethodException | SecurityException ex) {
                 LoggerHelper.logException(logger, ex);
                     return new ServiceCallReturn(
-                            false, null, String.format("%s is unknown method", methodName));
+                            false, null, String.format("%s is unknown method in %s repository.",
+                            methodName, repositoryName));
             }
             Object[] parameters = toMethodParameters(method, arguments);
             Object result = method.invoke(repository, parameters);
+            Gson gson = new Gson();
+            ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(result), null);
+            return ret;
+        } catch (Throwable ex) {
+            LoggerHelper.logException(logger, ex);
+            return new ServiceCallReturn(
+                    false, null, String.format("MasterService exception: %s", ex.getMessage()));
+        }
+    }
+    
+    @Override
+    public ServiceCallReturn execServiceMethod(String serviceName, String methodName, String[] arguments) {
+        try {
+            Object service = Core.getService(serviceName);
+            if (service == null) {
+                return new ServiceCallReturn(
+                        false, null, String.format("%s is unknown service.", serviceName));
+            }
+            Method method;
+            try {
+                method = ReflectionHelper.findMethod(service.getClass(), methodName);
+            } catch(NoSuchMethodException | SecurityException ex) {
+                LoggerHelper.logException(logger, ex);
+                    return new ServiceCallReturn(
+                            false, null, String.format("%s is unknown method in %s service.", 
+                            methodName, serviceName));
+            }
+            Object[] parameters = toMethodParameters(method, arguments);
+            Object result = method.invoke(service, parameters);
             Gson gson = new Gson();
             ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(result), null);
             return ret;

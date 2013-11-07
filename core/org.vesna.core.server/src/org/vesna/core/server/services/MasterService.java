@@ -28,4 +28,6 @@ public interface MasterService {
     String getServerInfo();
     
     ServiceCallReturn execRepositoryMethod(String repository, String methodName, String[] arguments);
+    
+    ServiceCallReturn execServiceMethod(String serviceName, String methodName, String[] arguments);
 }

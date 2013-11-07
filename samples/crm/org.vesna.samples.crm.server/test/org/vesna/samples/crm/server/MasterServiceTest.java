@@ -65,10 +65,10 @@ public class MasterServiceTest {
         hibernateService.setMappingsJar("dist//lib//org.vesna.samples.crm.dto.jar");
         masterService = new MasterServiceImpl();
 
-        Core.getServices().add(derbyService);
-        Core.getServices().add(databaseService);
-        Core.getServices().add(entitiesService);
-        Core.getServices().add(hibernateService);
+        Core.addService(derbyService);
+        Core.addService(databaseService);
+        Core.addService(entitiesService);
+        Core.addService(hibernateService);
         
         createSchema();
         insertRows();
