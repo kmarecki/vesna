@@ -9,16 +9,19 @@
 <!--<tfx:replace attribute="fx:controller" value="$CONTROLLER"/>-->
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
          fx:controller="org.vesna.apps.client.controls.EntitiesListController">
-    <HBox spacing="10">
-        <children>
-            <Button fx:id="insertButton" text="Add" 
-                    onAction="#handleActionAdd" />
-            <Button fx:id="updateButton" text="Edit" 
-                    onAction="#handleActionEdit" />
-            <Button fx:id="deleteButton" text="Delete"
-                    onAction="#handleActionDelete" /> 
-        </children>
+    <HBox VBox.vgrow="ALWAYS">
+        <!--<tfx:replace_element source="$ENTITIES_TABLE_VIEW"/>-->
+        <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" 
+                   HBox.hgrow="ALWAYS"/>
+        <VBox spacing="10" maxWidth="150">
+            <children>
+                <Button fx:id="insertButton" text="Add" 
+                        onAction="#handleActionAdd" />
+                <Button fx:id="updateButton" text="Edit" 
+                        onAction="#handleActionEdit" />
+                <Button fx:id="deleteButton" text="Delete"
+                        onAction="#handleActionDelete" /> 
+            </children>
+        </VBox>
     </HBox>
-    <!--<tfx:replace_element source="$ENTITIES_TABLE_VIEW"/>-->
-    <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" VBox.vgrow="ALWAYS"/>
 </fx:root>
