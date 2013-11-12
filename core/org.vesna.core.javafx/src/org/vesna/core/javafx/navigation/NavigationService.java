@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import javafx.scene.Node;
+import org.vesna.core.javafx.BaseController;
+import org.vesna.core.javafx.controls.ControlEx;
 
 /**
  *
@@ -108,6 +110,10 @@ public class NavigationService {
         
         adapter.closeCurrentScreen();
         Screen screen = windows.navigateToPreviousScreen(windowTag);
+        if (screen.control instanceof ControlEx) {
+            BaseController screenController = ((ControlEx)screen.control).getController();
+            screenController.refreshModel();
+        }
         adapter.openScreenInCurrentWindow(screen.control, screen.title);
     }
     

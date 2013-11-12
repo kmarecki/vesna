@@ -12,4 +12,8 @@ public class BaseModel {
     
     public void initialize() {
     }
+    
+    public void refresh() {
+        
+    }
 }

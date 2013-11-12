@@ -43,6 +43,12 @@ public abstract class BaseController<TModel extends BaseModel> {
         this.model.initialize();
     }
     
+    public void refreshModel() {
+        if (this.model != null) {
+            model.refresh();
+        }
+    }
+    
     protected abstract void configureView(TModel model);
     
     protected <TNewModel extends BaseModel> Stage showStage(
