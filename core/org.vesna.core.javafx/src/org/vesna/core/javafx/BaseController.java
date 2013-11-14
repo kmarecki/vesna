@@ -18,7 +18,6 @@ package org.vesna.core.javafx;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Control;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.vesna.core.app.Core;
@@ -68,11 +67,23 @@ public abstract class BaseController<TModel extends BaseModel> {
     
     protected <TNewModel extends BaseModel> void showScreenInCurrentWindow(
             ControlEx control,
+            TNewModel model) {
+        showScreenInCurrentWindow(control, model, model.getModelName());
+    }
+    
+    protected <TNewModel extends BaseModel> void showScreenInCurrentWindow(
+            ControlEx control,
             TNewModel model,
             String title) {
         NavigationService navigationServices = Core.getService(NavigationService.class);
         control.getController().setModel(model);
         navigationServices.openScreenInCurrentWindow((Node)control, title);
+    }
+    
+    protected <TNewModel extends BaseModel> void showScreenInNewWindow(
+            ControlEx control,
+            TNewModel model) {
+        showScreenInNewWindow(control, model, model.getModelName());
     }
     
     protected <TNewModel extends BaseModel> void showScreenInNewWindow(

@@ -39,7 +39,7 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
         TModel model = getModel();
         ControlEx control = createRowEditControl();
         EntitiesEditModel editModel = model.createNewEntityEditModel();
-        showScreenInCurrentWindow(control, editModel, "Add");
+        showScreenInCurrentWindow(control, editModel);
     }
     
     @FXML
@@ -47,7 +47,7 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
         TModel model = getModel();
         ControlEx control = createRowEditControl();
         EntitiesEditModel editModel = model.createSelectedEntityEditModel();
-        showScreenInCurrentWindow(control, editModel, "Edit");
+        showScreenInCurrentWindow(control, editModel);
     }
     
     @FXML

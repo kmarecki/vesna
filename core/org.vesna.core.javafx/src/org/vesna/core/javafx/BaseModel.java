@@ -8,12 +8,12 @@ package org.vesna.core.javafx;
  *
  * @author Krzysztof Marecki
  */
-public class BaseModel {
+public interface BaseModel {
     
-    public void initialize() {
-    }
+    public String getModelName();
     
-    public void refresh() {
+    public void initialize();
+    
+    public void refresh();
         
-    }
 }

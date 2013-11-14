@@ -17,16 +17,26 @@ package org.vesna.apps.client.controls;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.apache.log4j.Logger;
+import org.vesna.apps.client.App;
 import org.vesna.core.entities.Repository;
-import org.vesna.core.javafx.BaseModel;
+import org.vesna.core.javafx.BaseModelImpl;
+import org.vesna.core.logging.LoggerHelper;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public abstract class EntitiesEditModel<TEntity> extends BaseModel {
+public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
+   protected static final Logger logger = Logger.getLogger(EntitiesEditModel.class);
     
-  
+    public enum Mode {
+        Add,
+        Copy,
+        Edit,
+        View
+    }
+    
     private Repository entitiesRepository;
     
     private final ObjectProperty<TEntity> entity = new SimpleObjectProperty();
@@ -42,9 +52,16 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModel {
     public ObjectProperty entityProperty() {
         return entity;
     }
-
-    public EntitiesEditModel(Repository entitiesRepository) {
+    
+    private Mode mode;
+    
+    public Mode getMode() {
+        return mode;
+    }
+    
+    public EntitiesEditModel(Repository entitiesRepository, Mode mode) {
         this.entitiesRepository = entitiesRepository;
+        this.mode = mode;
     }
     
     @Override
@@ -54,8 +71,25 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModel {
         fromEntity(getEntity());
     }
     
-    public void saveEntity() {
+    public Boolean saveEntity() {
+        try {
+        toEntity(getEntity());
+        switch(mode) {
+            case Add : {
+                entitiesRepository.insert(getEntity());
+                break;
+            }
+            case Edit : {
+                entitiesRepository.update(getEntity());
+                break;
+            }
+        }
+        } catch (Throwable ex) {
+            LoggerHelper.logException(logger, ex);
+            return false;
+        }
         
+        return true;
     }
     
     protected abstract void fromEntity(TEntity entity);

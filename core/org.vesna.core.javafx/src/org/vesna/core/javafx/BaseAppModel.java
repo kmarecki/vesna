@@ -19,7 +19,7 @@ package org.vesna.core.javafx;
  *
  * @author Krzysztof Marecki
  */
-public abstract class BaseAppModel extends BaseModel {
+public abstract class BaseAppModel extends BaseModelImpl {
     
      public abstract String getApplicationTitle();
 }

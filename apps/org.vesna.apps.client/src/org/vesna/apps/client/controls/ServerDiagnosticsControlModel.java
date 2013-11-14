@@ -19,13 +19,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
-import org.vesna.core.javafx.BaseModel;
+import org.vesna.core.javafx.BaseModelImpl;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class ServerDiagnosticsControlModel extends BaseModel {
+public class ServerDiagnosticsControlModel extends BaseModelImpl {
     private final StringProperty serverInfo = new SimpleStringProperty();
 
     public String getServerInfo() {

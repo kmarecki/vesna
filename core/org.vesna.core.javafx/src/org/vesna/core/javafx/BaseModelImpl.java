@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Krzysztof Marecki
  *
- * Licensed under te Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -13,29 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client.controls;
+package org.vesna.core.javafx;
 
-import org.vesna.apps.client.controls.EntitiesEditModel;
-import org.vesna.apps.client.controls.EntitiesListModel;
-import org.vesna.samples.crm.dto.Person;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class PersonListModel extends EntitiesListModel<Person> {
-    
-    public PersonListModel() {
+public class BaseModelImpl implements BaseModel {
+    private final StringProperty modelName = new SimpleStringProperty();
+
+    @Override
+    public String getModelName() {
+        return modelName.get();
+    }
+
+    public void setModelName(String value) {
+        modelName.set(value);
+    }
+
+    public StringProperty modelNameProperty() {
+        return modelName;
     }
     
     @Override
-    protected EntitiesEditModel createRowEditModel(EntitiesEditModel.Mode mode) {
-        PersonEditModel editModel = new PersonEditModel(entitiesRepository, mode);
-        return editModel;
+    public void initialize() {
     }
 
     @Override
-    protected String getRepositoryName() {
-        return "Persons";
+    public void refresh() {   
     }
 }

@@ -25,13 +25,13 @@ import javafx.collections.ObservableList;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
-import org.vesna.core.javafx.BaseModel;
+import org.vesna.core.javafx.BaseModelImpl;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public abstract class EntitiesListModel<TEntity> extends BaseModel {
+public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     private final ListProperty<TEntity> entities = new SimpleListProperty<>(FXCollections.<TEntity>observableArrayList());
 
     public ObservableList getEntities() {
@@ -69,34 +69,43 @@ public abstract class EntitiesListModel<TEntity> extends BaseModel {
 
     @Override
     public void initialize() {
-        String repositoryName = getRepositoryName();
-        EntitiesService entitiesService = Core.getService(EntitiesService.class);
-        entitiesRepository = entitiesService.getRepository(repositoryName);
-        List<TEntity> dtos = entitiesRepository.getAll();
-        
-        for(TEntity dto : dtos) {
-                getEntities().add(dto);
-        }
+        loadEntities();
+    }
+
+    @Override
+    public void refresh() {
+        loadEntities();
     }
     
     public EntitiesEditModel createNewEntityEditModel() {
-        EntitiesEditModel model = createRowEditModel();
+        EntitiesEditModel model = createRowEditModel(EntitiesEditModel.Mode.Add);
         TEntity entity = entitiesRepository.create();
         model.setEntity(entity);
         return model;
     }
      
     public EntitiesEditModel createSelectedEntityEditModel() {
-        EntitiesEditModel model = createRowEditModel();
+        EntitiesEditModel model = createRowEditModel(EntitiesEditModel.Mode.Edit);
         TEntity entity = getSelectedEntity();
         model.setEntity(entity);
         return model;
     }
     
     
-    protected abstract EntitiesEditModel createRowEditModel();
+    protected abstract EntitiesEditModel createRowEditModel(EntitiesEditModel.Mode mode);
     
     protected abstract String getRepositoryName();
     
+    private void loadEntities() {
+        String repositoryName = getRepositoryName();
+        EntitiesService entitiesService = Core.getService(EntitiesService.class);
+        entitiesRepository = entitiesService.getRepository(repositoryName);
+        List<TEntity> dtos = entitiesRepository.getAll();
+        
+        getEntities().clear();
+        for(TEntity dto : dtos) {
+                getEntities().add(dto);
+        }
+    }
 
 }
