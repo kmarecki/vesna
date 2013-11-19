@@ -77,7 +77,7 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
     @Override
     protected void toEntity(Person entity) {
         entity.setFirstName(getFirstName());
-        entity.setLastName(entity.getLastName());
+        entity.setLastName(getLastName());
     }
     
     
