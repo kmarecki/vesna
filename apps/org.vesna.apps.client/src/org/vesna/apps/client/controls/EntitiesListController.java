@@ -15,13 +15,16 @@
  */
 package org.vesna.apps.client.controls;
 
+import java.io.IOException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import org.vesna.core.javafx.BaseController;
+import org.vesna.core.javafx.MessageBox;
 import org.vesna.core.javafx.controls.ControlEx;
+import org.vesna.core.logging.LoggerHelper;
 
 
 /**
@@ -30,6 +33,8 @@ import org.vesna.core.javafx.controls.ControlEx;
  */
 public abstract class EntitiesListController<TModel extends EntitiesListModel>
     extends BaseController<TModel> {
+    
+    protected static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EntitiesListController.class);
     
     @FXML
     TableView entitiesTable;
@@ -52,7 +57,15 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     
     @FXML
     protected void handleActionDelete(ActionEvent event) {
-       
+        try {
+            TModel model = getModel();
+            if (MessageBox.show("Do you want to delete selected object?", "Warning") == MessageBox.DialogResult.OK) {
+                model.deleteSelectedEntity();
+                model.refresh();
+            }
+        } catch (IOException ex) {
+            LoggerHelper.logException(logger, ex);
+        }
     }
 
     @Override

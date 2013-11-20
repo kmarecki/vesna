@@ -81,8 +81,19 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     }
 
     @Override
-    public void delete(TEntity entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(final TEntity entity) {
+        execMasterService(new Func<MasterServiceImpl, Boolean>() {
+            @Override
+            public Boolean apply(MasterServiceImpl impl) {
+                String entityJson = GsonHelper.toJson(entity);
+                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "delete", Arrays.asList(new String[]{entityJson}));
+                if (ret.isSuccess()) {
+                    return true;
+                }
+                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+                throw new RuntimeException(msg);
+            }
+        });
     }
 
     @Override

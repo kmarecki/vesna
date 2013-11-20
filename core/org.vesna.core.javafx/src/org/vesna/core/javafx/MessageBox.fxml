@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.vesna.core.javafx.MessageBox" >
+    <Label fx:id="messageLabel" VBox.vgrow="ALWAYS"/>
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="buttonCancel" text="Cancel"
+                onAction="#handleActionCancel" /> 
+        <Button fx:id="buttonOK" text="OK"
+                onAction="#handleActionOK" /> 
+    </HBox> 
+</VBox>

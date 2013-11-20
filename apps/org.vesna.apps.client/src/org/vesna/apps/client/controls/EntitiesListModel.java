@@ -91,6 +91,11 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
         return model;
     }
     
+    public void deleteSelectedEntity() {
+        TEntity entity = getSelectedEntity();
+        entitiesRepository.delete(entity);
+    }
+     
     
     protected abstract EntitiesEditModel createRowEditModel(EntitiesEditModel.Mode mode);
     
