@@ -15,7 +15,6 @@
  */
 package org.vesna.apps.client.controls;
 
-import java.io.IOException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -37,22 +36,30 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     protected static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EntitiesListController.class);
     
     @FXML
-    TableView entitiesTable;
+    protected TableView entitiesTable;
     
     @FXML
     protected void handleActionAdd(ActionEvent event) {
-        TModel model = getModel();
-        ControlEx control = createRowEditControl();
-        EntitiesEditModel editModel = model.createNewEntityEditModel();
-        showScreenInCurrentWindow(control, editModel);
+        try {
+            TModel model = getModel();
+            ControlEx control = createRowEditControl();
+            EntitiesEditModel editModel = model.createNewEntityEditModel();
+            showScreenInCurrentWindow(control, editModel);
+        } catch(Throwable ex) {
+            LoggerHelper.logException(logger, ex);
+        }
     }
     
     @FXML
     protected void handleActionEdit(ActionEvent event) { 
-        TModel model = getModel();
-        ControlEx control = createRowEditControl();
-        EntitiesEditModel editModel = model.createSelectedEntityEditModel();
-        showScreenInCurrentWindow(control, editModel);
+        try {
+            TModel model = getModel();
+            ControlEx control = createRowEditControl();
+            EntitiesEditModel editModel = model.createSelectedEntityEditModel();
+            showScreenInCurrentWindow(control, editModel);
+        } catch(Throwable ex) {
+            LoggerHelper.logException(logger, ex);
+        }
     }
     
     @FXML
@@ -63,7 +70,7 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
                 model.deleteSelectedEntity();
                 model.refresh();
             }
-        } catch (IOException ex) {
+        } catch(Throwable ex) {
             LoggerHelper.logException(logger, ex);
         }
     }

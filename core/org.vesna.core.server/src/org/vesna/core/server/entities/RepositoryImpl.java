@@ -16,7 +16,6 @@
 package org.vesna.core.server.entities;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;

@@ -24,8 +24,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
+import org.vesna.core.entities.EntityHelper;
+import org.vesna.core.entities.EntityType;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.javafx.BaseModelImpl;
+import org.vesna.core.lang.ReflectionHelper;
 
 /**
  *
@@ -65,11 +68,13 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     public Repository<TEntity> getEntitiesRepository() {
         return entitiesRepository;
     }
-
+    
+    protected EntityType entityType;
 
     @Override
     public void initialize() {
         loadEntities();
+        loadEntityType();
     }
 
     @Override
@@ -86,13 +91,13 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
      
     public EntitiesEditModel createSelectedEntityEditModel() {
         EntitiesEditModel model = createRowEditModel(EntitiesEditModel.Mode.Edit);
-        TEntity entity = getSelectedEntity();
+        TEntity entity = getLoadedSelectedEntity();
         model.setEntity(entity);
         return model;
     }
     
     public void deleteSelectedEntity() {
-        TEntity entity = getSelectedEntity();
+        TEntity entity = getLoadedSelectedEntity();
         entitiesRepository.delete(entity);
     }
      
@@ -112,5 +117,21 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
                 getEntities().add(dto);
         }
     }
-
+    
+    private void loadEntityType() {
+        EntitiesService entitiesService = Core.getService(EntitiesService.class);
+        String klassName = getTEntityClass().getName();
+        entityType = entitiesService.getEntityType(klassName);
+    }
+    
+    private TEntity getLoadedSelectedEntity() {
+        Object id = EntityHelper.getId(entityType, getSelectedEntity());
+        TEntity entity = entitiesRepository.getSingle(id);
+        return entity;
+    }
+    
+     protected Class getTEntityClass() {
+        Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
+        return entityClass;
+    }
 }

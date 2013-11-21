@@ -24,17 +24,26 @@ import java.util.Map;
  */
 public class EntitiesService {
     
-    Map<String, Repository> entities = new HashMap<>();
+    private EntitiesServiceTypesConnector typesConnector;
+    private Map<String, Repository> repositories = new HashMap<>();
+    
+    public void setTypesConnector(EntitiesServiceTypesConnector typesConnector) {
+        this.typesConnector = typesConnector;
+    }
     
     public void addRepository(String name, Repository repository) {
-        entities.put(name, repository);
+        repositories.put(name, repository);
     }
     
     public Repository  getRepository(String name) {
-        Repository repository = entities.containsKey(name) ?
-                                entities.get(name) :
+        Repository repository = repositories.containsKey(name) ?
+                                repositories.get(name) :
                                 null;
         return repository;
     }
     
+    public EntityType getEntityType(String klassName) {
+        assert typesConnector != null : "typesConnector is null";
+        return typesConnector.getEntityType(klassName);
+    }
 }

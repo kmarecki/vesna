@@ -19,62 +19,64 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
+import org.vesna.core.entities.EntitiesServiceTypesConnector;
+import org.vesna.core.entities.EntityType;
 
 /**
  * @author Krzysztof Marecki
  */
-public class HibernateService {
+public class HibernateService implements EntitiesServiceTypesConnector {
 
-        private static final Logger logger = Logger.getLogger(HibernateService.class);
-        
-	private SessionFactory sessionFactory;
-	
-        private String mappingsJar;
+    private static final Logger logger = Logger.getLogger(HibernateService.class);
+    private SessionFactory sessionFactory;
+    private String mappingsJar;
 
-        public String getMappingsJar() {
-            return mappingsJar;
-        }
+    public String getMappingsJar() {
+        return mappingsJar;
+    }
 
-        public void setMappingsJar(String jarPath) {
-           mappingsJar = jarPath;
-        }
-        
-        private String configurationResource;
+    public void setMappingsJar(String jarPath) {
+        mappingsJar = jarPath;
+    }
+    private String configurationResource;
 
-        public String getConfigurationResource() {
-            return configurationResource;
-        }
+    public String getConfigurationResource() {
+        return configurationResource;
+    }
 
-        public void setConfigurationResource(String configurationResource) {
-            this.configurationResource = configurationResource;
-        }
+    public void setConfigurationResource(String configurationResource) {
+        this.configurationResource = configurationResource;
+    }
 
-        
-	
-	public SessionFactory getSessionFactory() {
-                if (sessionFactory == null) {
-                    try {
-			// Create the SessionFactory from standard (hibernate.cfg.xml) 
-			// config file.
-                        AnnotationConfiguration configuration = new AnnotationConfiguration();
-                        if (mappingsJar != null) {
-                            File jar = new File(System.getProperty("user.dir"), mappingsJar);
-                            if (!jar.exists()) {
-                                logger.error(String.format("%s mappings jar does not exists", jar.getPath()));
-                            } else {
-                                configuration.addJar(jar);
-                            }
-                        }
-                        if (configurationResource != null) {
-                            configuration.configure(configurationResource);
-                        } else {
-                            configuration.configure();
-                        }
-			sessionFactory = configuration.buildSessionFactory();
-                    } catch (Throwable ex) {
-                            logger.error(ex.getMessage());
+    public SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                // Create the SessionFactory from standard (hibernate.cfg.xml) 
+                // config file.
+                AnnotationConfiguration configuration = new AnnotationConfiguration();
+                if (mappingsJar != null) {
+                    File jar = new File(System.getProperty("user.dir"), mappingsJar);
+                    if (!jar.exists()) {
+                        logger.error(String.format("%s mappings jar does not exists", jar.getPath()));
+                    } else {
+                        configuration.addJar(jar);
                     }
                 }
-		return sessionFactory;
-	}
+                if (configurationResource != null) {
+                    configuration.configure(configurationResource);
+                } else {
+                    configuration.configure();
+                }
+                sessionFactory = configuration.buildSessionFactory();
+            } catch (Throwable ex) {
+                logger.error(ex.getMessage());
+            }
+        }
+        return sessionFactory;
+    }
+
+    @Override
+    public EntityType getEntityType(String klassName) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 }

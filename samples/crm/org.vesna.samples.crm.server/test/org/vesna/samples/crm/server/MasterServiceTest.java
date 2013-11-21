@@ -28,6 +28,8 @@ import org.vesna.core.app.Core;
 import org.vesna.core.data.DataRow;
 import org.vesna.core.data.HashDataRow;
 import org.vesna.core.entities.EntitiesService;
+import org.vesna.core.entities.EntityHelper;
+import org.vesna.core.entities.EntityType;
 import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.server.derby.DerbyService;
 import org.vesna.core.server.hibernate.HibernateService;
@@ -58,12 +60,13 @@ public class MasterServiceTest {
         derbyService = new DerbyService("crm_test");
         derbyService.check();
         databaseService = new DatabaseService(derbyService);
-        entitiesService = new EntitiesService();
-        entitiesService.addRepository("Persons", new PersonsRepositoryImpl());
         hibernateService = new HibernateService();
         hibernateService.setConfigurationResource("hibernate.test.cfg.xml");
         hibernateService.setMappingsJar("dist//lib//org.vesna.samples.crm.dto.jar");
         masterService = new MasterServiceImpl();
+        entitiesService = new EntitiesService();
+        entitiesService.setTypesConnector(hibernateService);
+        entitiesService.addRepository("Persons", new PersonsRepositoryImpl());
 
         Core.addService(derbyService);
         Core.addService(databaseService);
@@ -95,7 +98,7 @@ public class MasterServiceTest {
     }
     
     @Test
-    public void repositoryiInsert() {
+    public void repositoryInsert() {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("XXX");
@@ -147,8 +150,19 @@ public class MasterServiceTest {
         result = execRepositoryMethod(
                 "Persons", "getSingle", new String[] { idJson });
         person = GsonHelper.fromJson(new TypeToken<Person>(){}, result.getReturnValue());
-        assertTrue(person == null);
-        
+        assertTrue(person == null);   
+    }
+    
+    @Test
+    public void entityTypeGet() {
+        int personID = 100;
+        Person person = new Person();
+        person.setPersonID(personID);
+        String classJson = GsonHelper.toJson(person.getClass().getName());
+        ServiceCallReturn result = execServiceMethod(
+                "EntitiesService", "getEntityType", new String[] { classJson });
+        EntityType entityType = GsonHelper.fromJson(new TypeToken<EntityType>(){}, result.getReturnValue());
+        assertEquals(personID, EntityHelper.getId(entityType, person));
     }
     
     private static void createSchema() {
@@ -175,6 +189,14 @@ public class MasterServiceTest {
             String repositoryName, String methodName, String[] arguments) {
         ServiceCallReturn result = masterService.execRepositoryMethod(
                 repositoryName, methodName, arguments);
+        assertTrue(result.getErrorMessage(), result.getSuccess());
+        return result;
+    }
+    
+    private ServiceCallReturn execServiceMethod(
+            String serviceName, String methodName, String[] arguments) {
+        ServiceCallReturn result = masterService.execServiceMethod(
+                serviceName, methodName, arguments);
         assertTrue(result.getErrorMessage(), result.getSuccess());
         return result;
     }
