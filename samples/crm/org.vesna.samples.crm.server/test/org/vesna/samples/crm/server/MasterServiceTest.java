@@ -25,9 +25,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.vesna.core.app.Core;
+import org.vesna.core.app.ServiceInfo;
 import org.vesna.core.data.DataRow;
 import org.vesna.core.data.HashDataRow;
 import org.vesna.core.entities.EntitiesService;
+import org.vesna.core.entities.EntityException;
 import org.vesna.core.entities.EntityHelper;
 import org.vesna.core.entities.EntityType;
 import org.vesna.core.lang.GsonHelper;
@@ -70,7 +72,7 @@ public class MasterServiceTest {
 
         Core.addService(derbyService);
         Core.addService(databaseService);
-        Core.addService(entitiesService);
+        Core.addService(new ServiceInfo("EntitiesService", EntitiesService.class), entitiesService);
         Core.addService(hibernateService);
         
         createSchema();
@@ -154,14 +156,16 @@ public class MasterServiceTest {
     }
     
     @Test
-    public void entityTypeGet() {
+    public void entityTypeGet() throws EntityException {
         int personID = 100;
         Person person = new Person();
         person.setPersonID(personID);
-        String classJson = GsonHelper.toJson(person.getClass().getName());
+        String className = person.getClass().getName();
+        String classJson = GsonHelper.toJson(className);
         ServiceCallReturn result = execServiceMethod(
                 "EntitiesService", "getEntityType", new String[] { classJson });
         EntityType entityType = GsonHelper.fromJson(new TypeToken<EntityType>(){}, result.getReturnValue());
+        assertEquals(className, entityType.getEntityName());
         assertEquals(personID, EntityHelper.getId(entityType, person));
     }
     

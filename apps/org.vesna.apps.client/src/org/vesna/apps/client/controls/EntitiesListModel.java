@@ -24,6 +24,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
+import org.vesna.core.entities.EntityException;
 import org.vesna.core.entities.EntityHelper;
 import org.vesna.core.entities.EntityType;
 import org.vesna.core.entities.Repository;
@@ -89,14 +90,16 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
         return model;
     }
      
-    public EntitiesEditModel createSelectedEntityEditModel() {
+    public EntitiesEditModel createSelectedEntityEditModel() 
+            throws EntityException {
         EntitiesEditModel model = createRowEditModel(EntitiesEditModel.Mode.Edit);
         TEntity entity = getLoadedSelectedEntity();
         model.setEntity(entity);
         return model;
     }
     
-    public void deleteSelectedEntity() {
+    public void deleteSelectedEntity() 
+            throws EntityException {
         TEntity entity = getLoadedSelectedEntity();
         entitiesRepository.delete(entity);
     }
@@ -124,7 +127,8 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
         entityType = entitiesService.getEntityType(klassName);
     }
     
-    private TEntity getLoadedSelectedEntity() {
+    private TEntity getLoadedSelectedEntity() 
+            throws EntityException {
         Object id = EntityHelper.getId(entityType, getSelectedEntity());
         TEntity entity = entitiesRepository.getSingle(id);
         return entity;

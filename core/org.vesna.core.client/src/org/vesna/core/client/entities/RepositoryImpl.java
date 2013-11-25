@@ -113,8 +113,20 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     }
 
     @Override
-    public TEntity getSingle(Object id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public TEntity getSingle(final Object id) {
+         return execMasterService(new Func<MasterServiceImpl, TEntity>() {
+            @Override
+            public TEntity apply(MasterServiceImpl impl) {
+                String idJson = GsonHelper.toJson(id);
+                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getSingle", Arrays.asList(new String[]{idJson}));
+                if (ret.isSuccess()) {
+                    TEntity dtos = (TEntity) GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
+                    return dtos;
+                }
+                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+                throw new RuntimeException(msg);
+            }
+        });
     }
     
     protected abstract TypeToken getTEntityTypeToken();

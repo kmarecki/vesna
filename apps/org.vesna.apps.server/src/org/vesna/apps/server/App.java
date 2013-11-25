@@ -23,6 +23,7 @@ import javax.xml.ws.Endpoint;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.vesna.core.app.Core;
+import org.vesna.core.app.ServiceInfo;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.server.derby.DerbyService;
@@ -82,10 +83,10 @@ public abstract class App extends BaseApp {
         EntitiesService entitiesService = new EntitiesService();
         entitiesService.setTypesConnector(hibernateService);
         
-        Core.addService(derbyService);
-        Core.addService(databaseService);
-        Core.addService(entitiesService);
-        Core.addService(hibernateService);
+        Core.addService(new ServiceInfo("DerbyService", DerbyService.class), derbyService);
+        Core.addService(new ServiceInfo("DatabaseService", DatabaseService.class), databaseService);
+        Core.addService(new ServiceInfo("EntitiesService", EntitiesService.class), entitiesService);
+        Core.addService(new ServiceInfo("HibernateService", HibernateService.class), hibernateService);
     }
 
     /**

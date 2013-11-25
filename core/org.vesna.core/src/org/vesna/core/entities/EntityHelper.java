@@ -15,17 +15,28 @@
  */
 package org.vesna.core.entities;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+
 /**
  *
  * @author Krzysztof Marecki
  */
 public class EntityHelper {
     
-    public static Object getId(EntityType type, Object entity) {
-        return null;
-    }
-    
-    public static void setId(EntityType type, Object entity) {
-        
+    public static Object getId(EntityType entityType, Object entity) 
+            throws EntityException {
+        try {
+        Class entityKlass = entity.getClass();
+        PropertyDescriptor pkDescriptor = new PropertyDescriptor(
+                entityType.getPrimaryKeyPropertyName(), entityKlass);
+        Method getMethod = pkDescriptor.getReadMethod();
+        Object ret = getMethod.invoke(entity, (Object[]) null);
+        return ret;
+        } catch (Throwable ex) {
+            String message = String.format("Cannot invoke bean getter for %s.%s", 
+                    entityType.getEntityName(), entityType.getPrimaryKeyPropertyName());
+            throw new EntityException(message, ex);
+        }
     }
 }

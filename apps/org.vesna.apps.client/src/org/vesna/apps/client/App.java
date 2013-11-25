@@ -24,11 +24,12 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
+import org.vesna.core.app.ServiceInfo;
+import org.vesna.core.client.entities.EntitiesServiceTypesConnectorImpl;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
 import org.vesna.core.javafx.navigation.NavigationService;
-import org.vesna.core.logging.LoggerHelper;
 import org.vesna.core.net.ClasspathURLHandler;
 
 /**
@@ -67,10 +68,11 @@ public abstract class App extends BaseApp {
      @Override
     protected void configureServices() {
         EntitiesService entitiesService = new EntitiesService();
+        entitiesService.setTypesConnector(new EntitiesServiceTypesConnectorImpl());
         NavigationService navigationService = new NavigationService();
 
-        Core.addService(entitiesService);
-        Core.addService(navigationService);
+        Core.addService(new ServiceInfo("EntitiesService", EntitiesService.class), entitiesService);
+        Core.addService(new ServiceInfo("NavigationService", NavigationService.class), navigationService);
     }
     
     protected MainFormController newMainFormController() {

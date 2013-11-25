@@ -21,4 +21,25 @@ package org.vesna.core.entities;
  */
 public class EntityType {
     
+    private String entityName;
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+ 
+    private String PrimaryKeyPropertyName;
+
+    public String getPrimaryKeyPropertyName() {
+        return PrimaryKeyPropertyName;
+    }
+
+    public void setPrimaryKeyPropertyName(String PrimaryKeyPropertyName) {
+        this.PrimaryKeyPropertyName = PrimaryKeyPropertyName;
+    }
+   
 }

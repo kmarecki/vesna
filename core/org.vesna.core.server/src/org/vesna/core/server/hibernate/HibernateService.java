@@ -19,6 +19,7 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
+import org.hibernate.metadata.ClassMetadata;
 import org.vesna.core.entities.EntitiesServiceTypesConnector;
 import org.vesna.core.entities.EntityType;
 
@@ -77,6 +78,15 @@ public class HibernateService implements EntitiesServiceTypesConnector {
 
     @Override
     public EntityType getEntityType(String klassName) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+       ClassMetadata metadata = getSessionFactory().getClassMetadata(klassName);
+       EntityType entityType = createEntityTypeFromMetadata(metadata);
+       return entityType;
+    }
+    
+    private EntityType createEntityTypeFromMetadata(ClassMetadata metadata) {
+        EntityType entityType = new EntityType();
+        entityType.setEntityName(metadata.getEntityName());
+        entityType.setPrimaryKeyPropertyName(metadata.getIdentifierPropertyName());
+        return entityType;
     }
 }
