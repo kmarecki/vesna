@@ -16,6 +16,7 @@
 package org.vesna.samples.crm.server;
 
 import static javafx.application.Application.launch;
+import javafx.scene.Scene;
 import org.vesna.apps.server.ServerAppModel;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
@@ -53,6 +54,9 @@ public class App extends org.vesna.apps.server.App  {
         EntitiesService entityService = Core.getService(EntitiesService.class);
         entityService.addRepository("Persons", new PersonsRepositoryImpl());
     }
-    
-    
+
+    @Override
+    protected void configureRootScene(Scene scene) {
+        scene.getStylesheets().add("resources/css/styles.css");
+    }
 }

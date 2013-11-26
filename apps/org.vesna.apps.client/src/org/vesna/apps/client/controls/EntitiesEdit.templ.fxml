@@ -11,11 +11,11 @@
          fx:controller="org.vesna.apps.client.controls.EntitiesEditController">
     <HBox>
        <!--<tfx:include source="$ENTITIES_ROW_VIEW"/>-->
-       <VBox spacing="10" maxWidth="150">
+       <VBox fx:id="buttonsVBox" maxWidth="80" minWidth="80" >
            <children>
-               <Button fx:id="applyButton" text="Apply" 
+               <Button fx:id="applyButton" text="Apply" maxWidth="${buttonsVBox.maxWidth}"
                        onAction="#handleActionApply" />
-               <Button fx:id="cancelButton" text="Cancel" 
+               <Button fx:id="cancelButton" text="Cancel" maxWidth="${buttonsVBox.maxWidth}"
                        onAction="#handleActionCancel" />
            </children>
        </VBox>

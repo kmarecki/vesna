@@ -13,13 +13,13 @@
         <!--<tfx:replace_element source="$ENTITIES_TABLE_VIEW"/>-->
         <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" 
                    HBox.hgrow="ALWAYS"/>
-        <VBox spacing="10" maxWidth="150">
+        <VBox fx:id="buttonsVBox" maxWidth="80" minWidth="80">
             <children>
-                <Button fx:id="insertButton" text="Add" 
+                <Button fx:id="insertButton" text="Add" maxWidth="${buttonsVBox.maxWidth}"
                         onAction="#handleActionAdd" />
-                <Button fx:id="updateButton" text="Edit" 
+                <Button fx:id="updateButton" text="Edit" maxWidth="${buttonsVBox.maxWidth}" 
                         onAction="#handleActionEdit" />
-                <Button fx:id="deleteButton" text="Delete"
+                <Button fx:id="deleteButton" text="Delete" maxWidth="${buttonsVBox.maxWidth}" 
                         onAction="#handleActionDelete" /> 
             </children>
         </VBox>

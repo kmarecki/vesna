@@ -16,6 +16,7 @@
 package org.vesna.core.javafx;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -39,5 +40,7 @@ public abstract class BaseApp extends Application {
     }
     
     protected abstract void configureServices();
+    
+    protected abstract void configureRootScene(Scene scene);
     
 }

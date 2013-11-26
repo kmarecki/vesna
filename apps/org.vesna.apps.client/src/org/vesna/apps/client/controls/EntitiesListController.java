@@ -20,6 +20,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 import org.vesna.core.javafx.BaseController;
 import org.vesna.core.javafx.MessageBox;
 import org.vesna.core.javafx.controls.ControlEx;
@@ -37,6 +38,9 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     
     @FXML
     protected TableView entitiesTable;
+    
+    @FXML
+    protected VBox buttonsVBox;
     
     @FXML
     protected void handleActionAdd(ActionEvent event) {
@@ -77,6 +81,8 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
 
     @Override
     protected void configureView(final TModel model) {
+        buttonsVBox.getStyleClass().add("vbox");
+        
         entitiesTable.itemsProperty().bind(model.entitiesProperty());
         entitiesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override

@@ -45,7 +45,20 @@ root {
 }
 
 .list-cell:even {
-       -fx-background-color: white;
+    -fx-background-color: white;
+}
+
+.button {
+}
+
+.vbox {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+.hbox {
+    -fx-padding: 10;
+    -fx-spacing: 10;
 }
 
 

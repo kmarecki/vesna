@@ -49,7 +49,7 @@ public abstract class App extends BaseApp {
         fxmlLoader.setLocation(App.class.getResource("MainForm.fxml"));
         Parent root = (Parent)fxmlLoader.load();
         Scene scene = new Scene(root);
-		scene.getStylesheets().add("resources/css/styles.css");
+        configureRootScene(scene);
         MainFormController controller = (MainFormController)fxmlLoader.getController();
         controller.setModel(model);
                 

@@ -17,6 +17,7 @@ package org.vesna.apps.client.controls;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 import org.vesna.core.app.Core;
 import org.vesna.core.javafx.BaseController;
 import org.vesna.core.javafx.navigation.NavigationService;
@@ -29,6 +30,9 @@ import org.vesna.core.javafx.navigation.NavigationService;
 public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
     extends BaseController<TModel> {
 
+    @FXML
+    protected VBox buttonsVBox;
+    
     @FXML
     protected void handleActionCancel(ActionEvent event) {
         NavigationService navigationService = Core.getService(NavigationService.class);
@@ -46,6 +50,6 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
 
     @Override
     protected void configureView(TModel model) {
-      
+      buttonsVBox.getStyleClass().add("vbox");
     }
 }

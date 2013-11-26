@@ -55,7 +55,7 @@ public abstract class App extends BaseApp {
         
          Parent root = (Parent)loader.load(new ByteArrayInputStream(fxml.getBytes()));
          Scene scene = new Scene(root);
-//         scene.getStylesheets().add("resources/css/styles.css");
+         configureRootScene(scene);
          MainFormController controller = loader.getController();
          controller.setModel(model);
 
@@ -65,7 +65,7 @@ public abstract class App extends BaseApp {
          stage.show();
     }
     
-     @Override
+    @Override
     protected void configureServices() {
         EntitiesService entitiesService = new EntitiesService();
         entitiesService.setTypesConnector(new EntitiesServiceTypesConnectorImpl());
