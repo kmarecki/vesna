@@ -50,7 +50,6 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     public TEntity insert(TEntity entity) {
         Session session = getSession();
         session.save(entity);
-        session.flush();
         session.close();
         return entity;
     }
@@ -59,7 +58,6 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     public TEntity update(TEntity entity) {
         Session session = getSession();
         session.update(entity);
-        session.flush();
         session.close();
         return entity;
     }
@@ -68,7 +66,6 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     public void delete(TEntity entity) {
         Session session = getSession();
         session.delete(entity);
-        session.flush();
         session.close();
     }
 
