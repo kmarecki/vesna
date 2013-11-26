@@ -16,6 +16,8 @@
 package org.vesna.apps.client.controls;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import org.apache.log4j.Logger;
 import org.vesna.apps.client.App;
@@ -52,6 +54,17 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
     public ObjectProperty entityProperty() {
         return entity;
     }
+    private final ReadOnlyStringWrapper applyButtonText = new ReadOnlyStringWrapper();
+
+    public String getApplyButtonText() {
+        return applyButtonText.get();
+    }
+
+    public ReadOnlyStringProperty applyButtonTextProperty() {
+        return applyButtonText.getReadOnlyProperty();
+    }
+    
+    
     
     private Mode mode;
     
@@ -68,6 +81,7 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
     public void initialize() {
         super.initialize(); 
         
+        initializeFromMode();
         fromEntity(getEntity());
     }
     
@@ -96,5 +110,16 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
     
     protected abstract void toEntity(TEntity entity);
     
-    
+    protected void initializeFromMode() {
+         switch(mode) {
+            case Add : {
+                applyButtonText.set("Add");
+                break;
+            }
+            case Edit : {
+                applyButtonText.set("Edit");
+                break;
+            }
+        }
+    }
 }

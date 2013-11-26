@@ -19,6 +19,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import org.vesna.core.javafx.BaseController;
@@ -38,7 +39,6 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     
     @FXML
     protected TableView entitiesTable;
-    
     @FXML
     protected VBox buttonsVBox;
     

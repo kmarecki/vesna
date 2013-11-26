@@ -17,6 +17,7 @@ package org.vesna.apps.client.controls;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import org.vesna.core.app.Core;
 import org.vesna.core.javafx.BaseController;
@@ -32,6 +33,10 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
 
     @FXML
     protected VBox buttonsVBox;
+    @FXML
+    protected Button applyButton;
+    @FXML
+    protected Button cancelButton;
     
     @FXML
     protected void handleActionCancel(ActionEvent event) {
@@ -51,5 +56,7 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
     @Override
     protected void configureView(TModel model) {
       buttonsVBox.getStyleClass().add("vbox");
+      
+      applyButton.textProperty().bind(model.applyButtonTextProperty());
     }
 }
