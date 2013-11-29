@@ -30,7 +30,7 @@ import org.vesna.core.logging.LoggerHelper;
  * @author Krzysztof Marecki
  */
 public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
-   protected static final Logger logger = Logger.getLogger(EntitiesEditModel.class);
+    protected static final Logger logger = Logger.getLogger(EntitiesEditModel.class);
     
     public enum Mode {
         Add,

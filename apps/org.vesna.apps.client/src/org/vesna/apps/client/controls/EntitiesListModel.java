@@ -30,19 +30,22 @@ import org.vesna.core.entities.EntityType;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.javafx.BaseModelImpl;
 import org.vesna.core.lang.ReflectionHelper;
+import org.vesna.core.logging.LoggerHelper;
 
 /**
  *
  * @author Krzysztof Marecki
  */
 public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
+    protected static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EntitiesListModel.class);
+    
     private final ListProperty<TEntity> entities = new SimpleListProperty<>(FXCollections.<TEntity>observableArrayList());
 
-    public ObservableList getEntities() {
+    public ObservableList<TEntity> getEntities() {
         return entities.get();
     }
 
-    public void setEntities(ObservableList value) {
+    public void setEntities(ObservableList<TEntity> value) {
         entities.set(value);
     }
 
@@ -74,13 +77,21 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
 
     @Override
     public void initialize() {
-        loadEntities();
-        loadEntityType();
+        try {
+            loadEntities();
+            loadEntityType();
+        } catch (EntityException ex) {
+           LoggerHelper.logException(logger, ex);
+        }
     }
 
     @Override
     public void refresh() {
-        loadEntities();
+        try {
+            loadEntities();
+        } catch (EntityException ex) {
+            LoggerHelper.logException(logger, ex);
+        }
     }
     
     public EntitiesEditModel createNewEntityEditModel() {
@@ -109,16 +120,24 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     
     protected abstract String getRepositoryName();
     
-    private void loadEntities() {
+    private void loadEntities() throws EntityException {
         String repositoryName = getRepositoryName();
         EntitiesService entitiesService = Core.getService(EntitiesService.class);
         entitiesRepository = entitiesService.getRepository(repositoryName);
         List<TEntity> dtos = entitiesRepository.getAll();
         
+        Object oldSelectedId = EntityHelper.getId(entityType, getSelectedEntity());
+        
         getEntities().clear();
         for(TEntity dto : dtos) {
-                getEntities().add(dto);
+            getEntities().add(dto);
         }
+        
+        TEntity selected = findEntity(oldSelectedId);
+        if (selected == null && getEntities().size() > 0) {
+            selected = getEntities().get(0);
+        }
+        setSelectedEntity(selected);
     }
     
     private void loadEntityType() {
@@ -127,14 +146,25 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
         entityType = entitiesService.getEntityType(klassName);
     }
     
-    private TEntity getLoadedSelectedEntity() 
-            throws EntityException {
+    private TEntity getLoadedSelectedEntity() throws EntityException {
         Object id = EntityHelper.getId(entityType, getSelectedEntity());
         TEntity entity = entitiesRepository.getSingle(id);
         return entity;
     }
     
-     protected Class getTEntityClass() {
+    private TEntity findEntity(Object id) throws EntityException {
+        TEntity ret = null;
+        for (TEntity entity : getEntities()) {
+            Object entityId = EntityHelper.getId(entityType, entity);
+            if (entityId.equals(id)) {
+                ret = entity;
+                break;
+            }
+        }
+        return ret;
+    }
+    
+    protected Class getTEntityClass() {
         Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
         return entityClass;
     }

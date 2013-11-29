@@ -26,6 +26,9 @@ public class EntityHelper {
     
     public static Object getId(EntityType entityType, Object entity) 
             throws EntityException {
+        if (entity == null) {
+            return null;
+        }
         try {
         Class entityKlass = entity.getClass();
         PropertyDescriptor pkDescriptor = new PropertyDescriptor(
