@@ -62,6 +62,9 @@ public class MainFormController extends BaseController<ClientAppModel>  {
         NavigationService navigationServices = Core.getService(NavigationService.class);
         navigationAdapter = new TabPaneNavigationAdapter(tabPane);
         navigationServices.setAdapter(navigationAdapter);
-        
+    }
+
+    @Override
+    protected void refreshView() {
     }
 }

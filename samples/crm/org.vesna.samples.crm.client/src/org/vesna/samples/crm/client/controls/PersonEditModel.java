@@ -20,6 +20,7 @@ import javafx.beans.property.StringProperty;
 import org.vesna.apps.client.controls.EntitiesEditModel;
 import static org.vesna.apps.client.controls.EntitiesEditModel.Mode.Add;
 import static org.vesna.apps.client.controls.EntitiesEditModel.Mode.Edit;
+import org.vesna.apps.client.controls.EntitiesListModel;
 import org.vesna.core.entities.Repository;
 import org.vesna.samples.crm.dto.Person;
 
@@ -55,8 +56,8 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
         return lastName;
     }
 
-    public PersonEditModel(Repository entitiesRepository, Mode mode) {
-        super(entitiesRepository, mode);
+    public PersonEditModel(EntitiesListModel parentModel, Repository entitiesRepository, Mode mode) {
+        super(parentModel, entitiesRepository, mode);
         switch(mode) {
             case Add : {
                 setModelName("New person");

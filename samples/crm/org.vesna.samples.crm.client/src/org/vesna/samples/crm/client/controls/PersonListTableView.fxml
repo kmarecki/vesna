@@ -8,7 +8,7 @@
 
  <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
      <columns>
-        <TableColumn fx:id="firstNameColumn"  text="First Name" minWidth="100" />
+        <TableColumn fx:id="firstNameColumn"  text="First Name" minWidth="150" maxWidth="150" />
         <TableColumn fx:id="lastNameColumn" text="Last Name" minWidth="150"/>
     </columns>
  </TableView>

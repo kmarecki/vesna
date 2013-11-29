@@ -115,6 +115,7 @@ public class NavigationService {
             screenController.refreshModel();
         }
         adapter.openScreenInCurrentWindow(screen.control, screen.title);
+        refreshScreen(screen);
     }
     
     public void closeCurrentWindow() {
@@ -131,6 +132,7 @@ public class NavigationService {
         String pathTitle = getFutureScreenPathTitle(windowTag, title);
         adapter.openScreenInCurrentWindow(screen.control, pathTitle);
         windows.addNextScreen(windowTag, screen);
+        refreshScreen(screen);
     }
     
     public void openScreenInNewWindow(Node control, String title) {
@@ -140,6 +142,7 @@ public class NavigationService {
         String windowTag = adapter.getCurrentWindowTag();
         windows.addWindow(windowTag);
         windows.addNextScreen(windowTag, screen);
+        refreshScreen(screen);
     }
     
     private String getScreenPathTitle(String windowTag) {
@@ -159,5 +162,12 @@ public class NavigationService {
     private String getFutureScreenPathTitle(String windowTag, String title) {
        String pathTitle = String.format("%s->%s", getScreenPathTitle(windowTag), title);
        return pathTitle;
+    }
+    
+    private void refreshScreen(Screen screen) {
+        if (screen.control instanceof ControlEx) {
+              BaseController screenController = ((ControlEx)screen.control).getController();
+              screenController.refresh();
+        }
     }
 }

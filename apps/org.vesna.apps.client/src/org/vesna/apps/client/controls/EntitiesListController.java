@@ -19,7 +19,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import org.vesna.core.javafx.BaseController;
@@ -73,6 +72,7 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
             if (MessageBox.show("Do you want to delete selected object?", "Warning") == MessageBox.DialogResult.OK) {
                 model.deleteSelectedEntity();
                 model.refresh();
+                refresh();
             }
         } catch(Throwable ex) {
             LoggerHelper.logException(logger, ex);
@@ -82,17 +82,26 @@ public abstract class EntitiesListController<TModel extends EntitiesListModel>
     @Override
     protected void configureView(final TModel model) {
         buttonsVBox.getStyleClass().add("vbox");
+        entitiesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
         entitiesTable.itemsProperty().bind(model.entitiesProperty());
         entitiesTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
-            public void changed(
-                ObservableValue ov, 
-                Object oldValue, 
-                Object newValue) {
+            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
                 model.setSelectedEntity(newValue);
             }	
         });
+        model.selectedEntityProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object oldValue, Object newValue) {
+                entitiesTable.getSelectionModel().select(model.getSelectedEntity());
+            }
+        });
+    }
+
+    @Override
+    public void refreshView() {
+        entitiesTable.requestFocus();
     }
     
     protected abstract ControlEx createRowEditControl();

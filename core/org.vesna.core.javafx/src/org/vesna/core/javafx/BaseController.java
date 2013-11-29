@@ -48,7 +48,13 @@ public abstract class BaseController<TModel extends BaseModel> {
         }
     }
     
+    public void refresh() {
+        refreshView();
+    }
+     
     protected abstract void configureView(TModel model);
+    
+    protected abstract void refreshView();
     
     protected <TNewModel extends BaseModel> Stage showStage(
             ControlEx control,

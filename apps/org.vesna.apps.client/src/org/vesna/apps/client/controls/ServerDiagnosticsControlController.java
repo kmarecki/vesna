@@ -41,4 +41,9 @@ public class ServerDiagnosticsControlController extends BaseController<ServerDia
     protected void configureView(ServerDiagnosticsControlModel model) {
         infoLabel.textProperty().bind(model.serverInfoProperty());
     }
+
+    @Override
+    protected void refreshView() {
+    }
+    
 }

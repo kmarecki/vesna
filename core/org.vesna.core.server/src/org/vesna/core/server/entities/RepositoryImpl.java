@@ -58,6 +58,7 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     public TEntity update(TEntity entity) {
         Session session = getSession();
         session.update(entity);
+        session.flush();
         session.close();
         return entity;
     }
@@ -66,6 +67,7 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
     public void delete(TEntity entity) {
         Session session = getSession();
         session.delete(entity);
+        session.flush();
         session.close();
     }
 
@@ -85,12 +87,12 @@ public class RepositoryImpl<TEntity> implements Repository<TEntity> {
         return entity;
     }
     
-    private Class getTEntityClass() {
+    protected Class getTEntityClass() {
         Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
         return entityClass;
     }
     
-    private Session getSession() {
+    protected Session getSession() {
         HibernateService hibernateService = Core.getService(HibernateService.class);
         Session session = hibernateService.getSessionFactory().openSession();
         return session;

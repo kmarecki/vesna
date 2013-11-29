@@ -20,7 +20,6 @@ import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import org.apache.log4j.Logger;
-import org.vesna.apps.client.App;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.javafx.BaseModelImpl;
 import org.vesna.core.logging.LoggerHelper;
@@ -39,6 +38,7 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
         View
     }
     
+    private EntitiesListModel parentModel;
     private Repository entitiesRepository;
     
     private final ObjectProperty<TEntity> entity = new SimpleObjectProperty();
@@ -72,7 +72,9 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
         return mode;
     }
     
-    public EntitiesEditModel(Repository entitiesRepository, Mode mode) {
+    public EntitiesEditModel(
+            EntitiesListModel parentModel, Repository entitiesRepository, Mode mode) {
+        this.parentModel = parentModel;
         this.entitiesRepository = entitiesRepository;
         this.mode = mode;
     }
@@ -87,17 +89,19 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
     
     public Boolean saveEntity() {
         try {
-        toEntity(getEntity());
-        switch(mode) {
-            case Add : {
-                entitiesRepository.insert(getEntity());
-                break;
+            toEntity(getEntity());
+            switch(mode) {
+                case Add : {
+                    TEntity insertedEntity = (TEntity)entitiesRepository.insert(getEntity());
+                    parentModel.setSelectedEntity(insertedEntity);
+                    break;
+                }
+                case Edit : {
+                    TEntity updatedEntity = (TEntity)entitiesRepository.update(getEntity());
+                    parentModel.setSelectedEntity(updatedEntity);
+                    break;
+                }
             }
-            case Edit : {
-                entitiesRepository.update(getEntity());
-                break;
-            }
-        }
         } catch (Throwable ex) {
             LoggerHelper.logException(logger, ex);
             return false;

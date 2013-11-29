@@ -59,4 +59,9 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
       
       applyButton.textProperty().bind(model.applyButtonTextProperty());
     }
+
+    @Override
+    protected void refreshView() {
+       
+    }
 }

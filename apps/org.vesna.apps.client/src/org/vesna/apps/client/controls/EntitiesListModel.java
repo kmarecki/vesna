@@ -78,8 +78,8 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     @Override
     public void initialize() {
         try {
-            loadEntities();
             loadEntityType();
+            loadEntities();
         } catch (EntityException ex) {
            LoggerHelper.logException(logger, ex);
         }
@@ -111,8 +111,15 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     
     public void deleteSelectedEntity() 
             throws EntityException {
+        int selectedIndex = getEntities().indexOf(getSelectedEntity());
         TEntity entity = getLoadedSelectedEntity();
+        
         entitiesRepository.delete(entity);
+        
+        if(selectedIndex > 0) {
+            TEntity selected = getEntities().get(selectedIndex - 1);
+            setSelectedEntity(selected);
+        }
     }
      
     

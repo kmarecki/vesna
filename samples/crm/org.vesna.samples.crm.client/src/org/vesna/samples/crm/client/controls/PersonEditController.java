@@ -38,5 +38,12 @@ public class PersonEditController
         firstNameText.textProperty().bindBidirectional(model.firstNameProperty());
         lastNameText.textProperty().bindBidirectional(model.lastNameProperty());
     }
-    
+
+    @Override
+    protected void refreshView() {
+        super.refreshView(); 
+        
+        firstNameText.requestFocus();
+    }
+   
 }
