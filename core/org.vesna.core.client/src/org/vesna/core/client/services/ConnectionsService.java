@@ -18,6 +18,8 @@ package org.vesna.core.client.services;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.log4j.Logger;
+import org.vesna.core.app.Core;
+import org.vesna.core.config.ConfigurationService;
 import org.vesna.core.logging.LoggerHelper;
 
 /**
@@ -27,10 +29,19 @@ import org.vesna.core.logging.LoggerHelper;
 public class ConnectionsService {
     private static final Logger logger = Logger.getLogger(MasterServiceImpl.class);
     
+    private String masterServiceUrl;
+
+    public String getMasterServiceUrl() {
+        if (masterServiceUrl == null) {
+            masterServiceUrl = readMasterServiceUrl();
+        }
+        return masterServiceUrl;
+    }
+
     public MasterServiceImpl getMasterServiceImpl() {
         MasterServiceImpl impl = null;
         try {
-            URL masterURL = new URL("http://localhost:1235/");
+            URL masterURL = new URL(getMasterServiceUrl());
             MasterServiceImplService service = new MasterServiceImplService(masterURL);
             impl = service.getMasterServiceImplPort();
             return impl;
@@ -38,5 +49,11 @@ public class ConnectionsService {
             LoggerHelper.logException(logger, ex);
         }
         return impl;
+    }
+    
+    private String readMasterServiceUrl() {
+        ConfigurationService configurationService = Core.getService(ConfigurationService.class);
+        String url = configurationService.readParameterValue("vesna.masterservice.url");
+        return url;
     }
 }

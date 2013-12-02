@@ -20,7 +20,6 @@ import javafx.scene.Scene;
 import org.vesna.apps.server.ServerAppModel;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
-import org.vesna.core.server.hibernate.HibernateService;
 import org.vesna.samples.crm.server.entities.PersonsRepositoryImpl;
 
 

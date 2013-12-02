@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.vesna.core.app.Core;
 import org.vesna.core.app.ServiceInfo;
+import org.vesna.core.config.ConfigurationService;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.server.derby.DerbyService;
@@ -61,16 +62,20 @@ public abstract class App extends BaseApp {
         publishMasterService();
     }
 	
-    @Override 
+    @Override
     public void stop() {
-            if (masterEndpoint != null && masterEndpoint.isPublished()) {
-                    masterEndpoint.stop();
-            }
+        if (masterEndpoint != null && masterEndpoint.isPublished()) {
+            masterEndpoint.stop();
+        }
     }
 
     private void publishMasterService() {
-            masterEndpoint = Endpoint.publish("http://localhost:1235/", new MasterServiceImpl());
-            logger.log(Priority.INFO, "Master service has been successfully published");
+        ConfigurationService configurationService = Core.getService(ConfigurationService.class);
+        String endpointUrl = configurationService.readParameterValue("vesna.masterservice.url");
+        masterEndpoint = Endpoint.publish(endpointUrl, new MasterServiceImpl());
+        
+        String info = String.format("Master service has been successfully published at %s", endpointUrl);
+        logger.log(Priority.INFO, info);
     }
 
     @Override
@@ -82,11 +87,15 @@ public abstract class App extends BaseApp {
         hibernateService.setMappingsJar(model.getHibernateMappingsJar());
         EntitiesService entitiesService = new EntitiesService();
         entitiesService.setTypesConnector(hibernateService);
+        ConfigurationService configurationService = new ConfigurationService();
+        configurationService.setResourceFile("vesna.server.properties");
+        
         
         Core.addService(new ServiceInfo("DerbyService", DerbyService.class), derbyService);
         Core.addService(new ServiceInfo("DatabaseService", DatabaseService.class), databaseService);
         Core.addService(new ServiceInfo("EntitiesService", EntitiesService.class), entitiesService);
         Core.addService(new ServiceInfo("HibernateService", HibernateService.class), hibernateService);
+        Core.addService(new ServiceInfo("ConfigurationService", ConfigurationService.class), configurationService);
     }
 
     /**
