@@ -69,7 +69,7 @@ public abstract class App extends BaseApp {
     }
 
     private void publishMasterService() {
-            masterEndpoint = Endpoint.publish("http://localhost:1234/", new MasterServiceImpl());
+            masterEndpoint = Endpoint.publish("http://localhost:1235/", new MasterServiceImpl());
             logger.log(Priority.INFO, "Master service has been successfully published");
     }
 

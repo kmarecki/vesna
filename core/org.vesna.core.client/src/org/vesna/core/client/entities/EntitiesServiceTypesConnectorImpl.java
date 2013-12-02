@@ -17,8 +17,9 @@ package org.vesna.core.client.entities;
 
 import com.google.gson.reflect.TypeToken;
 import java.util.Arrays;
+import org.vesna.core.app.Core;
+import org.vesna.core.client.services.ConnectionsService;
 import org.vesna.core.client.services.MasterServiceImpl;
-import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
 import org.vesna.core.entities.EntitiesServiceTypesConnector;
 import org.vesna.core.entities.EntityType;
@@ -32,8 +33,8 @@ public class EntitiesServiceTypesConnectorImpl implements EntitiesServiceTypesCo
 
     @Override
     public EntityType getEntityType(String klassName) {
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
+        ConnectionsService connectionService = Core.getService(ConnectionsService.class);
+        MasterServiceImpl impl = connectionService.getMasterServiceImpl();
         String klassNameJson = GsonHelper.toJson(klassName);
         ServiceCallReturn ret = impl.execServiceMethod(
                 "EntitiesService", "getEntityType", Arrays.asList(new String[] { klassNameJson }));

@@ -21,11 +21,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
 import org.vesna.core.app.ServiceInfo;
 import org.vesna.core.client.entities.EntitiesServiceTypesConnectorImpl;
+import org.vesna.core.client.services.ConnectionsService;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseApp;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
@@ -67,10 +67,12 @@ public abstract class App extends BaseApp {
     
     @Override
     protected void configureServices() {
+        ConnectionsService connectionsService = new ConnectionsService();
         EntitiesService entitiesService = new EntitiesService();
         entitiesService.setTypesConnector(new EntitiesServiceTypesConnectorImpl());
         NavigationService navigationService = new NavigationService();
 
+        Core.addService(new ServiceInfo("ConnectionsService", ConnectionsService.class), connectionsService);
         Core.addService(new ServiceInfo("EntitiesService", EntitiesService.class), entitiesService);
         Core.addService(new ServiceInfo("NavigationService", NavigationService.class), navigationService);
     }

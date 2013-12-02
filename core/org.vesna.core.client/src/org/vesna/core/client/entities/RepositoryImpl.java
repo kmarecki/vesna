@@ -19,6 +19,8 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.vesna.core.app.Core;
+import org.vesna.core.client.services.ConnectionsService;
 import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
@@ -134,8 +136,8 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     protected abstract TypeToken getListTEntityTypeToken();
     
     protected <TResult> TResult execMasterService(Func<MasterServiceImpl, TResult> method) {
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
+        ConnectionsService connectionService = Core.getService(ConnectionsService.class);
+        MasterServiceImpl impl = connectionService.getMasterServiceImpl();
         TResult result = method.apply(impl);
         return result;
     }

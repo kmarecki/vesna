@@ -17,8 +17,9 @@ package org.vesna.apps.client.controls;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.vesna.core.app.Core;
+import org.vesna.core.client.services.ConnectionsService;
 import org.vesna.core.client.services.MasterServiceImpl;
-import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.javafx.BaseModelImpl;
 
 /**
@@ -41,8 +42,8 @@ public class ServerDiagnosticsControlModel extends BaseModelImpl {
     }
     
     public void refreshServerInfo() {
-        MasterServiceImplService service = new MasterServiceImplService();
-        MasterServiceImpl impl = service.getMasterServiceImplPort();
+        ConnectionsService connectionService = Core.getService(ConnectionsService.class);
+        MasterServiceImpl impl = connectionService.getMasterServiceImpl();
         String info = impl.getServerInfo();
         setServerInfo(info);
     }

@@ -36,11 +36,19 @@ public class Core {
     
     public static <T> T getService(Class<T> serviceClass) {
         T service = services.get(serviceClass);
+        if (service == null) {
+            String msg = String.format("Cannot find service for %s type.", serviceClass.getName());
+            throw new RuntimeException(msg);
+        }
         return service;
     }
     
     public static <T> T getService(String serviceName) {
        T service = services.get(serviceName);
+       if (service == null) {
+            String msg = String.format("Cannot find service %s.", serviceName);
+            throw new RuntimeException(msg);
+        }
        return service;
     }
 }
