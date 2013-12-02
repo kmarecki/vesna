@@ -30,6 +30,12 @@ public class PersonEditController
     TextField firstNameText;
     @FXML
     TextField lastNameText;
+    @FXML
+    TextField phoneText;
+    @FXML
+    TextField privatePhoneText;
+    @FXML
+    TextField emailText;
 
     @Override
     protected void configureView(PersonEditModel model) {
@@ -37,6 +43,9 @@ public class PersonEditController
         
         firstNameText.textProperty().bindBidirectional(model.firstNameProperty());
         lastNameText.textProperty().bindBidirectional(model.lastNameProperty());
+        phoneText.textProperty().bindBidirectional(model.phoneProperty());
+        privatePhoneText.textProperty().bindBidirectional(model.privatePhoneProperty());
+        emailText.textProperty().bindBidirectional(model.emailProperty());
     }
 
     @Override

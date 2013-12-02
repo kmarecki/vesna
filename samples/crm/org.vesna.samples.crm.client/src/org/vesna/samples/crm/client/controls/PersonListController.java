@@ -17,9 +17,7 @@ package org.vesna.samples.crm.client.controls;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.vesna.apps.client.controls.EntitiesEditModel;
 import org.vesna.apps.client.controls.EntitiesListController;
 import org.vesna.core.javafx.controls.ControlEx;
 import org.vesna.samples.crm.dto.Person;
@@ -35,6 +33,10 @@ public class PersonListController
     TableColumn firstNameColumn;
     @FXML
     TableColumn lastNameColumn;
+    @FXML
+    TableColumn phoneColumn;
+    @FXML
+    TableColumn emailColumn;
 
     @Override
     protected void configureView(PersonListModel model) {
@@ -44,6 +46,10 @@ public class PersonListController
                new PropertyValueFactory<Person, String>("firstName"));
         lastNameColumn.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("lastName"));
+        phoneColumn.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("phone"));
+        emailColumn.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("email"));
     }
     
     @Override

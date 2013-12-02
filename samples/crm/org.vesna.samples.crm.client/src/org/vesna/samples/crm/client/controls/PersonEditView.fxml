@@ -8,7 +8,7 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
       HBox.hgrow="ALWAYS">
-    <GridPane prefHeight="47.0">
+    <GridPane>
         <columnConstraints>
             <ColumnConstraints minWidth="10.0" />
             <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -16,10 +16,22 @@
         <rowConstraints>
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <Label text="First name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField fx:id="firstNameText" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <Label text="Last name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField  fx:id="lastNameText" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Separator GridPane.columnSpan="2" GridPane.rowIndex="2"
+                   />
+        <Label text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="phoneText" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Private phone" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField  fx:id="privatePhoneText" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />  
+        <Label text="Email" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField  fx:id="emailText" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />  
     </GridPane>
 </VBox>

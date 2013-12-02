@@ -55,6 +55,48 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
     public StringProperty lastNameProperty() {
         return lastName;
     }
+    
+    private final StringProperty phone = new SimpleStringProperty();
+
+    public String getPhone() {
+        return phone.get();
+    }
+
+    public void setPhone(String value) {
+        phone.set(value);
+    }
+
+    public StringProperty phoneProperty() {
+        return phone;
+    }
+    private final StringProperty privatePhone = new SimpleStringProperty();
+
+    public String getPrivatePhone() {
+        return privatePhone.get();
+    }
+
+    public void setPrivatePhone(String value) {
+        privatePhone.set(value);
+    }
+
+    public StringProperty privatePhoneProperty() {
+        return privatePhone;
+    }
+    
+    private final StringProperty email = new SimpleStringProperty();
+
+    public String getEmail() {
+        return email.get();
+    }
+
+    public void setEmail(String value) {
+        email.set(value);
+    }
+
+    public StringProperty emailProperty() {
+        return email;
+    }
+    
 
     public PersonEditModel(EntitiesListModel parentModel, Repository entitiesRepository, Mode mode) {
         super(parentModel, entitiesRepository, mode);
@@ -73,12 +115,18 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
     protected void fromEntity(Person entity) {
         setFirstName(entity.getFirstName());
         setLastName(entity.getLastName());
+        setPhone(entity.getPhone());
+        setPrivatePhone(entity.getPrivatePhone());
+        setEmail(entity.getEmail());
     }
 
     @Override
     protected void toEntity(Person entity) {
         entity.setFirstName(getFirstName());
         entity.setLastName(getLastName());
+        entity.setPhone(getPhone());
+        entity.setPrivatePhone(getPrivatePhone());
+        entity.setEmail(getEmail());
     }
     
     

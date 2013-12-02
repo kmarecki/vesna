@@ -61,6 +61,12 @@ root {
     -fx-spacing: 10;
 }
 
+.separator *.line { 
+-fx-border-style: solid;
+-fx-border-width: 1px;
+
+}
+
 
 
 
