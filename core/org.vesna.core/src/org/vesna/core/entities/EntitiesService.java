@@ -17,6 +17,7 @@ package org.vesna.core.entities;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.vesna.core.util.MapHelper;
 
 /**
  *
@@ -35,11 +36,16 @@ public class EntitiesService {
         repositories.put(name, repository);
     }
     
-    public Repository  getRepository(String name) {
+    public Repository getRepository(String name) {
         Repository repository = repositories.containsKey(name) ?
                                 repositories.get(name) :
                                 null;
         return repository;
+    }
+    
+    public String getRepositoryName(Repository repository) {
+        String name = MapHelper.getKeyByValue(repositories, repository);
+        return name;
     }
     
     public EntityType getEntityType(String klassName) {

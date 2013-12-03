@@ -22,8 +22,8 @@ import org.apache.log4j.Logger;
 import org.vesna.core.app.Core;
 import org.vesna.core.client.services.ConnectionsService;
 import org.vesna.core.client.services.MasterServiceImpl;
-import org.vesna.core.client.services.MasterServiceImplService;
 import org.vesna.core.client.services.ServiceCallReturn;
+import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.lang.Func;
 import org.vesna.core.lang.GsonHelper;
@@ -54,7 +54,8 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
             @Override
             public TEntity apply(MasterServiceImpl impl) {
                 String entityJson = GsonHelper.toJson(entity);
-                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "insert", Arrays.asList(new String[]{entityJson}));
+                ServiceCallReturn ret = impl.execRepositoryMethod(
+                        getRepositoryName(), "insert", Arrays.asList(new String[]{entityJson}));
                 if (ret.isSuccess()) {
                     TEntity dtos = (TEntity) GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
                     return dtos;
@@ -71,7 +72,8 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
             @Override
             public TEntity apply(MasterServiceImpl impl) {
                 String entityJson = GsonHelper.toJson(entity);
-                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "update", Arrays.asList(new String[]{entityJson}));
+                ServiceCallReturn ret = impl.execRepositoryMethod(
+                        getRepositoryName(), "update", Arrays.asList(new String[]{entityJson}));
                 if (ret.isSuccess()) {
                     TEntity dtos = (TEntity) GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
                     return dtos;
@@ -88,7 +90,8 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
             @Override
             public Boolean apply(MasterServiceImpl impl) {
                 String entityJson = GsonHelper.toJson(entity);
-                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "delete", Arrays.asList(new String[]{entityJson}));
+                ServiceCallReturn ret = impl.execRepositoryMethod(
+                        getRepositoryName(), "delete", Arrays.asList(new String[]{entityJson}));
                 if (ret.isSuccess()) {
                     return true;
                 }
@@ -103,7 +106,8 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
         return execMasterService(new Func<MasterServiceImpl, List<TEntity>>() {
             @Override
             public List<TEntity> apply(MasterServiceImpl impl) {
-                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getAll", null);
+                ServiceCallReturn ret = impl.execRepositoryMethod(
+                        getRepositoryName(), "getAll", null);
                 if (ret.isSuccess()) {
                     List<TEntity> dtos = (List<TEntity>) GsonHelper.fromJson(getListTEntityTypeToken(), ret.getReturnValue());
                     return dtos;
@@ -120,7 +124,8 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
             @Override
             public TEntity apply(MasterServiceImpl impl) {
                 String idJson = GsonHelper.toJson(id);
-                ServiceCallReturn ret = impl.execRepositoryMethod("Persons", "getSingle", Arrays.asList(new String[]{idJson}));
+                ServiceCallReturn ret = impl.execRepositoryMethod(
+                        getRepositoryName(), "getSingle", Arrays.asList(new String[]{idJson}));
                 if (ret.isSuccess()) {
                     TEntity dtos = (TEntity) GsonHelper.fromJson(getTEntityTypeToken(), ret.getReturnValue());
                     return dtos;
@@ -142,8 +147,14 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
         return result;
     }
     
-    private Class getTEntityClass() {
+    protected Class getTEntityClass() {
         Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
         return entityClass;
+    }
+    
+    protected String getRepositoryName() {
+        EntitiesService entitiesService = Core.getService(EntitiesService.class);
+        String name = entitiesService.getRepositoryName(this);
+        return name;
     }
 }

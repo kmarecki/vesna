@@ -13,12 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client.entities;
+package org.vesna.samples.crm.client.controls;
+
+import org.vesna.apps.client.controls.EntitiesEditModel;
+import org.vesna.apps.client.controls.EntitiesListModel;
+import org.vesna.samples.crm.dto.Company;
 
 /**
  *
- * @author Krzysztof Mareck
+ * @author Krzysztof Marecki
  */
-public class PersonEntity {
+public class CompanyListModel extends EntitiesListModel<Company> {
+
+    @Override
+    protected EntitiesEditModel createRowEditModel(EntitiesEditModel.Mode mode) {
+        CompanyEditModel editModel = new CompanyEditModel(this, entitiesRepository, mode);
+        return editModel;
+    }
+
+    @Override
+    protected String getRepositoryName() {
+        return "Companies";
+    }
     
 }

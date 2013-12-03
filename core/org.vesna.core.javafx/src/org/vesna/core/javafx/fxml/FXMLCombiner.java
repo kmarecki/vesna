@@ -77,11 +77,16 @@ public class FXMLCombiner {
     
     private abstract class CombinerMethod {
         public abstract void invoke(Node node, Node parentNode)
-            throws TransformerException, SAXException, IOException, DOMException;
+            throws TransformerException, SAXException, IOException, DOMException, FXMLCombinerException;
         
         protected Node getChildNode(Document document, String source)
-            throws TransformerException, SAXException, IOException, DOMException {
+            throws TransformerException, SAXException, IOException, DOMException, FXMLCombinerException {
             InputStream templateStream = (InputStream)context.resolveVariable(source);
+            
+            if (templateStream == null) {
+                String msg = String.format("Cannot find %s", source);
+                throw new FXMLCombinerException(msg);
+            }
             
             CombinedDocument childNodeCombined = new CombinedDocument();
             childNodeCombined.parseTemplate(templateStream);
@@ -118,7 +123,7 @@ public class FXMLCombiner {
 
         @Override 
         public void invoke(Node node, Node parentNode) 
-            throws TransformerException, SAXException, DOMException, IOException {
+            throws TransformerException, SAXException, DOMException, IOException, FXMLCombinerException {
             Node childNode = getChildNode(parentNode.getOwnerDocument(), source);
             parentNode.replaceChild(childNode, node);
         }
@@ -167,7 +172,7 @@ public class FXMLCombiner {
 
         @Override
         public void invoke(Node node, Node parentNode) 
-            throws TransformerException, SAXException, IOException, DOMException {
+            throws TransformerException, SAXException, IOException, DOMException, FXMLCombinerException {
             Node nextNode = getNextElement(node, parentNode);
             Node childNode = getChildNode(parentNode.getOwnerDocument(), source);
             parentNode.replaceChild(childNode, nextNode);
@@ -283,7 +288,7 @@ public class FXMLCombiner {
         }
         
         public void invokeMethod() 
-            throws TransformerException, SAXException, IOException {
+            throws TransformerException, SAXException, IOException, FXMLCombinerException {
             method.invoke(methodNode, parentNode);
         }
     }
@@ -312,7 +317,7 @@ public class FXMLCombiner {
         }
         
         public void combine() 
-            throws TransformerException, SAXException, DOMException, IOException {
+            throws TransformerException, SAXException, DOMException, IOException, FXMLCombinerException {
             invokeCombinerMethods();
         }
         
@@ -367,7 +372,7 @@ public class FXMLCombiner {
         }
         
         private void invokeCombinerMethods() 
-            throws TransformerException, SAXException, DOMException, IOException {
+            throws TransformerException, SAXException, DOMException, IOException, FXMLCombinerException {
             for(MethodPoint point : methodPoints) {
                 point.invokeMethod();
             }
@@ -415,7 +420,7 @@ public class FXMLCombiner {
             String fxml = rootDocument.getCombinedFXML();
             logger.info(fxml);
             return fxml;
-        } catch (TransformerException | SAXException |  DOMException | IOException | NullPointerException ex) {
+        } catch (Throwable ex) {
             LoggerHelper.logException(logger, ex);
         }
         return "";

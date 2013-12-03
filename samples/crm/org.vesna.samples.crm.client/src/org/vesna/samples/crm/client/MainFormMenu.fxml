@@ -15,10 +15,12 @@
                     onAction="#handleMenuItemExit"/>
         </items>
       </Menu>
-      <Menu mnemonicParsing="false" text="Dictionaries">
+      <Menu mnemonicParsing="false" text="Contacts">
           <items>
               <MenuItem mnemonicParsing="false" text="Persons"
                         onAction="#handleMenuItemPersons" /> 
+              <MenuItem mnemonicParsing="false" text="Companies"
+                        onAction="#handleMenuItemCompanies" />
           </items>
       </Menu> 
       <Menu mnemonicParsing="false" text="Help">

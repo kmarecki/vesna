@@ -20,43 +20,35 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.vesna.apps.client.controls.EntitiesListController;
 import org.vesna.core.javafx.controls.ControlEx;
-import org.vesna.samples.crm.dto.Person;
+import org.vesna.samples.crm.dto.Company;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class PersonListController 
-    extends EntitiesListController<PersonListModel> {
-    
-    @FXML
-    TableColumn firstNameColumn;
-    @FXML
-    TableColumn lastNameColumn;
-    @FXML
-    TableColumn phoneColumn;
-    @FXML
-    TableColumn emailColumn;
+public class CompanyListController 
+    extends EntitiesListController<CompanyListModel> {
 
+    @FXML
+    TableColumn shortNameColumn;
+    @FXML
+    TableColumn homepageUrlColumn;
+    
     @Override
-    protected void configureView(PersonListModel model) {
+    protected void configureView(CompanyListModel model) {
         super.configureView(model); 
         
-        firstNameColumn.setCellValueFactory(
-               new PropertyValueFactory<Person, String>("firstName"));
-        lastNameColumn.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("lastName"));
-        phoneColumn.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("phone"));
-        emailColumn.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("email"));
+        shortNameColumn.setCellValueFactory(
+                new PropertyValueFactory<Company, String>("shortName"));
+        homepageUrlColumn.setCellValueFactory(
+                new PropertyValueFactory<Company, String>("homepageUrl"));
+        
     }
-    
+
     @Override
     protected ControlEx createRowEditControl() {
-       PersonEdit control = new PersonEdit();
-       return control;
+        CompanyEdit control = new CompanyEdit();
+        return control;
     }
-    
     
 }

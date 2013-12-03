@@ -18,6 +18,8 @@ package org.vesna.samples.crm.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.vesna.apps.client.MainFormController;
+import org.vesna.samples.crm.client.controls.CompanyList;
+import org.vesna.samples.crm.client.controls.CompanyListModel;
 import org.vesna.samples.crm.client.controls.PersonList;
 import org.vesna.samples.crm.client.controls.PersonListModel;
 
@@ -32,5 +34,12 @@ public class CrmMainFormController extends MainFormController {
         PersonList list = new PersonList();
         PersonListModel model = new PersonListModel();
         showScreenInNewWindow(list, model, "Persons");
+    }
+    
+    @FXML
+    protected void handleMenuItemCompanies(ActionEvent event) {
+        CompanyList list = new CompanyList();
+        CompanyListModel model = new CompanyListModel();
+        showScreenInNewWindow(list, model, "Companies");
     }
 }
