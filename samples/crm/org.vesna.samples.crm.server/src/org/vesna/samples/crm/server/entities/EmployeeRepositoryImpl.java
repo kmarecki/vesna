@@ -16,32 +16,32 @@
 package org.vesna.samples.crm.server.entities;
 
 import org.vesna.core.server.entities.RepositoryImpl;
-import org.vesna.samples.crm.dto.Company;
-import org.vesna.samples.crm.entities.CompaniesRepository;
+import org.vesna.samples.crm.dto.Employee;
+import org.vesna.samples.crm.entities.EmployeeRepository;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CompaniesRepositoryImpl extends RepositoryImpl<Company> implements CompaniesRepository {
+public class EmployeeRepositoryImpl
+    extends RepositoryImpl<Employee> implements EmployeeRepository{
 
     @Override
-    public Company insert(Company entity) {
+    public Employee insert(Employee entity) {
         return super.insert(entity); 
     }
 
     @Override
-    public Company update(Company entity) {
+    public Employee update(Employee entity) {
         return super.update(entity); 
     }
 
     @Override
-    public void delete(Company entity) {
+    public void delete(Employee entity) {
         super.delete(entity); 
     }
-    
-    public Company getSingle(int id) {
+
+    public Employee getSingle(int id) {
         return super.getSingle(id); 
     }
-   
 }

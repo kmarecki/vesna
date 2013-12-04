@@ -10,5 +10,12 @@
       <property name="phone" type="text" column="phone" length="30"/>
       <property name="privatePhone" type="text" column="private_phone" length="30"/>
       <property name="email" type="text" column="email" length="100"/>
+      
+      <joined-subclass name="org.vesna.samples.crm.dto.Employee" table="employees"
+                       polymorphism="explicit">
+          <key column="person_ID"/>
+          <many-to-one name="company" class="org.vesna.samples.crm.dto.Company" column="company_ID"/>
+          <property name="title" type="text" column="title" length="100"/>
+      </joined-subclass>
   </class>
 </hibernate-mapping>

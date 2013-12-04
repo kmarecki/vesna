@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Krzysztof Marecki
  *
- * Licensed under te Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client.entities;
+package org.vesna.samples.crm.server.entities;
 
-import com.google.gson.reflect.TypeToken;
-import java.util.List;
-import org.vesna.core.client.entities.RepositoryImpl;
+import org.vesna.core.server.entities.RepositoryImpl;
 import org.vesna.samples.crm.dto.Company;
 import org.vesna.samples.crm.entities.CompanyRepository;
 
@@ -25,16 +23,26 @@ import org.vesna.samples.crm.entities.CompanyRepository;
  *
  * @author Krzysztof Marecki
  */
-public class CompaniesRepositoryImpl extends RepositoryImpl<Company> implements CompanyRepository {
+public class CompanyRepositoryImpl 
+    extends RepositoryImpl<Company> implements CompanyRepository {
 
     @Override
-    protected TypeToken getTEntityTypeToken() {
-       return new TypeToken<Company>(){};
+    public Company insert(Company entity) {
+        return super.insert(entity); 
     }
 
     @Override
-    protected TypeToken getListTEntityTypeToken() {
-        return new TypeToken<List<Company>>(){};
+    public Company update(Company entity) {
+        return super.update(entity); 
+    }
+
+    @Override
+    public void delete(Company entity) {
+        super.delete(entity); 
     }
     
+    public Company getSingle(int id) {
+        return super.getSingle(id); 
+    }
+   
 }

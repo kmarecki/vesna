@@ -39,8 +39,10 @@ import org.vesna.core.server.services.MasterServiceImpl;
 import org.vesna.core.server.sql.DatabaseService;
 import org.vesna.core.services.ServiceCallReturn;
 import org.vesna.core.sql.MetaDataTable;
+import org.vesna.samples.crm.dto.Employee;
 import org.vesna.samples.crm.dto.Person;
-import org.vesna.samples.crm.server.entities.PersonsRepositoryImpl;
+import org.vesna.samples.crm.server.entities.EmployeeRepositoryImpl;
+import org.vesna.samples.crm.server.entities.PersonRepositoryImpl;
 
 /**
  *
@@ -68,7 +70,8 @@ public class MasterServiceTest {
         masterService = new MasterServiceImpl();
         entitiesService = new EntitiesService();
         entitiesService.setTypesConnector(hibernateService);
-        entitiesService.addRepository("Persons", new PersonsRepositoryImpl());
+        entitiesService.addRepository("Persons", new PersonRepositoryImpl());
+        entitiesService.addRepository("Employees", new EmployeeRepositoryImpl());
 
         Core.addService(derbyService);
         Core.addService(databaseService);
@@ -156,6 +159,15 @@ public class MasterServiceTest {
     }
     
     @Test
+    public void repositoryComplexEntityGetAll() {
+        ServiceCallReturn result = execRepositoryMethod(
+                "Employees", "getAll", new String[] {});
+        List<Employee> employees = 
+                GsonHelper.fromJson(new TypeToken<List<Employee>>(){}, result.getReturnValue());
+        assertTrue(employees.size() > 0);
+    }
+    
+    @Test
     public void entityTypeGet() throws EntityException {
         int personID = 100;
         Person person = new Person();
@@ -174,10 +186,9 @@ public class MasterServiceTest {
     }
 
     private static void insertRows() throws SQLException {
-        MetaDataTable personsTable = databaseService.getTables(
-                null, "app", "persons", null).get(0);
-        databaseService.loadTable(personsTable);
-        
+        MetaDataTable personsTable = databaseService.getLoadedTable(
+                null, "app", "persons");
+
         DataRow person1 = new HashDataRow();
         person1.setString("first_name", "Tom");
         person1.setString("last_name", "Johnson");        
@@ -187,6 +198,27 @@ public class MasterServiceTest {
         person2.setString("first_name", "Julia");
         person2.setString("last_name", "Smith");        
         databaseService.insertRow(personsTable, person2);
+        
+        DataRow person3 = new HashDataRow();
+        person3.setString("first_name", "Jack");
+        person3.setString("last_name", "Black");        
+        databaseService.insertRow(personsTable, person3);
+        
+        MetaDataTable companiesTable = databaseService.getLoadedTable(
+                null, "app", "companies");
+        DataRow company1 = new HashDataRow();
+        company1.setString("short_name", "Super Company");
+        company1.setString("long_name", "Super Company Inc.");
+        databaseService.insertRow(companiesTable, company1);
+        
+        MetaDataTable employeesTable = databaseService.getLoadedTable(
+                null, "app", "employees");
+        DataRow employee1 = new HashDataRow();
+        employee1.setString("person_id", "3");        
+        employee1.setString("company_id", "1");
+        employee1.setString("title", "Boss");
+        databaseService.insertRow(employeesTable, employee1);
+        
     }
     
     private ServiceCallReturn execRepositoryMethod(

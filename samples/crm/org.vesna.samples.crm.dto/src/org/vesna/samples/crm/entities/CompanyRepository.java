@@ -15,14 +15,13 @@
  */
 package org.vesna.samples.crm.entities;
 
-
 import org.vesna.core.entities.Repository;
-import org.vesna.samples.crm.dto.Person;
+import org.vesna.samples.crm.dto.Company;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public interface PersonsRepository extends Repository<Person>{
+public interface CompanyRepository extends Repository<Company> {
     
 }

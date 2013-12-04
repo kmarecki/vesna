@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Krzysztof Marecki
  *
- * Licensed under te Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -13,28 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.client.entities;
+package org.vesna.samples.crm.server.entities;
 
-import com.google.gson.reflect.TypeToken;
-import java.util.List;
-import org.vesna.core.client.entities.RepositoryImpl;
+import org.vesna.core.server.entities.RepositoryImpl;
 import org.vesna.samples.crm.dto.Person;
 import org.vesna.samples.crm.entities.PersonRepository;
+
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class PersonsRepositoryImpl extends RepositoryImpl<Person> implements PersonRepository {
+public class PersonRepositoryImpl 
+    extends RepositoryImpl<Person> implements PersonRepository {
 
     @Override
-    protected TypeToken getTEntityTypeToken() {
-        return new TypeToken<Person>(){};
+    public Person insert(Person entity) {
+        return super.insert(entity); 
     }
 
     @Override
-    protected TypeToken getListTEntityTypeToken() {
-        return new TypeToken<List<Person>>(){};
+    public Person update(Person entity) {
+        return super.update(entity);
     }
-    
+
+    @Override
+    public void delete(Person entity) {
+        super.delete(entity); 
+    }
+
+    public Person getSingle(int id) {
+        return super.getSingle(id); 
+    }
 }

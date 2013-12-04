@@ -20,8 +20,8 @@ import javafx.scene.Scene;
 import org.vesna.apps.server.ServerAppModel;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
-import org.vesna.samples.crm.server.entities.CompaniesRepositoryImpl;
-import org.vesna.samples.crm.server.entities.PersonsRepositoryImpl;
+import org.vesna.samples.crm.server.entities.CompanyRepositoryImpl;
+import org.vesna.samples.crm.server.entities.PersonRepositoryImpl;
 
 
 /**
@@ -52,8 +52,8 @@ public class App extends org.vesna.apps.server.App  {
         super.configureServices(); 
         
         EntitiesService entityService = Core.getService(EntitiesService.class);
-        entityService.addRepository("Persons", new PersonsRepositoryImpl());
-        entityService.addRepository("Companies", new CompaniesRepositoryImpl());
+        entityService.addRepository("Persons", new PersonRepositoryImpl());
+        entityService.addRepository("Companies", new CompanyRepositoryImpl());
     }
 
     @Override

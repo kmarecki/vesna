@@ -13,35 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.server.entities;
-
-import org.vesna.core.server.entities.RepositoryImpl;
-import org.vesna.samples.crm.dto.Person;
-import org.vesna.samples.crm.entities.PersonsRepository;
-
+package org.vesna.samples.crm.dto;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class PersonsRepositoryImpl extends RepositoryImpl<Person> implements PersonsRepository {
+public class Employee extends Person {
+    
+    private String title;
 
-    @Override
-    public Person insert(Person entity) {
-        return super.insert(entity); 
+    public String getTitle() {
+        return title;
     }
 
-    @Override
-    public Person update(Person entity) {
-        return super.update(entity);
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    private Company company;
+
+    public Company getCompany() {
+        return company;
     }
 
-    @Override
-    public void delete(Person entity) {
-        super.delete(entity); 
-    }
-
-    public Person getSingle(int id) {
-        return super.getSingle(id); 
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

@@ -130,6 +130,16 @@ public class DatabaseService {
         return table;
     }
     
+    public MetaDataTable getLoadedTable(
+            String catalog,
+            String schemaPattern,
+            String tableNamePattern) throws SQLException {
+        MetaDataTable table = getTables(
+                catalog, schemaPattern, tableNamePattern, null).get(0);
+        loadTable(table);
+        return table;
+    }
+    
     public void deleteTable(MetaDataTable table) throws SQLException {
         Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
