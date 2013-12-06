@@ -16,6 +16,7 @@
 package org.vesna.samples.crm.server.entities;
 
 import org.vesna.core.server.entities.RepositoryImpl;
+import org.vesna.samples.crm.dto.Company;
 import org.vesna.samples.crm.dto.Employee;
 import org.vesna.samples.crm.entities.EmployeeRepository;
 
@@ -43,5 +44,13 @@ public class EmployeeRepositoryImpl
 
     public Employee getSingle(int id) {
         return super.getSingle(id); 
+    }
+
+    @Override
+    protected Employee transformEntityForJson(Employee entity) {
+        Company company = new Company();
+        company.setCompanyID(entity.getCompany().getCompanyID());
+        entity.setCompany(company);
+        return entity;
     }
 }

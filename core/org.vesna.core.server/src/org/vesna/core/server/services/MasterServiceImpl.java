@@ -28,6 +28,7 @@ import org.vesna.core.entities.Repository;
 import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.logging.LoggerHelper;
+import org.vesna.core.server.entities.RepositoryImpl;
 import org.vesna.core.services.ServiceCallReturn;
 
 /**
@@ -46,7 +47,7 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public ServiceCallReturn execRepositoryMethod(String repositoryName, String methodName, String[] arguments) {
         try {
-            Repository repository = Core.getService(EntitiesService.class).getRepository(repositoryName);
+            RepositoryImpl repository = (RepositoryImpl)Core.getService(EntitiesService.class).getRepository(repositoryName);
             if (repository == null) {
                 return new ServiceCallReturn(
                         false, null, String.format("%s is unknown repository.", repositoryName));
@@ -63,6 +64,7 @@ public class MasterServiceImpl implements MasterService {
             }
             Object[] parameters = toMethodParameters(method, arguments);
             Object result = method.invoke(repository, parameters);
+            result = repository.transformForJson(result);
             Gson gson = new Gson();
             ServiceCallReturn ret = new ServiceCallReturn(true, gson.toJson(result), null);
             return ret;

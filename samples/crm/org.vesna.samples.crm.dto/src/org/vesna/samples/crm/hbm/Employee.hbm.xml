@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="org.vesna.samples.crm.dto.Person" table="persons">
+  <class name="org.vesna.samples.crm.dto.Employee" table="persons" polymorphism="explicit">
       <id name="personID" type="integer" column="person_ID">
           <generator class="identity"/>
       </id>
@@ -10,5 +10,11 @@
       <property name="phone" type="text" column="phone" length="30"/>
       <property name="privatePhone" type="text" column="private_phone" length="30"/>
       <property name="email" type="text" column="email" length="100"/>
+      
+      <join table="employees">
+          <key column="person_ID"/>
+          <many-to-one name="company" class="org.vesna.samples.crm.dto.Company" column="company_ID"/>
+          <property name="title" type="text" column="title" length="100"/>
+      </join>
   </class>
 </hibernate-mapping>

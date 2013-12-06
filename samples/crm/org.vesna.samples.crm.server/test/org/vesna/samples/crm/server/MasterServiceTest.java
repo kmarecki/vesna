@@ -165,6 +165,9 @@ public class MasterServiceTest {
         List<Employee> employees = 
                 GsonHelper.fromJson(new TypeToken<List<Employee>>(){}, result.getReturnValue());
         assertTrue(employees.size() > 0);
+        Employee employee = employees.get(0);
+        assertEquals(1, employee.getCompany().getCompanyID());
+        assertEquals(null,employee.getCompany().getShortName());
     }
     
     @Test
