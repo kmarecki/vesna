@@ -15,6 +15,11 @@
  */
 package org.vesna.samples.crm.server.entities;
 
+import java.util.Collections;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.vesna.core.server.entities.RepositoryImpl;
 import org.vesna.samples.crm.dto.Company;
 import org.vesna.samples.crm.dto.Employee;
@@ -45,6 +50,17 @@ public class EmployeeRepositoryImpl
     public Employee getSingle(int id) {
         return super.getSingle(id); 
     }
+
+    @Override
+    public List<Employee> getEmployees(Company company) {
+        Session session = getSession();
+        Criteria crit = session.createCriteria(entityClass);
+        crit.add(Restrictions.eq("company.companyID", company.getCompanyID()));
+        
+        List<Employee> result = Collections.checkedList(crit.list(), entityClass);
+        return result;
+    }
+    
 
     @Override
     protected Employee transformEntityForJson(Employee entity) {

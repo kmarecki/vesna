@@ -18,23 +18,24 @@ package org.vesna.samples.crm.client.entities;
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import org.vesna.core.client.entities.RepositoryImpl;
-import org.vesna.samples.crm.dto.Company;
-import org.vesna.samples.crm.entities.CompanyRepository;
+import org.vesna.samples.crm.dto.Person;
+import org.vesna.samples.crm.entities.PersonRepository;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public class CompaniesRepositoryImpl extends RepositoryImpl<Company> implements CompanyRepository {
+public class PersonRepositoryImpl 
+    extends RepositoryImpl<Person> implements PersonRepository {
 
     @Override
     protected TypeToken getTEntityTypeToken() {
-       return new TypeToken<Company>(){};
+        return new TypeToken<Person>(){};
     }
 
     @Override
     protected TypeToken getListTEntityTypeToken() {
-        return new TypeToken<List<Company>>(){};
+        return new TypeToken<List<Person>>(){};
     }
     
 }

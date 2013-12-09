@@ -35,6 +35,8 @@ public class CompanyEditController
     TextField homepageUrlText;
     @FXML
     TextArea commentsText;
+    @FXML
+    EmployeeList employeesList;
 
     @Override
     protected void configureView(CompanyEditModel model) {
@@ -44,6 +46,10 @@ public class CompanyEditController
         longNameText.textProperty().bindBidirectional(model.longNameProperty());
         homepageUrlText.textProperty().bindBidirectional(model.homepageUrlProperty());
         commentsText.textProperty().bindBidirectional(model.commentsProperty());
+        
+        EmployeeListModel employeesModel = new EmployeeListModel();
+        employeesModel.setParentCompany(model.getEntity());
+        employeesList.getController().setModel(employeesModel);
     }
 
     @Override

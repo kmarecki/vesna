@@ -16,6 +16,7 @@
 package org.vesna.core.client.entities;
 
 import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -103,19 +104,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public List<TEntity> getAll() {
-        return execMasterService(new Func<MasterServiceImpl, List<TEntity>>() {
-            @Override
-            public List<TEntity> apply(MasterServiceImpl impl) {
-                ServiceCallReturn ret = impl.execRepositoryMethod(
-                        getRepositoryName(), "getAll", null);
-                if (ret.isSuccess()) {
-                    List<TEntity> dtos = (List<TEntity>) GsonHelper.fromJson(getListTEntityTypeToken(), ret.getReturnValue());
-                    return dtos;
-                }
-                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
-                throw new RuntimeException(msg);
-            }
-        });
+        return execGetList("getAll", null);
     }
 
     @Override
@@ -145,6 +134,29 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
         MasterServiceImpl impl = connectionService.getMasterServiceImpl();
         TResult result = method.apply(impl);
         return result;
+    }
+    
+    protected List<TEntity> execGetList(final String methodName, final Object[] parameters) {
+         return execMasterService(new Func<MasterServiceImpl, List<TEntity>>() {
+            @Override
+            public List<TEntity> apply(MasterServiceImpl impl) {
+                List<String> jsonParameters = new ArrayList();
+                if (parameters != null) {
+                    for(Object parameter : parameters) {
+                        String jsonParameter = GsonHelper.toJson(parameter);
+                        jsonParameters.add(jsonParameter);
+                    }
+                }
+                ServiceCallReturn ret = impl.execRepositoryMethod(
+                        getRepositoryName(), methodName, jsonParameters);
+                if (ret.isSuccess()) {
+                    List<TEntity> dtos = (List<TEntity>) GsonHelper.fromJson(getListTEntityTypeToken(), ret.getReturnValue());
+                    return dtos;
+                }
+                String msg = String.format("execRepositoryMethod failed: %s", ret.getErrorMessage());
+                throw new RuntimeException(msg);
+            }
+        });
     }
     
     protected Class getTEntityClass() {

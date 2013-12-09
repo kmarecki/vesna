@@ -21,6 +21,7 @@ import org.vesna.apps.server.ServerAppModel;
 import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.samples.crm.server.entities.CompanyRepositoryImpl;
+import org.vesna.samples.crm.server.entities.EmployeeRepositoryImpl;
 import org.vesna.samples.crm.server.entities.PersonRepositoryImpl;
 
 
@@ -54,6 +55,7 @@ public class App extends org.vesna.apps.server.App  {
         EntitiesService entityService = Core.getService(EntitiesService.class);
         entityService.addRepository("Persons", new PersonRepositoryImpl());
         entityService.addRepository("Companies", new CompanyRepositoryImpl());
+        entityService.addRepository("Employees", new EmployeeRepositoryImpl());
     }
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Krzysztof Marecki
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under te Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -13,18 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.entities;
+package org.vesna.samples.crm.client.entities;
 
+import com.google.gson.reflect.TypeToken;
 import java.util.List;
-import org.vesna.core.entities.Repository;
+import org.vesna.core.client.entities.RepositoryImpl;
 import org.vesna.samples.crm.dto.Company;
-import org.vesna.samples.crm.dto.Employee;
+import org.vesna.samples.crm.entities.CompanyRepository;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public interface EmployeeRepository extends Repository<Employee> {
+public class CompanyRepositoryImpl 
+    extends RepositoryImpl<Company> implements CompanyRepository {
+
+    @Override
+    protected TypeToken getTEntityTypeToken() {
+       return new TypeToken<Company>(){};
+    }
+
+    @Override
+    protected TypeToken getListTEntityTypeToken() {
+        return new TypeToken<List<Company>>(){};
+    }
     
-    List<Employee> getEmployees(Company company);
 }

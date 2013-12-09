@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Krzysztof Marecki
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under te Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.entities;
-
-import java.util.List;
-import org.vesna.core.entities.Repository;
-import org.vesna.samples.crm.dto.Company;
-import org.vesna.samples.crm.dto.Employee;
+package org.vesna.samples.crm.client.controls;
 
 /**
  *
  * @author Krzysztof Marecki
  */
-public interface EmployeeRepository extends Repository<Employee> {
+public class EmployeeEditController {
     
-    List<Employee> getEmployees(Company company);
 }

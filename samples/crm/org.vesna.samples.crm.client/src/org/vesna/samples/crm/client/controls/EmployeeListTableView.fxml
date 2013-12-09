@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+ <TableView xmlns:fx="http://javafx.com/fxml" fx:id="entitiesTable" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+     <columns>
+        <TableColumn fx:id="firstNameColumn"  text="First Name" minWidth="150" maxWidth="150" />
+        <TableColumn fx:id="lastNameColumn" text="Last Name" minWidth="150" maxWidth="250"/>
+        <TableColumn fx:id="titleColumn" text="Title" minWidth="150" maxWidth="150" /> 
+        <TableColumn fx:id="phoneColumn" text="Phone" minWidth="150" maxWidth="150"/>
+        <TableColumn fx:id="emailColumn" text="Email" minWidth="200"/> 
+    </columns>
+ </TableView>

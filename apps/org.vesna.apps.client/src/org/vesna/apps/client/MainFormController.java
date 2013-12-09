@@ -18,8 +18,6 @@ package org.vesna.apps.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import org.apache.log4j.Logger;
 

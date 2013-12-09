@@ -18,6 +18,7 @@ package org.vesna.apps.client.controls;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.vesna.core.app.Core;
 import org.vesna.core.javafx.BaseController;
@@ -32,7 +33,7 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
     extends BaseController<TModel> {
 
     @FXML
-    protected VBox buttonsVBox;
+    protected HBox buttonsHBox;
     @FXML
     protected Button applyButton;
     @FXML
@@ -55,7 +56,7 @@ public abstract class EntitiesEditController<TModel extends EntitiesEditModel>
 
     @Override
     protected void configureView(TModel model) {
-      buttonsVBox.getStyleClass().add("vbox");
+      buttonsHBox.getStyleClass().add("hbox");
       
       applyButton.textProperty().bind(model.applyButtonTextProperty());
     }

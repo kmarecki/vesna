@@ -127,11 +127,16 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     
     protected abstract String getRepositoryName();
     
+    protected List<TEntity> getAllEntities() {
+         List<TEntity> dtos = entitiesRepository.getAll();
+         return dtos;
+    }
+    
     private void loadEntities() throws EntityException {
         String repositoryName = getRepositoryName();
         EntitiesService entitiesService = Core.getService(EntitiesService.class);
         entitiesRepository = entitiesService.getRepository(repositoryName);
-        List<TEntity> dtos = entitiesRepository.getAll();
+        List<TEntity> dtos = getAllEntities();
         
         Object oldSelectedId = EntityHelper.getId(entityType, getSelectedEntity());
         

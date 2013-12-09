@@ -9,15 +9,15 @@
 <!--<tfx:replace attribute="fx:controller" value="$CONTROLLER"/>-->
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml" 
          fx:controller="org.vesna.apps.client.controls.EntitiesEditController">
-    <HBox>
+    <VBox>
        <!--<tfx:include source="$ENTITIES_ROW_VIEW"/>-->
-       <VBox fx:id="buttonsVBox" maxWidth="80" minWidth="80" >
+       <HBox fx:id="buttonsHBox" alignment="CENTER_RIGHT">
            <children>
-               <Button fx:id="applyButton" text="Apply" maxWidth="${buttonsVBox.maxWidth}"
-                       onAction="#handleActionApply" />
-               <Button fx:id="cancelButton" text="Cancel" maxWidth="${buttonsVBox.maxWidth}"
+               <Button fx:id="cancelButton" text="Cancel" maxWidth="80"
                        onAction="#handleActionCancel" />
+               <Button fx:id="applyButton" text="Apply" maxWidth="80"
+                       onAction="#handleActionApply" />
            </children>
-       </VBox>
-    </HBox>
+       </HBox>
+    </VBox>
 </fx:root>

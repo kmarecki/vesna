@@ -29,6 +29,7 @@ public class FXMLLoaderHelper {
         String fxml = combiner.getCombinedFXML();
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setRoot(root);
+        fxmlLoader.setClassLoader(root.getClass().getClassLoader());
         fxmlLoader.setLocation(combiner.getTemplateLocation());
          
         try {

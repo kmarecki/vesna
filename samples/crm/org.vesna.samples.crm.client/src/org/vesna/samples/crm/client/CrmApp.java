@@ -22,8 +22,9 @@ import org.vesna.core.app.Core;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.javafx.BaseAppModel;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
-import org.vesna.samples.crm.client.entities.CompaniesRepositoryImpl;
-import org.vesna.samples.crm.client.entities.PersonsRepositoryImpl;
+import org.vesna.samples.crm.client.entities.CompanyRepositoryImpl;
+import org.vesna.samples.crm.client.entities.EmployeeRepositoryImpl;
+import org.vesna.samples.crm.client.entities.PersonRepositoryImpl;
 
 /**
  *
@@ -64,8 +65,9 @@ public class CrmApp extends org.vesna.apps.client.App {
         super.configureServices(); 
         
         EntitiesService entityService = Core.getService(EntitiesService.class);
-        entityService.addRepository("Persons", new PersonsRepositoryImpl());
-        entityService.addRepository("Companies", new CompaniesRepositoryImpl());
+        entityService.addRepository("Persons", new PersonRepositoryImpl());
+        entityService.addRepository("Companies", new CompanyRepositoryImpl());
+        entityService.addRepository("Employees", new EmployeeRepositoryImpl());
     }
 
     @Override
