@@ -96,7 +96,7 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
     
     public EntitiesEditModel createNewEntityEditModel() {
         EntitiesEditModel model = createRowEditModel(EntitiesEditModel.Mode.Add);
-        TEntity entity = entitiesRepository.create();
+        TEntity entity = createNewEntity();
         model.setEntity(entity);
         return model;
     }
@@ -132,6 +132,17 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
          return dtos;
     }
     
+    protected TEntity getLoadedSelectedEntity() throws EntityException {
+        Object id = EntityHelper.getId(entityType, getSelectedEntity());
+        TEntity entity = entitiesRepository.getSingle(id);
+        return entity;
+    }
+    
+    protected TEntity createNewEntity() {
+        TEntity entity = entitiesRepository.create();
+        return entity;
+    }
+    
     private void loadEntities() throws EntityException {
         String repositoryName = getRepositoryName();
         EntitiesService entitiesService = Core.getService(EntitiesService.class);
@@ -156,12 +167,6 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
         EntitiesService entitiesService = Core.getService(EntitiesService.class);
         String klassName = getTEntityClass().getName();
         entityType = entitiesService.getEntityType(klassName);
-    }
-    
-    private TEntity getLoadedSelectedEntity() throws EntityException {
-        Object id = EntityHelper.getId(entityType, getSelectedEntity());
-        TEntity entity = entitiesRepository.getSingle(id);
-        return entity;
     }
     
     private TEntity findEntity(Object id) throws EntityException {

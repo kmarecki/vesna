@@ -15,10 +15,22 @@
  */
 package org.vesna.samples.crm.client.controls;
 
+import org.vesna.apps.client.controls.EntitiesEdit;
+import org.vesna.core.javafx.fxml.FXMLCombiner;
+
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EmployeeEdit {
+public class EmployeeEdit 
+    extends EntitiesEdit<EmployeeEditModel, EmployeeEditController> {
+    
+    @Override
+    protected FXMLCombiner getCombiner() {
+        FXMLCombiner combiner = super.getCombiner();
+        combiner.addAttributeVariable("CONTROLLER", EmployeeEditController.class.getName());
+        combiner.addFXMLVariable("ENTITIES_ROW_VIEW", this.getClass().getResourceAsStream("EmployeeEditView.fxml"));
+        return combiner;
+    }
     
 }

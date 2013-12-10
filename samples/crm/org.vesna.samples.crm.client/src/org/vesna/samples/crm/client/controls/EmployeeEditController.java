@@ -15,10 +15,26 @@
  */
 package org.vesna.samples.crm.client.controls;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EmployeeEditController {
+public class EmployeeEditController 
+    extends PersonEditController<EmployeeEditModel> {
+    
+    @FXML
+    TextField titleText;
+
+    @Override
+    protected void configureView(EmployeeEditModel model) {
+        super.configureView(model); 
+        
+        titleText.textProperty().bindBidirectional(model.titileProperty());
+    }
+    
+    
     
 }

@@ -17,13 +17,14 @@ package org.vesna.samples.crm.client.controls;
 
 import org.vesna.apps.client.controls.EntitiesEdit;
 import org.vesna.core.javafx.fxml.FXMLCombiner;
+import org.vesna.samples.crm.dto.Person;
 
 /**
  *
  * @author Krzysztof Marecki
  */
 public class PersonEdit 
-    extends EntitiesEdit<PersonEditModel, PersonEditController> {
+    extends EntitiesEdit<PersonEditModel<Person>, PersonEditController<PersonEditModel<Person>>> {
     
     @Override
     protected FXMLCombiner getCombiner() {

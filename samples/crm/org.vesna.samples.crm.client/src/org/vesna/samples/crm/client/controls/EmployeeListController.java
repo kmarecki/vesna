@@ -59,7 +59,8 @@ public class EmployeeListController
 
     @Override
     protected ControlEx createRowEditControl() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EmployeeEdit control = new EmployeeEdit();
+        return control;
     }
     
 }

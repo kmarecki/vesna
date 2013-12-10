@@ -23,8 +23,8 @@ import org.vesna.apps.client.controls.EntitiesEditController;
  *
  * @author Krzysztof Marecki
  */
-public class PersonEditController 
-    extends EntitiesEditController<PersonEditModel> {
+public class PersonEditController<TModel extends PersonEditModel> 
+    extends EntitiesEditController<TModel> {
    
     @FXML
     TextField firstNameText;
@@ -38,7 +38,7 @@ public class PersonEditController
     TextField emailText;
 
     @Override
-    protected void configureView(PersonEditModel model) {
+    protected void configureView(TModel model) {
         super.configureView(model);
         
         firstNameText.textProperty().bindBidirectional(model.firstNameProperty());

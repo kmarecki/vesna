@@ -15,10 +15,49 @@
  */
 package org.vesna.samples.crm.client.controls;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import org.vesna.apps.client.controls.EntitiesListModel;
+import org.vesna.core.entities.Repository;
+import org.vesna.samples.crm.dto.Employee;
+
 /**
  *
  * @author Krzysztof Marecki
  */
-public class EmployeeEditModel {
+public class EmployeeEditModel 
+    extends PersonEditModel<Employee> {
+    
+    private final StringProperty titile = new SimpleStringProperty();
+
+    public String getTitile() {
+        return titile.get();
+    }
+
+    public void setTitile(String value) {
+        titile.set(value);
+    }
+
+    public StringProperty titileProperty() {
+        return titile;
+    }
+
+    
+    public EmployeeEditModel(EntitiesListModel parentModel, Repository entitiesRepository, Mode mode) {
+        super(parentModel, entitiesRepository, mode);
+    }
+
+    @Override
+    protected void fromEntity(Employee entity) {
+        super.fromEntity(entity); 
+        setTitile(entity.getTitle());
+    }
+
+    
+    @Override
+    protected void toEntity(Employee entity) {
+        super.toEntity(entity); 
+        entity.setTitle(getTitile());
+    }
     
 }

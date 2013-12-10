@@ -38,7 +38,8 @@ public class EmployeeListModel
 
     @Override
     protected EntitiesEditModel createRowEditModel(EntitiesEditModel.Mode mode) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EmployeeEditModel editModel = new EmployeeEditModel(this, entitiesRepository, mode);
+        return editModel;
     }
 
     @Override
@@ -52,4 +53,11 @@ public class EmployeeListModel
         return dtos;
     }
 
+    @Override
+    protected Employee createNewEntity() {
+        Employee employee = super.createNewEntity();
+        employee.setCompany(parentCompany);
+        return employee;
+    }
+    
 }

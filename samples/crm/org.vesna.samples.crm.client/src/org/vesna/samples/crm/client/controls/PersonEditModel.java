@@ -28,7 +28,8 @@ import org.vesna.samples.crm.dto.Person;
  *
  * @author Krzysztof Marecki
  */
-public class PersonEditModel extends EntitiesEditModel<Person> {
+public class PersonEditModel<TEntity extends Person> 
+    extends EntitiesEditModel<TEntity> {
     private final StringProperty firstName = new SimpleStringProperty();
 
     public String getFirstName() {
@@ -112,7 +113,7 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
     }
     
     @Override
-    protected void fromEntity(Person entity) {
+    protected void fromEntity(TEntity entity) {
         setFirstName(entity.getFirstName());
         setLastName(entity.getLastName());
         setPhone(entity.getPhone());
@@ -121,7 +122,7 @@ public class PersonEditModel extends EntitiesEditModel<Person> {
     }
 
     @Override
-    protected void toEntity(Person entity) {
+    protected void toEntity(TEntity entity) {
         entity.setFirstName(getFirstName());
         entity.setLastName(getLastName());
         entity.setPhone(getPhone());
