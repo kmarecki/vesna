@@ -48,7 +48,7 @@ public abstract class BaseController<TModel extends BaseModel> {
         }
     }
     
-    public void refresh() {
+    public final void refresh() {
         refreshView();
     }
      

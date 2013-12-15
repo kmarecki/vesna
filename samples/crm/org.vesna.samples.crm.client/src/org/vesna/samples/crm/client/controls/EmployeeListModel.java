@@ -18,6 +18,7 @@ package org.vesna.samples.crm.client.controls;
 import java.util.List;
 import org.vesna.apps.client.controls.EntitiesEditModel;
 import org.vesna.apps.client.controls.EntitiesListModel;
+import org.vesna.core.lang.Func;
 import org.vesna.samples.crm.dto.Company;
 import org.vesna.samples.crm.dto.Employee;
 import org.vesna.samples.crm.entities.EmployeeRepository;
@@ -29,12 +30,17 @@ import org.vesna.samples.crm.entities.EmployeeRepository;
 public class EmployeeListModel 
     extends EntitiesListModel<Employee> {
     
-    private Company parentCompany;
+    private Func<Company> refreshParentCompany;
 
-    public void setParentCompany(Company parentCompany) {
+    public void refreshParentCompany(Func<Company> parentCompany) {
+        this.refreshParentCompany = parentCompany;
+    }
+    
+    private Company parentCompany;
+    
+    protected void setParentCompany(Company parentCompany) {
         this.parentCompany = parentCompany;
     }
-
 
     @Override
     protected EntitiesEditModel createRowEditModel(EntitiesEditModel.Mode mode) {
@@ -55,6 +61,7 @@ public class EmployeeListModel
 
     @Override
     protected Employee createNewEntity() {
+        parentCompany = refreshParentCompany.apply();
         Employee employee = super.createNewEntity();
         employee.setCompany(parentCompany);
         return employee;

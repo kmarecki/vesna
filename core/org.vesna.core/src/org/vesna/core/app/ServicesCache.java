@@ -18,7 +18,7 @@ package org.vesna.core.app;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.vesna.core.lang.Func;
+import org.vesna.core.lang.Func1;
 
 /**
  *
@@ -32,7 +32,7 @@ public class ServicesCache {
     }
     
     public <T> T get(final Class<T> clazz) {
-         return get(new Func<ServiceInfo, Boolean>(){
+         return get(new Func1<ServiceInfo, Boolean>(){
             @Override
             public Boolean apply(ServiceInfo serviceInfo) {
                 return serviceInfo.getServiceClass() == clazz;
@@ -41,7 +41,7 @@ public class ServicesCache {
     }
     
      public <T> T get(final String serviceName) {
-        return get(new Func<ServiceInfo, Boolean>(){
+        return get(new Func1<ServiceInfo, Boolean>(){
             @Override
             public Boolean apply(ServiceInfo serviceInfo) {
                 return serviceInfo.getServiceName().equals(serviceName);
@@ -49,7 +49,7 @@ public class ServicesCache {
         });
     }
      
-    private <T> T get(Func<ServiceInfo, Boolean> comparator) {
+    private <T> T get(Func1<ServiceInfo, Boolean> comparator) {
         T service = null;
         for (ServiceInfo serviceInfo : services.keySet()) {
             if (comparator.apply(serviceInfo)) {

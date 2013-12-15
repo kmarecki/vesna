@@ -19,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.vesna.apps.client.controls.EntitiesEditController;
+import org.vesna.core.lang.Func;
+import org.vesna.samples.crm.dto.Company;
 
 /**
  *
@@ -39,7 +41,7 @@ public class CompanyEditController
     EmployeeList employeesList;
 
     @Override
-    protected void configureView(CompanyEditModel model) {
+    protected void configureView(final CompanyEditModel model) {
         super.configureView(model); 
         
         shortNameText.textProperty().bindBidirectional(model.shortNameProperty());
@@ -49,15 +51,32 @@ public class CompanyEditController
         
         EmployeeListModel employeesModel = new EmployeeListModel();
         employeesModel.setParentCompany(model.getEntity());
+        employeesModel.refreshParentCompany(new Func<Company>() {
+            @Override
+            public Company apply() {
+                model.saveEntity();
+                model.refresh();
+                Company company = model.getEntity();
+                return company;
+            }
+        });
         employeesList.getController().setModel(employeesModel);
     }
 
     @Override
-    public void refresh() {
-        super.refresh(); 
+    protected void refreshView() {
+        super.refreshView(); 
         
         shortNameText.requestFocus();
     }
+
+    @Override
+    public void refreshModel() {
+        super.refreshModel(); 
+        
+        employeesList.getController().refreshModel();
+    }
+    
     
     
 }

@@ -19,6 +19,7 @@ package org.vesna.core.lang;
  *
  * @author Krzysztof Marecki
  */
-public interface Func<TResult> {
-    public TResult apply();
+public interface Func1<T1, TResult> {
+    public TResult apply(T1 arg1);
 }
+

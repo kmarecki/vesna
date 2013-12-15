@@ -93,11 +93,13 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
             switch(mode) {
                 case Add : {
                     TEntity insertedEntity = (TEntity)entitiesRepository.insert(getEntity());
+                    setEntity(insertedEntity);
                     parentModel.setSelectedEntity(insertedEntity);
                     break;
                 }
                 case Edit : {
                     TEntity updatedEntity = (TEntity)entitiesRepository.update(getEntity());
+                    setEntity(updatedEntity);
                     parentModel.setSelectedEntity(updatedEntity);
                     break;
                 }

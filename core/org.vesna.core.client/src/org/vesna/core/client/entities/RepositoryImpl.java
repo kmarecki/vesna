@@ -26,7 +26,7 @@ import org.vesna.core.client.services.MasterServiceImpl;
 import org.vesna.core.client.services.ServiceCallReturn;
 import org.vesna.core.entities.EntitiesService;
 import org.vesna.core.entities.Repository;
-import org.vesna.core.lang.Func;
+import org.vesna.core.lang.Func1;
 import org.vesna.core.lang.GsonHelper;
 import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.logging.LoggerHelper;
@@ -51,7 +51,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
      
     @Override
     public TEntity insert(final TEntity entity) {
-        return execMasterService(new Func<MasterServiceImpl, TEntity>() {
+        return execMasterService(new Func1<MasterServiceImpl, TEntity>() {
             @Override
             public TEntity apply(MasterServiceImpl impl) {
                 String entityJson = GsonHelper.toJson(entity);
@@ -69,7 +69,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public TEntity update(final TEntity entity) {
-        return execMasterService(new Func<MasterServiceImpl, TEntity>() {
+        return execMasterService(new Func1<MasterServiceImpl, TEntity>() {
             @Override
             public TEntity apply(MasterServiceImpl impl) {
                 String entityJson = GsonHelper.toJson(entity);
@@ -87,7 +87,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public void delete(final TEntity entity) {
-        execMasterService(new Func<MasterServiceImpl, Boolean>() {
+        execMasterService(new Func1<MasterServiceImpl, Boolean>() {
             @Override
             public Boolean apply(MasterServiceImpl impl) {
                 String entityJson = GsonHelper.toJson(entity);
@@ -109,7 +109,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
 
     @Override
     public TEntity getSingle(final Object id) {
-         return execMasterService(new Func<MasterServiceImpl, TEntity>() {
+         return execMasterService(new Func1<MasterServiceImpl, TEntity>() {
             @Override
             public TEntity apply(MasterServiceImpl impl) {
                 String idJson = GsonHelper.toJson(id);
@@ -129,7 +129,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     
     protected abstract TypeToken getListTEntityTypeToken();
     
-    protected <TResult> TResult execMasterService(Func<MasterServiceImpl, TResult> method) {
+    protected <TResult> TResult execMasterService(Func1<MasterServiceImpl, TResult> method) {
         ConnectionsService connectionService = Core.getService(ConnectionsService.class);
         MasterServiceImpl impl = connectionService.getMasterServiceImpl();
         TResult result = method.apply(impl);
@@ -137,7 +137,7 @@ public abstract class RepositoryImpl<TEntity> implements Repository<TEntity> {
     }
     
     protected List<TEntity> execGetList(final String methodName, final Object[] parameters) {
-         return execMasterService(new Func<MasterServiceImpl, List<TEntity>>() {
+         return execMasterService(new Func1<MasterServiceImpl, List<TEntity>>() {
             @Override
             public List<TEntity> apply(MasterServiceImpl impl) {
                 List<String> jsonParameters = new ArrayList();
