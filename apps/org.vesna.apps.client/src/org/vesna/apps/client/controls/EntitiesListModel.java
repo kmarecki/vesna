@@ -77,12 +77,7 @@ public abstract class EntitiesListModel<TEntity> extends BaseModelImpl {
 
     @Override
     public void initialize() {
-        try {
-            loadEntityType();
-            loadEntities();
-        } catch (EntityException ex) {
-           LoggerHelper.logException(logger, ex);
-        }
+        loadEntityType();
     }
 
     @Override

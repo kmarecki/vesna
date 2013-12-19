@@ -24,15 +24,17 @@ import javafx.scene.control.Control;
  */
 public interface NavigationAdapter {
     
-    public Control getCurrentScreen();
+    Control getCurrentScreen();
     
-    public void closeCurrentScreen() ;
+    void closeCurrentScreen() ;
     
-    public void closeCurrentWindow();
+    void closeCurrentWindow();
     
-    public void openScreenInCurrentWindow(Node screen, String title);
+    void openScreenInCurrentWindow(Node screen, String title);
     
-    public void openScreenInNewWindow(Node screen, String title);
+    void openScreenInNewWindow(Node screen, String title);
     
-    public String getCurrentWindowTag();
+    String getCurrentWindowTag();
+    
+    void updateCurrentWindowTitle(String title);
 }

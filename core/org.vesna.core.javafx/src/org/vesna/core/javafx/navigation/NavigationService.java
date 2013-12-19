@@ -44,6 +44,10 @@ public class NavigationService {
             return title;
         }
         
+        public void setTitle(String title) {
+            this.title = title;
+        }
+        
         public Screen(Node control, String title) {
             this.control = control;
             this.title = title;
@@ -96,9 +100,8 @@ public class NavigationService {
         this.adapter = adapter;
     }
 
-    public Node getCurrentScreen() {
-        String windowTag = adapter.getCurrentWindowTag();
-        Screen screen = windows.getCurrentScreen(windowTag);
+    public Node getCurrentScreenNode() {
+        Screen screen = findCurrentScreen();
         Node control = screen.getControl();
         Node currentControl = adapter.getCurrentScreen();
         assert control == currentControl;
@@ -143,6 +146,20 @@ public class NavigationService {
         windows.addWindow(windowTag);
         windows.addNextScreen(windowTag, screen);
         refreshScreen(screen);
+    }
+    
+    public void updateCurrentScreenTitle(String title) {
+        Screen screen = findCurrentScreen();
+        screen.setTitle(title);
+        String windowTag = adapter.getCurrentWindowTag();
+        String pathTitle = getScreenPathTitle(windowTag);
+        adapter.updateCurrentWindowTitle(pathTitle);
+    }
+    
+    private Screen findCurrentScreen() {
+        String windowTag = adapter.getCurrentWindowTag();
+        Screen screen = windows.getCurrentScreen(windowTag);
+        return screen;
     }
     
     private String getScreenPathTitle(String windowTag) {

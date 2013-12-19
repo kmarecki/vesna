@@ -24,7 +24,7 @@ import org.vesna.samples.crm.dto.Person;
  * @author Krzysztof Marecki
  */
 public class PersonEdit 
-    extends EntitiesEdit<PersonEditModel<Person>, PersonEditController<PersonEditModel<Person>>> {
+    extends EntitiesEdit<PersonBaseEditModel<Person>, PersonEditController<PersonBaseEditModel<Person>>> {
     
     @Override
     protected FXMLCombiner getCombiner() {

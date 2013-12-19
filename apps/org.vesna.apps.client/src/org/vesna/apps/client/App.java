@@ -59,7 +59,7 @@ public abstract class App extends BaseApp {
          Scene scene = new Scene(root);
          configureRootScene(scene);
          MainFormController controller = loader.getController();
-         controller.setModel(model);
+         controller.setModelAndInitialize(model);
 
          stage.setTitle(model.getApplicationTitle());
          stage.setScene(scene);

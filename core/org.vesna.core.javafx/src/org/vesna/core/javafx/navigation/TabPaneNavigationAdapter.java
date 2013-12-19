@@ -79,6 +79,12 @@ public class TabPaneNavigationAdapter implements NavigationAdapter {
         return windowTag;
     }
     
+    @Override
+    public void updateCurrentWindowTitle(String title) {
+        Tab tab = getCurrentTab();
+        tab.setText(title);
+    }
+    
     private Tab getCurrentTab() {
         Tab tab = tabPane.getSelectionModel().getSelectedItem();
         return tab;

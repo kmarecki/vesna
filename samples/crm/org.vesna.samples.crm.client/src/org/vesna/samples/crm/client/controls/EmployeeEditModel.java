@@ -26,7 +26,7 @@ import org.vesna.samples.crm.dto.Employee;
  * @author Krzysztof Marecki
  */
 public class EmployeeEditModel 
-    extends PersonEditModel<Employee> {
+    extends PersonBaseEditModel<Employee> {
     
     private final StringProperty titile = new SimpleStringProperty();
 

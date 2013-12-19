@@ -86,15 +86,6 @@ public class CompanyEditModel extends EntitiesEditModel<Company> {
 
     public CompanyEditModel(EntitiesListModel parentModel, Repository entitiesRepository, Mode mode) {
         super(parentModel, entitiesRepository, mode);
-        switch(mode) {
-            case Add : {
-                setModelName("New company");
-                break;
-            } 
-            case Edit : {
-                setModelName("Edit company");
-            }
-        }
     }
     
     @Override

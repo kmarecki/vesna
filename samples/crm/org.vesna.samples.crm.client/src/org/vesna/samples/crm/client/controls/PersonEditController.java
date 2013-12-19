@@ -23,7 +23,7 @@ import org.vesna.apps.client.controls.EntitiesEditController;
  *
  * @author Krzysztof Marecki
  */
-public class PersonEditController<TModel extends PersonEditModel> 
+public class PersonEditController<TModel extends PersonBaseEditModel> 
     extends EntitiesEditController<TModel> {
    
     @FXML

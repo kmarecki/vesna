@@ -36,10 +36,11 @@ public abstract class BaseController<TModel extends BaseModel> {
         return model;
     }
 
-    public void setModel(TModel model) {
+    public void setModelAndInitialize(TModel model) {
         this.model = model;
         configureView(this.model);
         this.model.initialize();
+        this.model.refresh();
     }
     
     public void refreshModel() {
@@ -65,7 +66,7 @@ public abstract class BaseController<TModel extends BaseModel> {
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
         
-        control.getController().setModel(model);
+        control.getController().setModelAndInitialize(model);
         stage.show();
         
         return stage;
@@ -74,7 +75,7 @@ public abstract class BaseController<TModel extends BaseModel> {
     protected <TNewModel extends BaseModel> void showScreenInCurrentWindow(
             ControlEx control,
             TNewModel model) {
-        showScreenInCurrentWindow(control, model, model.getModelName());
+        showScreenInCurrentWindow(control, model, null);
     }
     
     protected <TNewModel extends BaseModel> void showScreenInCurrentWindow(
@@ -82,7 +83,10 @@ public abstract class BaseController<TModel extends BaseModel> {
             TNewModel model,
             String title) {
         NavigationService navigationServices = Core.getService(NavigationService.class);
-        control.getController().setModel(model);
+        control.getController().setModelAndInitialize(model);
+        if (title == null) {
+            title = model.getModelName();
+        }
         navigationServices.openScreenInCurrentWindow((Node)control, title);
     }
     
@@ -97,7 +101,7 @@ public abstract class BaseController<TModel extends BaseModel> {
             TNewModel model,
             String title) {
         NavigationService navigationServices = Core.getService(NavigationService.class);
-        control.getController().setModel(model);
+        control.getController().setModelAndInitialize(model);
         navigationServices.openScreenInNewWindow((Node)control, title);
     }
 }

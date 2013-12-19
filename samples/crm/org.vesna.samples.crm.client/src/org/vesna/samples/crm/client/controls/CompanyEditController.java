@@ -19,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.vesna.apps.client.controls.EntitiesEditController;
+import org.vesna.core.app.Core;
+import org.vesna.core.javafx.navigation.NavigationService;
 import org.vesna.core.lang.Func;
 import org.vesna.samples.crm.dto.Company;
 
@@ -56,11 +58,13 @@ public class CompanyEditController
             public Company apply() {
                 model.saveEntity();
                 model.refresh();
+                NavigationService navigationService = Core.getService(NavigationService.class);
+                navigationService.updateCurrentScreenTitle(model.getModelName());
                 Company company = model.getEntity();
                 return company;
             }
         });
-        employeesList.getController().setModel(employeesModel);
+        employeesList.getController().setModelAndInitialize(employeesModel);
     }
 
     @Override

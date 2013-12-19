@@ -20,8 +20,12 @@ import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import org.apache.log4j.Logger;
+import org.vesna.core.app.Core;
+import org.vesna.core.entities.EntitiesService;
+import org.vesna.core.entities.EntityType;
 import org.vesna.core.entities.Repository;
 import org.vesna.core.javafx.BaseModelImpl;
+import org.vesna.core.lang.ReflectionHelper;
 import org.vesna.core.logging.LoggerHelper;
 
 /**
@@ -63,14 +67,10 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
     public ReadOnlyStringProperty applyButtonTextProperty() {
         return applyButtonText.getReadOnlyProperty();
     }
+   
+    protected Mode mode;
     
-    
-    
-    private Mode mode;
-    
-    public Mode getMode() {
-        return mode;
-    }
+    protected EntityType entityType;
     
     public EntitiesEditModel(
             EntitiesListModel parentModel, Repository entitiesRepository, Mode mode) {
@@ -78,12 +78,18 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
         this.entitiesRepository = entitiesRepository;
         this.mode = mode;
     }
-    
+
     @Override
     public void initialize() {
         super.initialize(); 
         
-        initializeFromMode();
+        loadEntityType();
+    }
+    
+    
+    @Override
+    public void refresh() {
+        refreshFromMode();
         fromEntity(getEntity());
     }
     
@@ -95,6 +101,7 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
                     TEntity insertedEntity = (TEntity)entitiesRepository.insert(getEntity());
                     setEntity(insertedEntity);
                     parentModel.setSelectedEntity(insertedEntity);
+                    mode = Mode.Edit;
                     break;
                 }
                 case Edit : {
@@ -116,16 +123,39 @@ public abstract class EntitiesEditModel<TEntity> extends BaseModelImpl {
     
     protected abstract void toEntity(TEntity entity);
     
-    protected void initializeFromMode() {
-         switch(mode) {
-            case Add : {
+    protected void refreshFromMode() {
+        String entityName = getPrettyEntityName();
+        switch (mode) {
+            case Add: {
                 applyButtonText.set("Add");
+                setModelName(String.format("Add %s", entityName));
                 break;
             }
-            case Edit : {
+            case Edit: {
                 applyButtonText.set("Edit");
+                setModelName(String.format("Edit %s", entityName));
                 break;
             }
         }
     }
+    
+    protected String getPrettyEntityName() {
+        String[] split = entityType.getEntityName().split("\\.");
+        String entityName = split.length > 0 ? 
+                split[split.length - 1].toLowerCase() : 
+                entityType.getEntityName();
+        return entityName;
+    }
+    
+    protected Class getTEntityClass() {
+        Class entityClass = ReflectionHelper.getTemplateTypeParameter(this.getClass());
+        return entityClass;
+    }
+
+    private void loadEntityType() {
+        EntitiesService entitiesService = Core.getService(EntitiesService.class);
+        String klassName = getTEntityClass().getName();
+        entityType = entitiesService.getEntityType(klassName);
+    }
+ 
 }
