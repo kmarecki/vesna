@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.vesna.samples.crm.server;
+package org.vesna.samples.crm.test.server;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
